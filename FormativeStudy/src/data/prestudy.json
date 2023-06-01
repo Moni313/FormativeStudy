@@ -1,0 +1,662 @@
+{
+    "questions": [
+        {
+            "id": 1,
+            "label": "What is the highest level of education you have completed?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Diploma",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 2,
+                    "label": "Undergraduate (e.g. Bachelor Degree)",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "Postgraduate (e.g. Master Degree)",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "Higher Degree Research (e.g. PhD)",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "label": "What best describes your role?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Student",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 2,
+                    "label": "Nurse",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "Doctor",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "Other professions",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "label": "What is your specialisation?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "datalist",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": "Anaesthesia",
+                    "label": "Anaesthesia"
+                },
+                {
+                    "id": "Pain Medicine",
+                    "label": "Pain Medicine"
+                },
+                {
+                    "id": "Intensive Care Medicine",
+                    "label": "Intensive Care Medicine"
+                },
+                {
+                    "id": "General Practice",
+                    "label": "General Practice"
+                },
+                {
+                    "id": "Dermatology",
+                    "label": "Dermatology"
+                },
+                {
+                    "id": "Emergency Medicine",
+                    "label": "Emergency Medicine"
+                },
+                {
+                    "id": "Sport and Exercise Medicine",
+                    "label": "Sport and Exercise Medicine"
+                },
+                {
+                    "id": "Oral and Maxillofacial Surgery",
+                    "label": "Oral and Maxillofacial Surgery"
+                },
+                {
+                    "id": "Medical Administration",
+                    "label": "Medical Administration"
+                },
+                {
+                    "id": "General Medicine",
+                    "label": "General Medicine"
+                },
+                {
+                    "id": "General Paediatrics",
+                    "label": "General Paediatrics"
+                },
+                {
+                    "id": "Cardiology",
+                    "label": "Cardiology"
+                },
+                {
+                    "id": "Clinical Genetics",
+                    "label": "Clinical Genetics"
+                },
+                {
+                    "id": "Clinical Pharmacology",
+                    "label": "Clinical Pharmacology"
+                },
+                {
+                    "id": "Community Child Health",
+                    "label": "Community Child Health"
+                },
+                {
+                    "id": "Endocrinology",
+                    "label": "Endocrinology"
+                },
+                {
+                    "id": "Gastroenterology and Hepatology",
+                    "label": "Gastroenterology and Hepatology"
+                },
+                {
+                    "id": "Geriatric Medicine",
+                    "label": "Geriatric Medicine"
+                },
+                {
+                    "id": "Haematology",
+                    "label": "Haematology"
+                },
+                {
+                    "id": "Immunology and Allergy",
+                    "label": "Immunology and Allergy"
+                },
+                {
+                    "id": "Infectious Diseases",
+                    "label": "Infectious Diseases"
+                },
+                {
+                    "id": "Medical Oncology",
+                    "label": "Medical Oncology"
+                },
+                {
+                    "id": "Neonatal/Perinatal Medicine",
+                    "label": "Neonatal/Perinatal Medicine"
+                },
+                {
+                    "id": "Nephrology",
+                    "label": "Nephrology"
+                },
+                {
+                    "id": "Neurology",
+                    "label": "Neurology"
+                },
+                {
+                    "id": "Nuclear Medicine",
+                    "label": "Nuclear Medicine"
+                },
+                {
+                    "id": "Paediatric Emergency Medicine",
+                    "label": "Paediatric Emergency Medicine"
+                },
+                {
+                    "id": "Palliative Medicine",
+                    "label": "Palliative Medicine"
+                },
+                {
+                    "id": "Respiratory and Sleep Medicine",
+                    "label": "Respiratory and Sleep Medicine"
+                },
+                {
+                    "id": "Rheumatology",
+                    "label": "Rheumatology"
+                },
+                {
+                    "id": "Occupational and Environmental Medicine",
+                    "label": "Occupational and Environmental Medicine"
+                },
+                {
+                    "id": "Addiction Medicine",
+                    "label": "Addiction Medicine"
+                },
+                {
+                    "id": "Public Health Medicine",
+                    "label": "Public Health Medicine"
+                },
+                {
+                    "id": "Rehabilitation Medicine",
+                    "label": "Rehabilitation Medicine"
+                },
+                {
+                    "id": "Sexual Health Medicine",
+                    "label": "Sexual Health Medicine"
+                },
+                {
+                    "id": "Cardio-thoracic Surgery",
+                    "label": "Cardio-thoracic Surgery"
+                },
+                {
+                    "id": "General Surgery",
+                    "label": "General Surgery"
+                },
+                {
+                    "id": "Neurosurgery",
+                    "label": "Neurosurgery"
+                },
+                {
+                    "id": "Orthopaedic Surgery",
+                    "label": "Orthopaedic Surgery"
+                },
+                {
+                    "id": "Otolaryngology – Head and Neck",
+                    "label": "Otolaryngology – Head and Neck"
+                },
+                {
+                    "id": "Surgery",
+                    "label": "Surgery"
+                },
+                {
+                    "id": "Paediatric Surgery",
+                    "label": "Paediatric Surgery"
+                },
+                {
+                    "id": "Plastic and Reconstructive",
+                    "label": "Plastic and Reconstructive"
+                },
+                {
+                    "id": "Urology",
+                    "label": "Urology"
+                },
+                {
+                    "id": "Vascular Surgery",
+                    "label": "Vascular Surgery"
+                },
+                {
+                    "id": "Obstetrics and Gynaecology",
+                    "label": "Obstetrics and Gynaecology"
+                },
+                {
+                    "id": "Gynaecological Oncology",
+                    "label": "Gynaecological Oncology"
+                },
+                {
+                    "id": "Maternal-Fetal Medicine",
+                    "label": "Maternal-Fetal Medicine"
+                },
+                {
+                    "id": "Obstetrics and Gynaecological",
+                    "label": "Obstetrics and Gynaecological"
+                },
+                {
+                    "id": "Ultrasound",
+                    "label": "Ultrasound"
+                },
+                {
+                    "id": "Reproductive Endocrinology and Infertility",
+                    "label": "Reproductive Endocrinology and Infertility"
+                },
+                {
+                    "id": "Urogynaecology",
+                    "label": "Urogynaecology"
+                },
+                {
+                    "id": "Ophthalmology",
+                    "label": "Ophthalmology"
+                },
+                {
+                    "id": "General Pathology",
+                    "label": "General Pathology"
+                },
+                {
+                    "id": "Anatomical Pathology (including Cytopathology)",
+                    "label": "Anatomical Pathology (including Cytopathology)"
+                },
+                {
+                    "id": "Chemical Pathology",
+                    "label": "Chemical Pathology"
+                },
+                {
+                    "id": "Forensic Pathology",
+                    "label": "Forensic Pathology"
+                },
+                {
+                    "id": "Immunology",
+                    "label": "Immunology"
+                },
+                {
+                    "id": "Microbiology",
+                    "label": "Microbiology"
+                },
+                {
+                    "id": "Psychiatry",
+                    "label": "Psychiatry"
+                },
+                {
+                    "id": "Diagnostic Radiology",
+                    "label": "Diagnostic Radiology"
+                },
+                {
+                    "id": "Diagnostic Ultrasound",
+                    "label": "Diagnostic Ultrasound"
+                },
+                {
+                    "id": "Radiation Oncology",
+                    "label": "Radiation Oncology"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "label": "How many years of experience do you have in a clinical role?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "datalist",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": "0",
+                    "label": "0"
+                },
+                {
+                    "id": "1",
+                    "label": "1"
+                },
+                {
+                    "id": "2",
+                    "label": "2"
+                },
+                {
+                    "id": "3",
+                    "label": "3"
+                },
+                {
+                    "id": "4",
+                    "label": "4"
+                },
+                {
+                    "id": "5",
+                    "label": "5"
+                },
+                {
+                    "id": "6",
+                    "label": "6 or more"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "label": "How many years of experience do you have caring for patients who have contracted sepsis",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "datalist",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": "0",
+                    "label": "0"
+                },
+                {
+                    "id": "1",
+                    "label": "1"
+                },
+                {
+                    "id": "2",
+                    "label": "2"
+                },
+                {
+                    "id": "3",
+                    "label": "3"
+                },
+                {
+                    "id": "4",
+                    "label": "4"
+                },
+                {
+                    "id": "5",
+                    "label": "5"
+                },
+                {
+                    "id": "6",
+                    "label": "6 or more"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "label": "Have you any special expertise with sepsis patients, e.g., undergone special training in sepsis and/or conducted research related to patient with sepsis",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": true,
+            "expand_to": 1,
+            "condition_to_expand": true,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "yes",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "less than 3"
+                },
+                {
+                    "id": 2,
+                    "label": "none",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "label": "Are you directly involved in diagnosis for sepsis?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Never been involved",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "less than 3"
+                },
+                {
+                    "id": 2,
+                    "label": "I was involved in the past, not anumore",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "I have being involved occasionally",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "To provide healthcare for sepsis is my daily job",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                },
+                {
+                    "id": 5,
+                    "label": "I do research in sepsis but i do not provide healthcare",
+                    "description": null,
+                    "help": null,
+                    "order": 4,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "label": "What best describes the health organisation you work in?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Regional Hospital",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "less than 3"
+                },
+                {
+                    "id": 2,
+                    "label": "Private Hospital",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "City Hospital",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "General Practice",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                },
+                {
+                    "id": 5,
+                    "label": "Other",
+                    "description": null,
+                    "help": null,
+                    "order": 4,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "label": "What is the approximate size of the facility you work in?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "N/A",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "less than 3"
+                },
+                {
+                    "id": 2,
+                    "label": "Small (up to 100 beds)",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "Medium (up to 499 beds)",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "Large (greater than 500 beds",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                },
+                {
+                    "id": 5,
+                    "label": "Other",
+                    "description": null,
+                    "help": null,
+                    "order": 4,
+                    "type": "answer"
+                }
+            ]
+        }
+    ],
+    "subquestions": [
+        {
+            "id": 1,
+            "label": "Please Explain",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "text",
+            "question_group": "Experience",
+            "expand": true,
+            "expand_to": 1,
+            "answer": null,
+            "options": null
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "id": 1,
+    "label": "Is this Sepsis?",
+    "image": null,
+    "description": null,
+    "help": "",
+    "type": "radioButton",
+    "question_group": "Experience",
+    "expand": false,
+    "expand_to": null,
+    "condition_to_expand": null,
+    "answer": null,
+    "options": [
+        {
+            "id": 1,
+            "label": "Yes",
+            "description": null,
+            "help": null,
+            "order": 0,
+            "type": "answer"
+        },
+        {
+            "id": 2,
+            "label": "No",
+            "description": null,
+            "help": null,
+            "order": 1,
+            "type": "answer"
+        }
+    ]
+}

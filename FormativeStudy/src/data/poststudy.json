@@ -1,0 +1,91 @@
+{
+    "questions": [
+        {
+            "id": 1,
+            "label": "Do you normally use defined guidelines to assess sepsis?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": true,
+            "expand_to": 1,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Yes",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 2,
+                    "label": "No",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                }
+            ]
+        }
+    ],
+    "subquestions": [
+        {
+            "id": 1,
+            "label": "",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "checkBox",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "qSOFA",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 2,
+                    "label": "NEWS (National Early Warning Result)",
+                    "description": null,
+                    "help": "Respiratory  frequency,  oxygen  saturation,  systolic blood pressure, pulse rate, neurological level of consciousness  and  body  temperature.",
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "MNEWS (Modified National Early Warning Result)",
+                    "description": null,
+                    "help": "Respiratory rate, systolic blood pressure, heart rate, level of consciousness and body temperature",
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "SIRS",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "Other",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                }
+            ]
+        }
+    ]
+    }
