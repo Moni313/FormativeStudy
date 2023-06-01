@@ -31,9 +31,10 @@ const { state } = useAsyncState(async (args) => {
 let search = ref("");
 let category = ref("");
 let showCheckBoxNumber = 20;
-// watch(search, (newValue, oldValue) => {
-//     console.log("New and old value of search", newValue, oldValue);
-// })
+watch(search, (newValue, oldValue) => {
+    console.log("New and old value of search", newValue, oldValue);
+    category = newValue
+})
 
 
 function getSubSetOptions(newValue, size) {
@@ -83,7 +84,7 @@ function calculateSizeofOptions(options) {
                 <ListSelected class="float-start me-2"></ListSelected>
 
                 <div class="container">
-                    <ListVariable v-if="search != ''" class="float-start" :category=category :showCheckBoxNumber="showCheckBoxNumber" @closeArea="e => search = e">
+                    <ListVariable v-if="search != ''" class="float-start" :category=category :showCheckBoxNumber=showCheckBoxNumber @closeArea="e => search = e">
                     </ListVariable>
                     <div v-else>
                         <VisArea></VisArea>
