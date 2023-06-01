@@ -30,15 +30,10 @@ const { state } = useAsyncState(async (args) => {
 
 let search = ref("");
 let category = ref("");
-let subCategory = ref("");
 let showCheckBoxNumber = 20;
-watch(search, (newValue, oldValue) => {
-    console.log("New and old value of search", newValue, oldValue);
-    category = JSON.parse(JSON.stringify(newValue));
-    subCategory = JSON.parse(JSON.stringify(newValue));
-    subCategory = getSubSetOptions(subCategory, showCheckBoxNumber);
-    console.log("category, subCategory", category, subCategory, showCheckBoxNumber);
-})
+// watch(search, (newValue, oldValue) => {
+//     console.log("New and old value of search", newValue, oldValue);
+// })
 
 
 function getSubSetOptions(newValue, size) {
@@ -48,7 +43,7 @@ function getSubSetOptions(newValue, size) {
 
 let day = 0;
 let tfbin = 0;
-function timeframe(e){
+function timeframe(e) {
     day = e.day;
     tfbin = e.tfbin;
     console.log(e)
@@ -71,8 +66,7 @@ function calculateSizeofOptions(options) {
             <div class="align-middle">
                 <TasksBar :actualTask=actualTask :totalTasks=totalTasks class="float-end"></TasksBar>
                 <SepsisQuest class="float-start bg-white text-danger ps-5 pe-5 pt-3 pb-1 mt-1"></SepsisQuest>
-                <Timeframe @timeframe="timeframe"
-                    class="float-start card-body border rounded bg-dark bg-gradient m-1">
+                <Timeframe @timeframe="timeframe" class="float-start card-body border rounded bg-dark bg-gradient m-1">
                 </Timeframe>
 
 
@@ -89,8 +83,7 @@ function calculateSizeofOptions(options) {
                 <ListSelected class="float-start me-2"></ListSelected>
 
                 <div class="container">
-                    <ListVariable v-if="search != ''" class="float-start" :category=category :subsetCategory=subCategory
-                        @closeArea="e => search = e">
+                    <ListVariable v-if="search != ''" class="float-start" :category=category :showCheckBoxNumber="showCheckBoxNumber" @closeArea="e => search = e">
                     </ListVariable>
                     <div v-else>
                         <VisArea></VisArea>
