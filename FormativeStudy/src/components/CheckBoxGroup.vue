@@ -1,5 +1,4 @@
 <script setup>
-import { number } from 'yup';
 import CheckBox from './CheckBox.vue';
 
 const props = defineProps({
@@ -14,9 +13,6 @@ const props = defineProps({
   'showCheckBoxNumber': {
     required: false,
     default:10
-  },
-  'allSelection': {
-    required: false
   }
 });
 defineEmits(['input']);
@@ -29,7 +25,7 @@ let selected = props.selected;
 <template>
   <div v-for="(option, index) in props.options.options">
     <CheckBox  v-if="index < props.showCheckBoxNumber" :options="option" :key="`${props.options.id}${option.id}`"
-      v-model=props.selected :allSelection="props.allSelection"/>
+      v-model=props.selected />
   </div>
 </template>
   
