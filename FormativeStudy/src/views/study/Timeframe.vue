@@ -32,7 +32,7 @@ function nextTF() {
 </script>
 <template>
     <section>
-        <div class="h5">
+        <div class="h6">
             <div class="ms-1 me-1">
                 <div class="float-start  border rounded ps-1 pe-1 bg-light">
                     <p class="d-flex flex-column justify-content-center align-items-center ms-1 me-1 pe-1 pt-1">Timeframe

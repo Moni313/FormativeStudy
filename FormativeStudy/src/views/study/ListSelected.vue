@@ -1,12 +1,23 @@
 <script setup>
-const selected = ["first", "second", "third", "Bla bla"]
+const props = defineProps({
+    'selected': {
+        required: true,
+        type: Object,
+        default: null
+    }
+})
+
+function remove(e){
+
+}
 </script>
 <template>
     <section class="border-end pe-3 border-top pt-2">
-        <h5>Selected</h5>
-        <ul v-for="v in selected" :key="v" class="list-group">
-            <li class="list-group-item"> {{ v }}</li>
-        </ul>
-
+        <p>Selected</p>
+        <div class="input-group mb-1" v-for="(v, index) in props.selected" :key="v.item">
+            <span class=" input-group-prepend input-group-text"> {{ index }}</span>
+            <span class="form-control"> {{ v.label }}</span>
+            <button class=" input-group-append btn btn-outline-danger input-group-text" :on-click="remove">X</button>
+        </div>
     </section>
 </template>

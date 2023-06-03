@@ -13,19 +13,21 @@ const props = defineProps({
   'showCheckBoxNumber': {
     required: false,
     default:10
+  },
+  'allSelection': {
+    required: false
   }
 });
 defineEmits(['input']);
 
-let selected = props.selected;
 
 </script>
 
 
 <template>
-  <div v-for="(option, index) in props.options.options">
+  <div v-for="(option, index) in props.options">
     <CheckBox  v-if="index < props.showCheckBoxNumber" :options="option" :key="`${props.options.id}${option.id}`"
-      v-model=props.selected />
+      v-model=props.selected :allSelection="allSelection"/>
   </div>
 </template>
   

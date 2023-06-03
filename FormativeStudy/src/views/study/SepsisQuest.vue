@@ -42,14 +42,16 @@ const sepsisQuest = sepsisQuestStore();
 //     ]
 // }
 
-function action(e){
-    if(e == labelReset) asnswerSepsis = null;
+function action(e) {
+    if (e == labelReset) asnswerSepsis = null;
 }
 </script>
 <template>
-    <div class="border rounded ms-1 me-1">
-        <h1 class="d-flex flex-column justify-content-center align-items-center ps-1 pe-1"><b>{{sepsisQuest.sepsisquest.label}}</b></h1>
-        <RadioButtonGroup v-model=sepsisQuest.sepsisquest.answer :options=sepsisQuest.sepsisquest :selected=sepsisQuest.sepsisquest.answer @input="e => (sepsisQuest.sepsisquest.answer = e)" class="ms-5 mb-2">
+    <div class="border rounded">
+        <h3 class="d-flex flex-column justify-content-center align-items-center"><b>{{ sepsisQuest.sepsisquest.label }}</b>
+        </h3>
+        <RadioButtonGroup v-model=sepsisQuest.sepsisquest.answer :options=sepsisQuest.sepsisquest
+            :selected=sepsisQuest.sepsisquest.answer @input="e => (sepsisQuest.sepsisquest.answer = e)" class="ms-5 mb-2">
         </RadioButtonGroup>
         <SubmitButtons :labelOk=labelOk @selected="action" class="mb-2"></SubmitButtons>
     </div>
