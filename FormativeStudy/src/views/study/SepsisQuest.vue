@@ -7,7 +7,6 @@ const labelOk = "Submit";
 const labelReset = "Reset";
 
 const sepsisQuest = sepsisQuestStore();
-//console.log(sepsisQuest.sepsisquest)
 //DONE - TODO make this as a data/file.json
 // const options =
 // {

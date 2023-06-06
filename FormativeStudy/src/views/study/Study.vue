@@ -9,10 +9,9 @@ import ListSelected from './ListSelected.vue';
 import InstructionInsideStudy from '../static/InstructionInsideStudy.vue';
 import VisArea from './VisArea.vue';
 import CompareArea from './CompareArea.vue';
-// import ListVariable from './ListVariable.vue';
 import VariableSelection from './VariableSelection.vue';
 
-import { ref,reactive, watch } from 'vue';
+import { ref, watch, inject } from 'vue';
 
 const startinInstruction = true;
 const actualTask = 2;
@@ -20,51 +19,50 @@ const totalTasks = 12;
 
 
 import axios from 'axios';
-import { useAsyncState } from '@vueuse/core'
-const { state } = useAsyncState(async (args) => {
-    const { data } = await axios.get('/apiFS')
-    console.log("data in async", data[0].categories)
-    return data[0].categories
+import { useAsyncState } from '@vueuse/core';
+
+
+//initialise the categories
+let { state, isReady } = useAsyncState(async () => {
+    const data = await axios.get('/categories').then(t => t.data)
+    console.log("Study.vue: data in useAsyncState", data)
+    return data
 })
 
-
-let search = ref("");
-let category = ref("");
+//category serach
+let search = ref();
+let category = ref();
 let showCheckBoxNumber = 20;
-let selected = reactive([]); //array with only selected {itemid, label, color, order}
-let lastSelected =ref();
-watch(search, (newValue, oldValue) => {
-    console.log("New and old value of search", newValue, oldValue);
-    category = newValue
-})
 
-function getSubSetOptions(newValue, size) {
-    if (newValue?.options && newValue.options.length > size) newValue.options = newValue.options.slice(0, size)
-    return newValue
-}
 
+//timeframe
 let day = 0;
 let tfbin = 0;
 function timeframe(e) {
     day = e.day;
     tfbin = e.tfbin;
-    console.log(e)
-}
-//todo
-function sortABC(newValue) { }
-
-
-function calculateSizeofOptions(options) {
-    console.log("lenght of options", options.options.length)
-    return options.options.length
 }
 
-function updateSelected(e){
-    console.log("selected", selected)
-    console.log("e", e)
-    selected.push(...e)
-}
+//update status
+const emitter = inject('emitter');
+emitter.on('updateCategory', (update) => {
+    if (update) {
+        ({ state, isReady } = useAsyncState(async () => {
+            let x = await axios.get('/categories').then(t => t.data);
+            console.log("after emittter in listSelected", x)
+            return x
+        }))
+    }
+})
 
+watch(search, (newValue, oldValue) => {
+    console.log("Study.vue: new catgory", newValue);
+    category = newValue
+});
+
+watch(state, (n,o )=> {
+    console.log("new state", n)
+});
 </script>
 
 <template>
@@ -81,18 +79,30 @@ function updateSelected(e){
             </div>
             <div class="mt-2">
 
-                <VarSearch class="float-start" :categories=state @searchFor="e => search = e"></VarSearch>
+                <VarSearch v-if="isReady" class="float-start" :categories=state @searchFor="e => search = e"></VarSearch>
+                <div v-else>Loading...</div>
                 <InstructionInsideStudy class="float-start" :starting=startinInstruction></InstructionInsideStudy>
             </div>
 
         </div>
         <div class="card card-body">
             <section class="h-100">
-                <ListSelected class="float-start me-2 h-100" :selected=selected></ListSelected>
+                
+ 
+                <div class="float-start me-2 h-100" >
+                    <ul class="nav flex-column" v-for="category in state">
+                        <li class="nav-item">
+                    <ListSelected :apiUrl="category.options" :label="category.label"></ListSelected>
+                </li>
+                </ul>
+                </div>
+                
+
+
 
                 <div class="container">
-                    <VariableSelection v-if="search != ''" :category=category :showCheckBoxNumber=showCheckBoxNumber
-                        @closeArea="e => search = e" @updateSelected="updateSelected">
+                    <VariableSelection v-if="search != null" :category=category :showCheckBoxNumber=showCheckBoxNumber
+                        @closeArea="e => search = e">
                     </VariableSelection>
                     <div v-else>
                         <VisArea></VisArea>

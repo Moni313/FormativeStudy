@@ -13,7 +13,6 @@ const agree = 'Agree';
 const close = 'Close';
 
 function prestudypage(e) {
-    console.log("prestudpage method is called");
     if(e == agree) router.push('/prestudy');
     else if(e == close) authStore.logout();
 }

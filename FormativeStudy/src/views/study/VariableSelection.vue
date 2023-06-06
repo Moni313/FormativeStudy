@@ -1,13 +1,14 @@
 <script setup>
-import { ref, toRef, computed } from 'vue';
+import { ref, toRef, inject, watch } from 'vue';
 import SubmitButtons from '../../components/SubmitButtons.vue';
-
+import axios from 'axios';
+import { useAsyncState } from '@vueuse/core';
 
 const props = defineProps({
     'category': {
         required: true,
         type: Object,
-        default: ""
+        default: []
     },
     'showCheckBoxNumber': {
         required: false,
@@ -15,92 +16,123 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['closeArea', 'viewVariables', 'updateSelected']);
+const emitter = inject('emitter');
+const emit = defineEmits(['closeArea', 'updateCategory']);
+
+console.log('VariableSelection: ', props.category)
+let url = "/" + props.category.options;
+
+let { state, isReady } = useAsyncState(async () => {
+    return await axios.get(url).then(t => t.data)
+})
+
+watch(props, (n, o) => {
+    url = n.category.options;
+    console.log("url in watch: ", url);
+
+    ({ state, isReady } = useAsyncState(async () => {
+        return await axios.get(url).then(t => t.data)
+    }))
+})
+
 const labelNo = 'Close';
 const labelOk = 'View Selected';
 const labelReset = 'Reset';
 
-let actualSelection = null;
-let category = toRef(props, 'category');
-let orderWithDeleted = props.category.selected.length;
-let trackAll = ref();
-trackAll = props.category.selected.slice();
-console.log(typeof (trackAll));
+//to keep the order of selection
+//let orderWithDeleted = countSelected();
+function countSelected() {
+    if (isReady) {
+        let c = 0;
+        console.log("state.value ", state)
+        state.forEach(e => {
+            if (e.checked) c = c + 1;
+        })
+        return c;
+    }
+};
 
 
-function emitSelection(e) {
-    if (e == '' || e == null) return;
-
+const emitSelection = async (e) => {
+    console.log("emitSelection: ", e);
     let eSplit = e.split(/ (.*)/s);
 
-    if (props.category.selected.some(e => e.itemid === eSplit[0])) {
-        // already there
-        console.log("Already there");
-        //TODO it does not work properly
-    }
-    else {
-        console.log("adding new item");
-        props.category.selected.push({ 'order': orderWithDeleted, 'label': eSplit[1], 'itemid': eSplit[0], 'color': props.category.color });
-
-        emit('updateSelected', [{ 'order': orderWithDeleted, 'label': eSplit[1], 'itemid': eSplit[0], 'color': props.category.color }]);
-    }
-
-    trackAll.push({ 'order': orderWithDeleted, 'label': eSplit[1], 'itemid': eSplit[0], 'color': props.category.color });
-
-
+    //console.log("state.value ", state.value)
+    state.value.filter(obj => {
+        if (obj.id == eSplit[0]) {
+            const response = useAsyncState(async () => {
+                const actualUrl = url + "/" + obj.id;
+                if (obj.checked) obj.checked = false;
+                else obj.checked = true;
+                console.log("VariableSelection.vue: updating: ", actualUrl, " -> ", obj);
+                return await axios.patch("" + actualUrl, obj)
+            })
+            console.log("Response is ready?", response)
+            if (response.isReady) {
+                emitter.emit('updateCategory', true);
+            }
+        }
+    })
     orderWithDeleted = orderWithDeleted + 1;
-    actualSelection = '';
+    datalistSelectionModel = "";
+
+
+    // orderWithDeleted = orderWithDeleted + 1;
+    // datalistSelectionModel = '';
 }
 
 function emitSelectionFromCheckBox(e) {
-    if (props.category.selected.some(a => a.itemid === e.itemid)) {
-        // already there, deselect it
-        props.category.selected = props.category.selected.filter(function (obj) {
-            return obj.itemid != e.itemid;
-        });
-    }
-    else {
-        console.log("adding new item");
-        props.category.selected.push({ 'order': orderWithDeleted, 'label': e.label, 'itemid': e.itemid, 'color': props.category.color });
-
-        emit('updateSelected', [{ 'order': orderWithDeleted, 'label': e.label, 'itemid': e.itemid, 'color': props.category.color }]);
-    }
-    trackAll.push({ 'order': orderWithDeleted, 'label': e.label, 'itemid': e.itemid, 'color': props.category.color });
-
+    state.value.filter(obj => {
+        if (obj.id == e.id) {
+            const response = useAsyncState(async () => {
+                const actualUrl = url + "/" + obj.id;
+                if (obj.checked) obj.checked = false;
+                else obj.checked = true;
+                obj.orderChecked = orderWithDeleted; 
+                console.log("VariableSelection.vue: updating from checkbox: ", actualUrl, " -> ", obj);
+                return await axios.patch("" + actualUrl, obj)
+            })
+            console.log("Response is ready?", response)
+            if (response.isReady) emitter.emit('updateCategory', true);
+        }
+    });
 
     orderWithDeleted = orderWithDeleted + 1;
-    actualSelection = '';
+    datalistSelectionModel = '';
 }
 
+let datalistSelectionModel = ref()
 </script>
 
 <template>
-    <h4 :class="props.category.color">{{ props.category.label }} <span class="h6"> ({{ props.category.options.length
+    <h4 :class="props.category.color">{{ props.category.label }} <span v-if="isReady" class="h6"> ({{ state.length
     }})</span></h4>
 
 
     <!-- datalist -->
     <div class="float-start">
-        <input class="form-control " list="vars" id="varsInput" name="vars" v-model="actualSelection"
+        <input class="form-control " list="vars" id="varsInput" name="vars" v-model="datalistSelectionModel"
             placeholder="Type to search..." @input="" @keydown.enter="emitSelection($event.target.value)"
             @change="emitSelection($event.target.value)">
 
         <datalist id="vars">
             <option id="0" value=""></option>
-            <option v-for="opt in category.options" :id=opt :key=opt.itemid><span v-if="opt?.itemid" class="h5">{{
-                opt.itemid
-            }}</span> {{ opt.label }}</option>
+            <option v-for="opt in state" :id=opt :key=opt.id>
+                <span v-if="opt?.id && opt?.id" class="h5">{{
+                    opt.id
+                }}</span> {{ opt.label }} <span v-if="opt.checked"> [X] </span>
+            </option>
         </datalist>
 
         <br />
 
-        <div v-for="(option, index) in category.options">
-            <label v-if="index < props.showCheckBoxNumber" :for="option.itemid">
-                <input type="checkbox" :value="option.itemid" :id="option.id" v-model="actualSelection"
-                    @change="emitSelectionFromCheckBox({ 'itemid': $event.target.value, 'label': option.label })"
-                    name="radio-input" />
+        <div v-for="(option, index) in state">
+            <label v-if="index < props.showCheckBoxNumber" :for="option.id">
+                <input type="checkbox" :checked="option.checked" :value="option.id" :id="option.id"
+                    v-model="datalistSelectionModel" name="radio-input"
+                    @change="emitSelectionFromCheckBox({ 'itemid': $event.target.value, 'label': option.label })" />
 
-                <span v-if="option?.itemid" class="sm">{{ option.itemid }}</span> {{
+                <span v-if="option?.id" class="sm ms-1"> {{ option.id }}</span> {{
                     option.label }}
             </label>
         </div>
@@ -112,8 +144,9 @@ function emitSelectionFromCheckBox(e) {
 
 
 
-        <p>cat<br />{{ category.selected }}</p>
-        <p>all<br />{{ trackAll }}</p>
+        <div>category<br />
+            <p v-for="c in props.category.options"><span v-if="c.checked">{{ c }}</span></p>
+        </div>
 
     </div>
 </template>

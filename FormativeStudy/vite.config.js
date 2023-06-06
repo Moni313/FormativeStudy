@@ -21,13 +21,41 @@ export default {
     open: '/',
     cors: true,
     proxy: {
-      "/apiFS": {
+      "/categories": {
         target: "http://localhost:3001",
-        pathRewrite: { "^/apiFS": "" },
+        pathRewrite: { "^/categories": "" },
         // ws: false,
         changeOrigin: true,
         secure: false,
       },
+      "/category":{
+        target: "http://localhost:3001",
+        pathRewrite: { "^/category": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
+      },
+      "/optionsLabsCategory":{
+        target: "http://localhost:3001",
+        pathRewrite: { "^/optionLabsCategory": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
+      },
+      "/optionsVitalsCategory":{
+        target: "http://localhost:3001",
+        pathRewrite: { "^/optionsVitalsCategory": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
+      },
+      "/optionsMedicationsCategory":{
+        target: "http://localhost:3001",
+        pathRewrite: { "^/optionsMedicationsCategory": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
+      }
     },
   },
 };

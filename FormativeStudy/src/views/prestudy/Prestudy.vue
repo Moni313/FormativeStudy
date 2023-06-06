@@ -32,14 +32,10 @@ function createObjQuestionAnswer() {
 }
 
 function action(e) {
-    console.log("Action in PreStudy: ", e);
     if (e == labelOk) {
         //store info
         let obj = createObjQuestionAnswer()
-        //this for is just for dev
-        obj.forEach(e => {
-            console.log(e.question, e.answer, e.expand); 
-        })
+        
         //redirect to study params: [ 'actualTask', 'totalTasks',  'actualTFDay', 'actualTFBin', 'startinInstruction']
         router.push('/study');
     }
@@ -51,19 +47,13 @@ function action(e) {
             element.answer = null;
         })
         let obj = createObjQuestionAnswer();
-        obj.forEach(e => {
-            console.log(e.question, e.answer, e.expand);
-        })
+        
     }
 }
 function updateSubanswer(q, s) { //update q questiond with subquestion asnwer
-    console.log(q);
     let item = preStudyData.prestudydata.questions.find(element => element.label == q);
-    console.log(item);
-    console.log(item.expand_to);
-    console.log(preStudyData.prestudydata.subquestions);
+
     let subq = preStudyData.prestudydata.subquestions.find(e => e.id == item.expand_to);
-    console.log(subq);
     subq.answer = s;
 }
 function setVariables(question, answer, subquestion) {
