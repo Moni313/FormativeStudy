@@ -40,7 +40,7 @@ const labelOk = 'View Selected';
 const labelReset = 'Reset';
 
 //to keep the order of selection
-//let orderWithDeleted = countSelected();
+let orderWithDeleted = 0; // countSelected();
 function countSelected() {
     if (isReady) {
         let c = 0;

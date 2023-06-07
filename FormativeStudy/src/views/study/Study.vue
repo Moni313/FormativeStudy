@@ -1,5 +1,3 @@
-
-
 <script setup>
 import VarSearch from './VarSearch.vue';
 import TasksBar from './TasksBar.vue';
@@ -10,30 +8,17 @@ import InstructionInsideStudy from '../static/InstructionInsideStudy.vue';
 import VisArea from './VisArea.vue';
 import CompareArea from './CompareArea.vue';
 import VariableSelection from './VariableSelection.vue';
-
 import { ref, watch, inject } from 'vue';
-
-const startinInstruction = true;
-const actualTask = 2;
-const totalTasks = 12;
 
 
 import axios from 'axios';
 import { useAsyncState } from '@vueuse/core';
 
 
-//initialise the categories
-let { state, isReady } = useAsyncState(async () => {
-    const data = await axios.get('/categories').then(t => t.data)
-    console.log("Study.vue: data in useAsyncState", data)
-    return data
-})
-
-//category serach
-let search = ref();
-let category = ref();
-let showCheckBoxNumber = 20;
-
+//variables for tasks
+const startinInstruction = true;
+const actualTask = 2;
+const totalTasks = 12;
 
 //timeframe
 let day = 0;
@@ -43,29 +28,66 @@ function timeframe(e) {
     tfbin = e.tfbin;
 }
 
-//update status
-const emitter = inject('emitter');
-emitter.on('updateCategory', (update) => {
-    if (update) {
-        ({ state, isReady } = useAsyncState(async () => {
-            let x = await axios.get('/categories').then(t => t.data);
-            console.log("after emittter in listSelected", x)
-            return x
-        }))
-    }
+
+//initialise the categories [vitals, labs, medications]
+const { state, isReady } = useAsyncState(async () => {
+    const data = await axios.get('/categories').then(t => t.data)
+    console.log("Study.vue: data in useAsyncState", data)
+    return data
 })
+//category serach
+const search = ref(state);
+const category = ref();
+//let showCheckBoxNumber = 20;
 
-watch(search, (newValue, oldValue) => {
-    console.log("Study.vue: new catgory", newValue);
-    category = newValue
-});
 
-watch(state, (n,o )=> {
-    console.log("new state", n)
-});
+//update status
+// const emitter = inject('emitter');
+// emitter.on('updateCategory', (update) => {
+//     if (update) {
+//         ({ state, isReady } = useAsyncState(async () => {
+//             let x = await axios.get('/categories').then(t => t.data);
+//             console.log("after emittter in listSelected", x)
+//             return x
+//         }))
+//     }
+// })
+
+// watch(search, (newValue, oldValue) => {
+//     console.log("Study.vue: new catgory", newValue);
+//     category = newValue
+// });
+
+// watch(state, (n, o) => {
+//     console.log("new state", n)
+// });
 </script>
 
+
 <template>
+    <VarSearch v-if="isReady" class="float-start" :categories=search @searchFor="e => category = e"></VarSearch>
+
+    <!-- <ListSelected :apiUrl="category.options" :label="category.label"></ListSelected> -->
+
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <template>
     <article>
         <div class="card card-header">
 
@@ -112,5 +134,5 @@ watch(state, (n,o )=> {
             </section>
         </div>
     </article>
-</template>
+</template> -->
 
