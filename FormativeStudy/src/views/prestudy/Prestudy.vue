@@ -76,7 +76,7 @@ function setVariables(question, answer, subquestion) {
 
 
 <template>
-    <form>
+    <form class="ms-5 me-5">
         <div class="card">
 
             <div class="card-header h4">{{ preStudyData.prestudydata.questions[0].question_group }}</div>

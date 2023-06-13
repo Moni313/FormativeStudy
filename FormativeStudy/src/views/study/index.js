@@ -4,4 +4,5 @@ export { default as TasksBar } from "./TasksBar.vue";
 export { default as SepsisQuest } from "./SepsisQuest.vue";
 export { default as ListSelected } from './ListSelected.vue';
 export { default as VisArea } from './VisArea.vue';
-export { default as VariableSelection } from './VariableSelection.vue'
+export { default as VariableSelection } from './VariableSelection.vue';
+export {default as Scenario } from './Scenario.vue';

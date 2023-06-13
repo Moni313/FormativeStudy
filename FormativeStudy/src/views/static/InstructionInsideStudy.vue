@@ -1,26 +1,25 @@
-<script setup>
-const props = defineProps({
-    'starting': {
-        required: true,
-        type: Boolean,
-    }
-}
-)
-</script>
 <template>
-    <article v-if="props.starting" class="m-3 h5">
-        <p>Please search for variables from the "Vital Signs", "Labs", "Medications" buttons.</p>
-    </article>
-    <article v-else>
-        <p class="ms-3">
-            <b>Undecided?</b> You can:
-        <ol class="list-group ms-3">
-            <li>View the <b>next timeframe</b>: select the button "Next" (all variables will be updated)
+    <article>
+        <h4 class="text-center">Instrunctions</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <b>Select</b> variable(s) from Vital Signs, Labs, Medication buttons.
             </li>
-            <li><b>Compare</b> two variables: select the first variable from the "View Var" button and the
-                second from the "Compare" button</li>
-            <li><b>Pick</b> another variable from "Vital Signs", "Labs", "Medications"</li>
-        </ol>
-        </p>
+            <li class="list-group-item">
+                <b>Look</b> at the graphics by selecting a variable from the "Variables Selected" list
+            </li>
+            <li class="list-group-item">
+                If you think this <b>is sepsis or not</b>, please click the respective button on the bottom right of the screen. <b>Try to answer this question as soon as possible</b> during your evaluation.
+            </li>
+            <li class="list-group-item">
+                If you are undecided, you can add more information by:
+                <ul>
+                    <li>discover the <b>"Next" Timeframe</b>,</li>
+                    <li><b> select other variable(s)</b>, or </li>
+                    <li><b>Compare</b> two variables</li>
+                </ul>
+
+            </li>
+        </ul>
     </article>
 </template>

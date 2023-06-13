@@ -8,7 +8,9 @@ import InstructionInsideStudy from '../static/InstructionInsideStudy.vue';
 import VisArea from './VisArea.vue';
 import CompareArea from './CompareArea.vue';
 import VariableSelection from './VariableSelection.vue';
-import { ref, watch, inject } from 'vue';
+import Scenario from './Scenario.vue';
+
+import { computed, reactive, ref, watch, watchEffect } from 'vue';
 
 
 import axios from 'axios';
@@ -16,7 +18,6 @@ import { useAsyncState } from '@vueuse/core';
 
 
 //variables for tasks
-const startinInstruction = true;
 const actualTask = 2;
 const totalTasks = 12;
 
@@ -32,43 +33,54 @@ function timeframe(e) {
 //initialise the categories [vitals, labs, medications]
 const { state, isReady } = useAsyncState(async () => {
     const data = await axios.get('/categories').then(t => t.data)
-    console.log("Study.vue: data in useAsyncState", data)
     return data
 })
+
 //category serach
-const search = ref(state);
-const category = ref();
-//let showCheckBoxNumber = 20;
+const categories = reactive(state);
+let showCheckBoxNumber = 20;
 
-
-//update status
-// const emitter = inject('emitter');
-// emitter.on('updateCategory', (update) => {
-//     if (update) {
-//         ({ state, isReady } = useAsyncState(async () => {
-//             let x = await axios.get('/categories').then(t => t.data);
-//             console.log("after emittter in listSelected", x)
-//             return x
-//         }))
-//     }
-// })
-
-// watch(search, (newValue, oldValue) => {
-//     console.log("Study.vue: new catgory", newValue);
-//     category = newValue
-// });
-
-// watch(state, (n, o) => {
-//     console.log("new state", n)
-// });
 </script>
 
 
 <template>
-    <VarSearch v-if="isReady" class="float-start" :categories=search @searchFor="e => category = e"></VarSearch>
+    <div class="row h-100">
+        <div class="col-2 h-100">
+            <div class="card card-body">
+                <TasksBar :actualTask=actualTask :totalTasks=totalTasks
+                    class="border-bottom border-3  mt-3 border-secondary">
+                </TasksBar>
+                <Scenario class="border-bottom border-3  mt-5 border-secondary"></Scenario>
+                <InstructionInsideStudy class="mt-5"></InstructionInsideStudy>
+            </div>
+        </div>
 
-    <!-- <ListSelected :apiUrl="category.options" :label="category.label"></ListSelected> -->
+        <div class="col-10 card">
 
+            <div class="border-bottom border-2 ">
+                <VarSearch v-if="isReady" class="w-auto float-start me-3 mt-3 ps-3" :categories=categories>
+                </VarSearch>
+                <Timeframe @timeframe="timeframe" class="ps-5">
+                </Timeframe>
+
+
+            </div>
+            <div class="card-body">
+                <div class="row mt-2">
+                    <div class="w-auto float-start border-end">
+                        <h5>Variables Selected</h5>
+                        <ListSelected v-for="c in categories" :c=c></ListSelected>
+                    </div>
+                    <div class="w-auto float-start ms-5">
+                        <VariableSelection @closeArea="e => console.log(e)">
+                        </VariableSelection>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </template>
 
 

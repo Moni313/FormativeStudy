@@ -21,7 +21,7 @@ function nextTF() {
     if (actualTFBin.value == 0) {
         actualTFDay.value = actualTFDay.value + 1
     }
-    emit('timeframe', ({'day': actualTFDay, 'tfbin': actualTFBin}))
+    emit('timeframe', ({ 'day': actualTFDay, 'tfbin': actualTFBin }))
     //}
     if (actualTFDay.value == days && actualTFBin.value == bins.length - 1) disableButton.value = 1
 }
@@ -30,6 +30,55 @@ function nextTF() {
 // })
 
 </script>
+
+<template>
+        <div class="row">
+            <div class="h4 m-1">
+                <div
+                    class="float-start border rounded bg-light d-flex flex-column justify-content-center align-items-center m-2 p-1">
+                    <p class="d-flex flex-column justify-content-center align-items-center m-3">Timeframe
+                        <button v-if="disableButton == 1" class="btn btn-danger text-center" v-on:click="nextTF"
+                            disabled><b>Next</b></button>
+                        <button v-else class="btn btn-success text-center mt-3" v-on:click="nextTF"><b
+                                class="h4">Next</b></button>
+                    </p>
+                </div>
+
+
+                <div v-for="d in days" class="float-start ms-2 border rounded bg-light m-2 p-1">
+
+                    <span class="d-flex flex-column justify-content-center align-items-center border-bottom">Day {{ d
+                    }}</span>
+                    <span v-for="b in bins" class="float-start ps-2 pe-2">
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                            <i v-if="(d <= actualTFDay && b.id < actualTFBin) || (d < actualTFDay)"
+                                class="bi bi-clipboard-heart-fill text-success"></i>
+                            <i v-else-if="(d == actualTFDay && b.id == actualTFBin)"
+                                class="bi bi-clipboard2-pulse-fill text-success"></i>
+                            <i v-else class="bi bi-clipboard-plus"></i>
+                            <span> {{ b.text }}</span>
+
+                        </div>
+                    </span>
+                    <br />
+                    <div class="text-center mb-1"> hours</div>
+                </div>
+            </div>
+        </div>
+    
+</template>
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
 <template>
     <section>
         <div class="h6">
@@ -59,4 +108,4 @@ function nextTF() {
             </div>
         </div>
     </section>
-</template>
+</template> -->
