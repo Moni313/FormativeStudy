@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 import { useAsyncState } from "@vueuse/core";
+import { countSelected } from "./countSelected.store";
 
 export const useCategoryStore = defineStore("category", () => {
   const id = "selectedCategory";
@@ -10,6 +11,7 @@ export const useCategoryStore = defineStore("category", () => {
   const showOptions = false;
   const showCheckBoxNumber = 30;
   const orderSelection = ref();
+  const count = countSelected();
   function setCategory(category) {
     console.log("getting category from database: ", category);
     this.category = category;
@@ -37,39 +39,33 @@ export const useCategoryStore = defineStore("category", () => {
   function setLimit(limit) {
     this.showCheckBoxNumber = limit;
   }
-  function getNexOrder() {}
   function updateOption(updatingId, url) {
-    console.log("checking id type", typeof(updatingId))
     this.options.state.filter((obj) => {
       if (obj.id == updatingId) {
         console.log("obj in store", updatingId, obj);
         const response = useAsyncState(async () => {
           const actualUrl = "/" + url + "/" + obj.id;
-          if (obj.checked) obj.checked = false;
-          else obj.checked = true;
+          count.add(); //this should keep the order going on
+          if (obj.checked) {
+            obj.checked = false;
+            obj.orderChecked = 0;
+            console.log("removing", count.count);
+          } else {
+            obj.checked = true;
+            obj.orderChecked = count.count;
+          }
           return await axios.patch("" + actualUrl, obj);
         });
         if (response.isReady) {
-            console.log("updated", updatingId, obj);
-          this.options = useAsyncState(async() => {
+          console.log("updated", updatingId, obj);
+          this.options = useAsyncState(async () => {
             const data = axios.get("" + url).then((t) => t.data);
             console.log("get options updated");
-            return data
-          })
+            return data;
+          });
         }
       }
     });
-  }
-  function remove(id, obj, url) {
-    const response = useAsyncState(async () => {
-      const actualUrl = "/" + url + "/" + id;
-      obj.checked = false;
-      //rewrite all the obj
-      return await axios.patch("" + actualUrl, obj);
-    });
-    if (response.isReady) {
-      console.log("this update is from outside the object")
-    }
   }
 
   return {
@@ -78,13 +74,13 @@ export const useCategoryStore = defineStore("category", () => {
     options,
     showOptions,
     orderSelection,
-    getNexOrder,
+    showCheckBoxNumber,
     getOptions,
     updateOption,
-    showCheckBoxNumber,
     setCategory,
     closeArea,
     setLimit,
-    remove
   };
 });
+
+

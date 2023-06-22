@@ -9,6 +9,7 @@ import VisArea from './VisArea.vue';
 import CompareArea from './CompareArea.vue';
 import VariableSelection from './VariableSelection.vue';
 import Scenario from './Scenario.vue';
+import { useVariableStore } from '../../stores/variable.store';
 
 import { computed, reactive, ref, watch, watchEffect } from 'vue';
 
@@ -18,15 +19,14 @@ import { useAsyncState } from '@vueuse/core';
 
 
 //variables for tasks
-const actualTask = 2;
+const actualTask = 1;
 const totalTasks = 12;
 
 //timeframe
-let day = 0;
-let tfbin = 0;
+let day = ref(0);
+let tfbin = ref(0);
 function timeframe(e) {
-    day = e.day;
-    tfbin = e.tfbin;
+    console.log("timeframe parameter: ", e)
 }
 
 
@@ -38,12 +38,30 @@ const { state, isReady } = useAsyncState(async () => {
 
 //category serach
 const categories = reactive(state);
-let showCheckBoxNumber = 20;
+
+function closeArea(e) {
+    console.log("what button?", e)
+}
+
+const variable = useVariableStore();
+const showGraphicsVariable = reactive(variable);
+
+function showGraphics(e) {
+    console.log("showGraphics", e)
+    showGraphicsVariable.variable = e
+}
+watch(() => showGraphicsVariable, (n, o) => {
+    console.log("showGraphicsVariable new ", n)
+    console.log("showGraphicsVariable old", o)
+    if (n.id != null) {
+
+    }
+}, { deep: true })
 
 </script>
 
 
-<template>
+<template class="container-fluid">
     <div class="row h-100">
         <div class="col-2 h-100">
             <div class="card card-body">
@@ -54,97 +72,52 @@ let showCheckBoxNumber = 20;
                 <InstructionInsideStudy class="mt-5"></InstructionInsideStudy>
             </div>
         </div>
-
-        <div class="col-10 card">
-
-            <div class="border-bottom border-2 ">
-                <VarSearch v-if="isReady" class="w-auto float-start me-3 mt-3 ps-3" :categories=categories>
-                </VarSearch>
-                <Timeframe @timeframe="timeframe" class="ps-5">
-                </Timeframe>
-
-
+        <div class="col-7 h-100">
+            <div class="card card-header">
+                <div class="text-center">
+                    <Timeframe @timeframe="timeframe">
+                    </Timeframe>
+                </div>
             </div>
             <div class="card-body">
-                <div class="row mt-2">
-                    <div class="w-auto float-start border-end">
-                        <h5>Variables Selected</h5>
-                        <ListSelected v-for="c in categories" :c=c></ListSelected>
-                    </div>
-                    <div class="w-auto float-start ms-5">
-                        <VariableSelection @closeArea="e => console.log(e)">
-                        </VariableSelection>
+                <div class="container-fluid">
+                    <div class="row mt-2">
+                        <div class="ms-5">
+                            <VisArea v-if="showGraphicsVariable.variable.id != null" :actualVariable="showGraphicsVariable"
+                                :compareModule="false"></VisArea>
+                            <VariableSelection v-else @closeArea="closeArea">
+                            </VariableSelection>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
 
 
+        </div>
+        <div class="col-3 h-100">
+            <div class="card">
+                <div class=" card-header">
+                    <div class="mt-2 mb-2 text-center w-auto">
+
+                        <VarSearch v-if="isReady" :categories=categories @variableSelected="showGraphics">
+                        </VarSearch>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-center">Variables Selected</h5>
+                    <ListSelected v-for="c in categories" :c=c :k="c" :compareModule="false"
+                        @variableSelected="showGraphics"> 
+                    </ListSelected>
+                
+                    <br />
+                    
+                    <SepsisQuest class="p-3 border-primary border-3"></SepsisQuest>
+                
+                </div>
+            </div>
         </div>
     </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <template>
-    <article>
-        <div class="card card-header">
-
-            <div class="align-middle">
-                <TasksBar :actualTask=actualTask :totalTasks=totalTasks class="float-end"></TasksBar>
-                <SepsisQuest class="float-start bg-white text-danger ps-5 pe-5 pt-3 pb-1 mt-1"></SepsisQuest>
-                <Timeframe @timeframe="timeframe" class="float-start card-body border rounded bg-dark bg-gradient m-1">
-                </Timeframe>
-
-
-            </div>
-            <div class="mt-2">
-
-                <VarSearch v-if="isReady" class="float-start" :categories=state @searchFor="e => search = e"></VarSearch>
-                <div v-else>Loading...</div>
-                <InstructionInsideStudy class="float-start" :starting=startinInstruction></InstructionInsideStudy>
-            </div>
-
-        </div>
-        <div class="card card-body">
-            <section class="h-100">
-                
- 
-                <div class="float-start me-2 h-100" >
-                    <ul class="nav flex-column" v-for="category in state">
-                        <li class="nav-item">
-                    <ListSelected :apiUrl="category.options" :label="category.label"></ListSelected>
-                </li>
-                </ul>
-                </div>
-                
-
-
-
-                <div class="container">
-                    <VariableSelection v-if="search != null" :category=category :showCheckBoxNumber=showCheckBoxNumber
-                        @closeArea="e => search = e">
-                    </VariableSelection>
-                    <div v-else>
-                        <VisArea></VisArea>
-                        <CompareArea></CompareArea>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </article>
-</template> -->
-

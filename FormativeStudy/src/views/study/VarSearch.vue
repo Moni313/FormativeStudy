@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps(['categories']);
-const emit = defineEmits(['searchFor', 'updateCategory']);
+const emit = defineEmits(['searchFor', 'updateCategory', 'variableSelected']);
 
 import { useCategoryStore } from '../../stores/study.store'
 const category = useCategoryStore();
@@ -11,9 +11,11 @@ function classButton(b) {
         return props.categories.indexOf(b) < 1 ? b.class : b.class + ' mt-1'
 }
 
+//TODO this empty variableSelected must be something define globaly
 function setCategory(b){
         console.log(category)
         category.setCategory(b)
+        emit('variableSelected', {id: null, label: null, checked: null, orderChecked: null, fluid: null, category: null })
 }
 
 </script>
@@ -25,34 +27,3 @@ function setCategory(b){
                         <i :class=b.iconClass></i></button>
         </div>
 </template>
-
-
-<!-- This component will create button with categoris listed in the database
-
-[
-{
-"id": "VitalsCat",
-"label": "Vital Signs",
-"class": "btn btn-primary",
-"color": "text-primary",
-"iconClass": "bi bi-search-heart btn-outline-primary float-end  ms-2",
-"options": "optionsVitalsCategory"
-},
-{
-"id": "LabsCat",
-"label": "Labs",
-"class": "btn btn-danger mt-1",
-"color": "text-danger",
-"iconClass": "bi bi-search-heart btn-outline-primary float-end  ms-2",
-"options": "optionsLabsCategory"
-},
-{
-"id": "MedicationCat",
-"label": "Medications",
-"class": "btn btn-secondary mt-1",
-"color": "text-secondary",
-"iconClass": "bi bi-search-heart btn-outline-primary float-end ms-2",
-"options": "optionsMedicationsCategory"
-}
-]
--->

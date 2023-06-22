@@ -8,7 +8,7 @@ const authStore = useAuthStore();
     <div class="app-container" :class="authStore.user && 'bg-light'">
         <Nav />
         <Alert />
-        <div class="ms-5 me-5 pt-4 pb-4">
+        <div class="">
             <router-view />
         </div>
     </div>

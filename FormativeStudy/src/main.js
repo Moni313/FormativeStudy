@@ -16,10 +16,8 @@ import { fakeBackend } from './helpers';
 fakeBackend();
 
 const app = createApp(App);
-
-app.use(createPinia());
 app.use(router);
+app.use(createPinia());
 
 app.provide('emitter', emitter);
-
 app.mount('#app');

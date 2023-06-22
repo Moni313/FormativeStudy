@@ -2,11 +2,13 @@
 import RadioButtonGroup from "../../components/RadioButtonGroup.vue";
 import SubmitButtons from "../../components/SubmitButtons.vue";
 import { sepsisQuestStore } from "../../stores/sepsisquest.store";
+import { severeQuestStore } from "../../stores/severequest.store";
 
 const labelOk = "Submit";
 const labelReset = "Reset";
 
 const sepsisQuest = sepsisQuestStore();
+const severeQuest = severeQuestStore();
 //DONE - TODO make this as a data/file.json
 // const options =
 // {
@@ -40,6 +42,16 @@ const sepsisQuest = sepsisQuestStore();
 //         }
 //     ]
 // }
+function setAnswerSepsis(e) {
+    console.log("setAnswerSepsis", e);
+    if (e == 'Yes' || e == 'No') sepsisQuest.sepsisquest.answer = e;
+    else sepsisQuest.sepsisquest.answer = '';
+    severeQuest.severequest.answer = '';
+}
+function setAnswerSeverity(e) {
+    console.log("setAnswerSeverity", sepsisQuest.sepsisquest.answer, e);
+    severeQuest.severequest.answer = e
+}
 
 function action(e) {
     if (e == labelReset) asnswerSepsis = null;
@@ -49,9 +61,28 @@ function action(e) {
     <div class="border rounded">
         <h3 class="d-flex flex-column justify-content-center align-items-center"><b>{{ sepsisQuest.sepsisquest.label }}</b>
         </h3>
-        <RadioButtonGroup v-model=sepsisQuest.sepsisquest.answer :options=sepsisQuest.sepsisquest
-            :selected=sepsisQuest.sepsisquest.answer @input="e => (sepsisQuest.sepsisquest.answer = e)" class="ms-5 mb-2">
-        </RadioButtonGroup>
-        <SubmitButtons :labelOk=labelOk @selected="action" class="mb-2"></SubmitButtons>
+        <form>
+            <RadioButtonGroup :key="'sepsisQuest'" :id="'sepsisQuest'" v-model=sepsisQuest.sepsisquest.answer
+                :options=sepsisQuest.sepsisquest :selected=sepsisQuest.sepsisquest.answer @input="setAnswerSepsis"
+                class="ms-4 mb-2">
+            </RadioButtonGroup>
+            <div v-if="sepsisQuest.sepsisquest.answer == 'Yes'">
+                <hr />
+                <RadioButtonGroup :key="'severeQuest'" :id="'severeQuest'" v-model=severeQuest.severequest.answer
+                    :options=severeQuest.severequest :selected=severeQuest.severequest.answer @input="setAnswerSeverity"
+                    class="ms-4 mb-2">
+
+                </RadioButtonGroup>
+                <hr />
+            </div>
+            <div class="btn">
+                <SubmitButtons v-if="sepsisQuest.sepsisquest.answer == 'No' || severeQuest.severequest.answer != ''"
+                    :labelOk=labelOk @selected="action" class="mb-2">
+                </SubmitButtons>
+                <div v-else class="row justify-content-center  ms-2 me-2">
+                    <button class="btn btn-outline-dark text-center btn-sm" disabled>{{ labelOk }}</button>
+                </div>
+            </div>
+        </form>
     </div>
 </template>

@@ -1,111 +1,78 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 const emit = defineEmits(['timeframe']);
 
 let disableButton = ref(0);
-let actualTFDay = ref(1);
-let actualTFBin = ref(0);
-const days = 3;
-const bins = [
-    { "id": 0, text: "0-6" },
-    { "id": 1, text: "7-12" },
-    { "id": 2, text: "13-18" },
-    { "id": 3, text: "19-24" }
-];
+let frame = ref(2);
+const frames = [{
+    'day': '1',
+    'tf': [
+        { "id": 1, start: "00:00", stop: "05:59" },
+        { "id": 2, start: "07:00", stop: "11:59" },
+        { "id": 3, start: "13:00", stop: "17:59" },
+        { "id": 4, start: "19:00", stop: "23:59" },]
+},
+{
+    'day': '2',
+    'tf': [
+        { "id": 5, start: "00:00", stop: "05:59" },
+        { "id": 6, start: "07:00", stop: "11:59" },
+        { "id": 7, start: "13:00", stop: "17:59" },
+        { "id": 8, start: "19:00", stop: "23:59" }]
+},
+{
+    'day': '3',
+    'tf': [
+        { "id": 9, start: "00:00", stop: "05:59" },
+        { "id": 10, start: "07:00", stop: "11:59" },
+        { "id": 11, start: "13:00", stop: "17:59" },
+        { "id": 12, start: "19:00", stop: "23:59" }
+    ]
+}]
 
-function nextTF() {
-    // if (actualTFDay.value == days && actualTFBin.value == bins.length-1) disableButton.value = 1
-    // else { //only one way, no back
-    actualTFBin.value = (actualTFBin.value + 1) % 4
-    if (actualTFBin.value == 0) {
-        actualTFDay.value = actualTFDay.value + 1
-    }
-    emit('timeframe', ({ 'day': actualTFDay, 'tfbin': actualTFBin }))
-    //}
-    if (actualTFDay.value == days && actualTFBin.value == bins.length - 1) disableButton.value = 1
+function nextFrame() {
+    console.log(frame)
+    frame.value = frame.value + 1;;
+    console.log(frame)
+    if (frame.value == (frames.length * 4)) disableButton = 1
+    emit('timeframe', frame)
 }
-// watch(disableButton, (n, o) =>{
-
-// })
 
 </script>
 
 <template>
-        <div class="row">
-            <div class="h4 m-1">
-                <div
-                    class="float-start border rounded bg-light d-flex flex-column justify-content-center align-items-center m-2 p-1">
-                    <p class="d-flex flex-column justify-content-center align-items-center m-3">Timeframe
-                        <button v-if="disableButton == 1" class="btn btn-danger text-center" v-on:click="nextTF"
-                            disabled><b>Next</b></button>
-                        <button v-else class="btn btn-success text-center mt-3" v-on:click="nextTF"><b
-                                class="h4">Next</b></button>
-                    </p>
-                </div>
+    <div class="row">
+        <div class="col-9">
+            <div class="container-fluid">
+                <div class="row">
+                    <div v-for="day in frames" class="col-4 border rounded text-center w-auto">
+                        <h4 class="border-bottom border-2 pb-2"
+                            :style="4 * day.day <= frame ? 'background-color:#C7E9B0; border-radius: 5px;' : ''">Day {{
+                                day.day
+                            }}</h4>
 
-
-                <div v-for="d in days" class="float-start ms-2 border rounded bg-light m-2 p-1">
-
-                    <span class="d-flex flex-column justify-content-center align-items-center border-bottom">Day {{ d
-                    }}</span>
-                    <span v-for="b in bins" class="float-start ps-2 pe-2">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            <i v-if="(d <= actualTFDay && b.id < actualTFBin) || (d < actualTFDay)"
-                                class="bi bi-clipboard-heart-fill text-success"></i>
-                            <i v-else-if="(d == actualTFDay && b.id == actualTFBin)"
-                                class="bi bi-clipboard2-pulse-fill text-success"></i>
+                        <div v-for="f in day.tf" class="float-start ms-2 me-3 h5">
+                            <i v-if="f.id < frame" class="bi bi-clipboard-heart-fill text-success"></i>
+                            <i v-else-if="f.id == frame" class="bi bi-clipboard2-pulse-fill text-success"></i>
                             <i v-else class="bi bi-clipboard-plus"></i>
-                            <span> {{ b.text }}</span>
-
+                            <p class="h6 mt-1"> {{ f.start }}</p>
+                            <p class="h6"> {{ f.stop }}</p>
                         </div>
-                    </span>
-                    <br />
-                    <div class="text-center mb-1"> hours</div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
-    
+
+        <div class="col-3 align-items-center text-center border rounded pt-3">
+            <h3>Timeframe <br />
+                <button v-if="disableButton == 1" class="btn btn-dark text-center mt-3" v-on:click="nextFrame" disabled><b
+                        class="h4">Next</b></button>
+                <button v-else class="btn btn-success text-center mt-3" v-on:click="nextFrame"><b
+                        class="h4">Next</b></button>
+            </h3>
+        </div>
+    </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
-<template>
-    <section>
-        <div class="h6">
-            <div class="ms-1 me-1">
-                <div class="float-start  border rounded ps-1 pe-1 bg-light">
-                    <p class="d-flex flex-column justify-content-center align-items-center ms-1 me-1 pe-1 pt-1">Timeframe
-                        <button v-if="disableButton == 1" class="btn btn-danger text-center mt-2" v-on:click="nextTF"
-                            disabled><b>Next</b></button>
-                        <button v-else class="btn btn-success text-center mt-2" v-on:click="nextTF"><b>Next</b></button>
-                    </p>
-                </div>
-
-                <div v-for="d in days" class="float-start ms-2 border rounded pt-1 pb-2 bg-light">
-                    <span class="d-flex flex-column justify-content-center align-items-center border-bottom mb-1">Day {{ d
-                    }}</span>
-                    <span v-for="b in bins" class="float-start ps-2 pe-2">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            <i v-if="(d <= actualTFDay && b.id < actualTFBin) || (d < actualTFDay)"
-                                class="bi bi-clipboard-heart-fill text-success"></i>
-                            <i v-else-if="(d == actualTFDay && b.id == actualTFBin)"
-                                class="bi bi-clipboard2-pulse-fill text-success"></i>
-                            <i v-else class="bi bi-clipboard-plus"></i>
-                            <span> {{ b.text }}</span>
-                        </div>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </section>
-</template> -->

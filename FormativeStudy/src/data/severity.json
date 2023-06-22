@@ -1,6 +1,6 @@
 {
     "id": 1,
-    "label": "Is this Sepsis?",
+    "label": "Severity",
     "image": null,
     "description": null,
     "help": "",
@@ -9,11 +9,11 @@
     "expand": false,
     "expand_to": null,
     "condition_to_expand": null,
-    "answer": null,
+    "answer": "",
     "options": [
         {
             "id": 1,
-            "label": "Yes",
+            "label": "Sepsis",
             "description": null,
             "help": null,
             "order": 0,
@@ -21,10 +21,18 @@
         },
         {
             "id": 2,
-            "label": "No",
+            "label": "Severe Sepsis",
             "description": null,
             "help": null,
             "order": 1,
+            "type": "answer"
+        },
+        {
+            "id": 3,
+            "label": "Septic Shock",
+            "description": null,
+            "help": null,
+            "order": 2,
             "type": "answer"
         }
     ]

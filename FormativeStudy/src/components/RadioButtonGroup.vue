@@ -19,8 +19,8 @@ let selected = props.selected;
 
 <template>
   <div class="input-group">
-    <RadioButton v-for="option in props.options.options" :option="option" :key="`${props.options.id}${option.id}`"
-      v-model=props.selected v-on:change="$parent.$emit('input', $event.target.value)" />
+    <RadioButton v-for="option in props.options.options" :option="option" :key="option.label"
+      v-model=props.selected v-on:change="$parent.$emit('input', $event.target.value)" :selected="selected"/>
   </div>
 </template>
   

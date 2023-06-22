@@ -35,7 +35,7 @@ function action(e) {
     if (e == labelOk) {
         //store info
         let obj = createObjQuestionAnswer()
-        
+
         //redirect to study params: [ 'actualTask', 'totalTasks',  'actualTFDay', 'actualTFBin', 'startinInstruction']
         router.push('/study');
     }
@@ -47,7 +47,7 @@ function action(e) {
             element.answer = null;
         })
         let obj = createObjQuestionAnswer();
-        
+
     }
 }
 function updateSubanswer(q, s) { //update q questiond with subquestion asnwer
@@ -76,53 +76,51 @@ function setVariables(question, answer, subquestion) {
 
 
 <template>
-    <form class="ms-5 me-5">
+    <form class="container">
         <div class="card">
-
             <div class="card-header h4">{{ preStudyData.prestudydata.questions[0].question_group }}</div>
 
-
             <div class="col-12">
-                <div v-for="question in preStudyData.prestudydata.questions" :id="'qustion_' + question.id">
-                    <div class="float-start col-6 border-top">
-                        <div class="card card-body border-0 input-group p-2">
-                            <div>
-                                <p class="me-2 text-muted card-header"><b>{{ question.label
-                                }}</b></p>
-                                <p v-if="question.answer != null && question.answer != ''"
-                                    class="me-2 text-muted card-header">
-                                    <b class="text-dark">{{
-                                        question.answer }}</b>
-                                </p>
-                                <p v-else class="me-2 text-muted card-header"><br /> </p>
-                            </div>
+                <div v-for="question in preStudyData.prestudydata.questions" :id="'qustion_' + question.id"
+                    class="float-start col-6 border-top">
 
-                            <div class="ps-5 pt-2">
-                                <TextBox v-if="question.type == 'text'" v-model="question.answer"
-                                    :key="'text_' + question.id" :id="'text_' + question.id"
-                                    @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5" />
+                    <div class="card card-body border-0 input-group p-2">
+                        <div>
+                            <p class="me-2 text-muted card-header"><b>{{ question.label
+                            }}</b></p>
+                            <p v-if="question.answer != null && question.answer != ''" class="me-2 text-muted card-header">
+                                <b class="text-dark">{{
+                                    question.answer }}</b>
+                            </p>
+                            <p v-else class="me-2 text-muted card-header"><br /> </p>
+                        </div>
 
-                                <SelectBox v-else-if="question.type == 'select'" v-model="question.answer"
-                                    :key="'select_' + question.id" :id="'select_' + question.id" :options="question.options"
-                                    @input="e => question.answer = e" class="mb-2 pe-5" />
+                        <div class="ps-5 pt-2">
+                            <TextBox v-if="question.type == 'text'" v-model="question.answer" :key="'text_' + question.id"
+                                :id="'text_' + question.id" @input="e => (setVariables(question.label, e, null))"
+                                class="mb-2 pe-5" :selected="question.answer" />
 
-                                <DatalistBox v-else-if="question.type == 'datalist'" v-model="question.answer"
-                                    :key="'datalist_' + question.id" :id="'datalist_' + question.id"
-                                    :options="question.options" :currentValue="question.answer"
-                                    @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5" />
+                            <SelectBox v-else-if="question.type == 'select'" v-model="question.answer"
+                                :key="'select_' + question.id" :id="'select_' + question.id" :options="question.options"
+                                @input="e => question.answer = e" class="mb-2 pe-5" :selected="question.answer" />
 
-                                <RadioButtonGroup v-else-if="question.type == 'radioButton'" v-model="question.answer"
-                                    :options="question" @input="e => (setVariables(question.label, e, null))"
-                                    class="mb-2 pe-5" />
+                            <DatalistBox v-else-if="question.type == 'datalist'" v-model="question.answer"
+                                :key="'datalist_' + question.id" :id="'datalist_' + question.id" :options="question.options"
+                                :currentValue="question.answer" @input="e => (setVariables(question.label, e, null))"
+                                class="mb-2 pe-5" />
 
-                                <NumberBox v-else-if="question.type == 'number'" min="0" v-model="question.answer"
-                                    @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5" />
+                            <RadioButtonGroup v-else-if="question.type == 'radioButton'" v-model="question.answer"
+                                :options="question" @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5"
+                                :selected="question.answer" />
 
-                                <div v-if="question.expand && question.answer == 'yes'">
-                                    <!-- Expand question [TODO] make this component with props and pass preStudy as a prop -->
-                                    <TextBox v-model="preStudyData.prestudydata.subquestions[question.expand_to - 1].answer"
-                                        @input="e => (updateSubanswer(question.label, e))" />
-                                </div>
+                            <NumberBox v-else-if="question.type == 'number'" min="0" v-model="question.answer"
+                                @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5"
+                                :selected="question.answer" />
+
+                            <div v-if="question.expand && question.answer == 'yes'">
+                                <!-- Expand question [TODO] make this component with props and pass preStudy as a prop -->
+                                <TextBox v-model="preStudyData.prestudydata.subquestions[question.expand_to - 1].answer"
+                                    @input="e => (updateSubanswer(question.label, e))" />
                             </div>
                         </div>
                     </div>
@@ -133,7 +131,34 @@ function setVariables(question, answer, subquestion) {
             <div class="card">
                 <div class="card-header h5">Summary</div>
                 <div class="card-body">
-                    <p class="ps-3 pe-5" v-for="a in preStudyData.prestudydata.questions">
+                    <div class="col-12">
+                        <div v-for="a in preStudyData.prestudydata.questions">
+                            <div class="col-8 float-end text-left border-top"> {{ a.label }}</div>
+                            <div class="col-4 text-end border-top pe-5">
+                                <div v-if="a.answer == null || a.answer == ''">
+                                    <br />
+                                    <div
+                                        v-if="a.expand && (preStudyData.prestudydata.questions[a.expand_to] == null || preStudyData.prestudydata.questions[a.expand_to] == '')">
+                                        <br />
+                                    </div>
+
+                                </div>
+                                <div v-else> <b>{{ a.answer }}</b>
+                                    <div
+                                        v-if="a.expand && preStudyData.prestudydata.questions[a.expand_to] != null && preStudyData.prestudydata.questions[a.expand_to] != ''">
+                                        <b>{{
+                                            preStudyData.prestudydata.subquestions.find(e => e.id =
+                                                a.expand_to).answer }}</b>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card-body">
+                    <div class="ps-3 pe-5" v-for="a in preStudyData.prestudydata.questions">
                         <span class=""
                             :class="(a.id % 2 == 0) ? 'bg-light col-7 float-end border-bottom' : 'col-7 float-end border-bottom'">{{
                                 a.label }}</span>
@@ -141,16 +166,17 @@ function setVariables(question, answer, subquestion) {
                         <span v-if="a.answer != null"><b :class="(a.id % 2 == 0) ? 'bg.light pe-5' : 'pe-5'">{{ a.answer
                         }}</b></span>
                         <span v-else><b :class="(a.id % 2 == 0) ? 'bg.light pe-5' : 'pe-5'"> -- </b></span>
-                        <span v-if="a.expand && preStudyData.prestudydata.questions[a.expand_to] != null"><br /><b
+                        <span v-if="a.expand && preStudyData.prestudydata.questions[a.expand_to] != null && preStudyData.prestudydata.questions[a.expand_to] != ''"><br /><b
                                 :class="(a.id % 2 == 0) ? 'bg.light pe-5' : 'pe-5'">{{
                                     preStudyData.prestudydata.subquestions.find(e => e.id =
                                         a.expand_to).answer }}</b><br /></span>
                     </div>
-                    </p>
+                    </div>
+                </div> -->
+                <div class="m-2 ps-1">
+                    <SubmitButtons :labelOk=labelOk :labelReset=labelReset :labelNo=labelNo @selected="action"
+                        class="d-flex flex-column justify-content-center align-items-center ps-1 pe-1" />
                 </div>
-                <div class="m-2 ps-2">
-                <SubmitButtons :labelOk=labelOk :labelReset=labelReset :labelNo=labelNo @selected="action" class="d-flex flex-column justify-content-center align-items-center ps-1 pe-1" />
-            </div>
             </div>
         </div>
     </form>
