@@ -45,6 +45,10 @@ export const useVariableStore = defineStore("variable", () => {
       category: null,
     };
   }
+  function getAllSelected(){
+    //TODO hard coded but with API should be easier to get all the variables selected
+    
+  }
   return {
     id,
     variable,

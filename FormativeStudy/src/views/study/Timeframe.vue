@@ -1,10 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-
-const emit = defineEmits(['timeframe']);
-
-let disableButton = ref(0);
-let frame = ref(2);
+const props = defineProps(['tf']);
+console.log("tf timeframe", props.tf)
 const frames = [{
     'day': '1',
     'tf': [
@@ -31,48 +27,22 @@ const frames = [{
     ]
 }]
 
-function nextFrame() {
-    console.log(frame)
-    frame.value = frame.value + 1;;
-    console.log(frame)
-    if (frame.value == (frames.length * 4)) disableButton = 1
-    emit('timeframe', frame)
-}
-
 </script>
 
 <template>
-    <div class="row">
-        <div class="col-9">
-            <div class="container-fluid">
-                <div class="row">
-                    <div v-for="day in frames" class="col-4 border rounded text-center w-auto">
-                        <h4 class="border-bottom border-2 pb-2"
-                            :style="4 * day.day <= frame ? 'background-color:#C7E9B0; border-radius: 5px;' : ''">Day {{
-                                day.day
-                            }}</h4>
+    <div v-for="day in frames" class="float-start border rounded text-center w-auto">
+        <h4 class="border-bottom border-2 pb-2 text-center"
+            :style="4 * day.day <= props.tf ? 'background-color:#C7E9B0; border-radius: 5px;' : ''">Day {{
+                day.day
+            }}</h4>
 
-                        <div v-for="f in day.tf" class="float-start ms-2 me-3 h5">
-                            <i v-if="f.id < frame" class="bi bi-clipboard-heart-fill text-success"></i>
-                            <i v-else-if="f.id == frame" class="bi bi-clipboard2-pulse-fill text-success"></i>
-                            <i v-else class="bi bi-clipboard-plus"></i>
-                            <p class="h6 mt-1"> {{ f.start }}</p>
-                            <p class="h6"> {{ f.stop }}</p>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
+        <div v-for="f in day.tf" class="float-start ms-2 me-3 h5">
+            <i v-if="f.id < props.tf" class="bi bi-clipboard-heart-fill text-success"></i>
+            <i v-else-if="f.id == props.tf" class="bi bi-clipboard2-pulse-fill text-success"></i>
+            <i v-else class="bi bi-clipboard-plus"></i>
+            <p class="h6 mt-1"> {{ f.start }}</p>
+            <p class="h6"> {{ f.stop }}</p>
         </div>
-
-        <div class="col-3 align-items-center text-center border rounded pt-3">
-            <h3>Timeframe <br />
-                <button v-if="disableButton == 1" class="btn btn-dark text-center mt-3" v-on:click="nextFrame" disabled><b
-                        class="h4">Next</b></button>
-                <button v-else class="btn btn-success text-center mt-3" v-on:click="nextFrame"><b
-                        class="h4">Next</b></button>
-            </h3>
-        </div>
+        <div class="h6">Hours</div>
     </div>
 </template>
