@@ -55,6 +55,13 @@ export default {
         //ws: false,
         changeOrigin: true,
         secure: false,
+      },
+      "/tasks":{
+        target: "http://localhost:3001",
+        pathRewrite: { "^/tasks": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
       }
     },
   },

@@ -9,3 +9,5 @@ export { default as Scenario } from "./Scenario.vue";
 export { default as Chart } from "./Chart.vue";
 export { default as Timeframe } from "./Timeframe.vue";
 export { default as TimeframeNext } from "./TimeframeNext.vue";
+export { default as AllSelected } from "./AllSelected.vue";
+export { default as SortSelected } from "./SortSelected.vue";

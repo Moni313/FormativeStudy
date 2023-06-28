@@ -38,7 +38,7 @@ function emitSelection(e, from) {
 
 emitter.on('updateCategoryfromSelected', (update) => {
     if (update) {
-        console.log("XXXXXXXXXXXXXXX", category.category.options)
+        console.log("updateCategoryfromSelected", category.category.options)
         const url = "/" + category.category.options;
         const opt = useAsyncState(async () => {
             console.log("url", url)

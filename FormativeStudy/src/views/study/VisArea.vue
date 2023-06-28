@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref, watch, toRefs } from 'vue';
 import { useVariableStore } from '../../stores/variable.store';
 import SubmitButtons from '../../components/SubmitButtons.vue';
 import ListSelected from './ListSelected.vue';
@@ -27,6 +27,8 @@ const categories = reactive(state);
 // const labelNo = "Close";
 const labelOk = "Compare With";
 const compare = ref(false)
+
+const timeframe = toRefs(props, 'tf');
 
 function userAction(e) {
     compare.value = true
@@ -58,7 +60,7 @@ const data1 = [
 
 
 ];
-const data2 = [
+const data2 = [ 
     { date: "24-Apr-07", amount: 93.24 },
     { date: "25-Apr-07", amount: 95.35 },
     { date: "26-Apr-07", amount: 98.84 },
@@ -85,12 +87,17 @@ const data3 = [
     { date: "10-May-07", amount: 107.34 },
 ]
 
-let data = reactive(data1);
-//TODO this must be dynamic!
-if (props.tf == 2) data = data2
-else if (props.tf == 3) data = data3
+let data = ref(data3);
+
+watch(() => timeframe, (n) => {
+    console.log("timeframe", n)
+    if(timeframe.value == 1) data = data1;
+    else if(timeframe.value == 2 ) data = data2;
+    else data = data3
+})
 </script>
 <template>
+    [dev: tf={{  props.tf }}]
     <section>
         <div class="row mb-5">
             <div class="input-group mb-1 w-auto">

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import { useAsyncState } from "@vueuse/core";
 
@@ -45,15 +45,13 @@ export const useVariableStore = defineStore("variable", () => {
       category: null,
     };
   }
-  function getAllSelected(){
-    //TODO hard coded but with API should be easier to get all the variables selected
-    
-  }
+
   return {
     id,
     variable,
     setVariable,
     setCompareVar,
     resetActual,
+    compareWith
   };
 });

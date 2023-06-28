@@ -6,7 +6,6 @@ import { useAsyncState } from "@vueuse/core";
 const props = defineProps(['c', 'compareModule', 'varCompare']);
 const emit = defineEmits(['updateCategoryfromSelected', 'variableSelected'])
 const category = toRefs(props, 'c');
-const compare = toRefs(props, 'varCompare')
 
 const url = "/" + category.c.value.options;
 const opt = reactive(useAsyncState(async () => {
@@ -80,7 +79,6 @@ watch(() => options.state, (n, o) => {
                 </div>
             </div>
         </div>
-
     </section>
 </template>
 

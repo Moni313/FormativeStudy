@@ -8,6 +8,7 @@ export const useCategoryStore = defineStore("category", () => {
   const id = "selectedCategory";
   const category = ref();
   const options = ref();
+  const allSelected = ref(getAllSelected());
   const showOptions = false;
   const showCheckBoxNumber = 30;
   const orderSelection = ref();
@@ -57,17 +58,73 @@ export const useCategoryStore = defineStore("category", () => {
           return await axios.patch("" + actualUrl, obj);
         });
         if (response.isReady) {
+          console.log("updating all selected...")
+          this.allSelected = getAllSelected();
           console.log("updated", updatingId, obj);
           this.options = useAsyncState(async () => {
             const data = axios.get("" + url).then((t) => t.data);
             console.log("get options updated");
             return data;
           });
+          
         }
       }
     });
   }
 
+  function getAllSelected() {
+    //TODO hard coded but with API should be easier to get all the variables selected
+    let selected = [];
+    let opts = useAsyncState(async () => {
+      const data = await axios
+        .get("/optionsVitalsCategory")
+        .then((t) => t.data)
+        .then((t) => {
+          t.forEach((element) => {
+            if (element.checked) {
+              selected.push(element);
+              console.log("Adding element: ", element);
+            }
+          });
+        });
+      return data;
+    });
+
+    console.log("1", opts)
+
+    opts = useAsyncState(async () => {
+      const data = await axios
+        .get("/optionsMedicationsCategory")
+        .then((t) => t.data)
+        .then((t) => {
+          t.forEach((element) => {
+            if (element.checked) {
+              selected.push(element);
+              console.log("Adding element: ", element);
+            }
+          });
+        });
+      return data;
+    });
+    console.log("2", opts)
+    opts = useAsyncState(async () => {
+      const data = await axios
+        .get("/optionsLabsCategory")
+        .then((t) => t.data)
+        .then((t) => {
+          t.forEach((element) => {
+            if (element.checked) {
+              selected.push(element);
+              console.log("Adding element: ", element);
+            }
+          });
+        });
+      return data;
+    });
+    console.log("3", opts)
+    console.log("selected from study.store", selected)
+    return selected;
+  }
   return {
     id,
     category,
@@ -80,6 +137,7 @@ export const useCategoryStore = defineStore("category", () => {
     setCategory,
     closeArea,
     setLimit,
+    allSelected
   };
 });
 
