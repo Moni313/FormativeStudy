@@ -2,6 +2,8 @@
 import { watch, inject, reactive, toRefs } from 'vue';
 import axios from "axios";
 import { useAsyncState } from "@vueuse/core";
+import { useVariableStore } from '../../stores/variable.store';
+
 
 const props = defineProps(['c', 'compareModule', 'varCompare']);
 const emit = defineEmits(['updateCategoryfromSelected', 'variableSelected'])
@@ -13,6 +15,9 @@ const opt = reactive(useAsyncState(async () => {
     return data
 }))
 let options = reactive(opt);
+
+
+const varsStore = useVariableStore();
 
 function remove(id) {
     options.state.filter((obj) => {
@@ -35,6 +40,7 @@ function remove(id) {
 }
 
 function showVariable(e) {
+    varsStore.resetCompare();
     emit('variableSelected', e)
 }
 

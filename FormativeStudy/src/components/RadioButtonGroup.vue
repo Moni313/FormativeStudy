@@ -8,8 +8,13 @@ const props = defineProps({
   'selected': {
     required: false,
     default: null
+  },
+  'name' : {
+    required: true,
+    type: String
   }
 });
+
 defineEmits(['input']);
 
 let selected = props.selected;
@@ -19,8 +24,8 @@ let selected = props.selected;
 
 <template>
   <div class="input-group">
-    <RadioButton v-for="option in props.options.options" :option="option" :key="option.label"
-      v-model=props.selected v-on:change="$parent.$emit('input', $event.target.value)" :selected="selected"/>
+    <RadioButton v-for="option in props.options.options" :option="option" :key="option.label" :name="props.name"
+      v-model=props.selected :selected="selected"/>
   </div>
 </template>
   

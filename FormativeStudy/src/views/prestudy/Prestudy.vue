@@ -111,7 +111,7 @@ function setVariables(question, answer, subquestion) {
 
                             <RadioButtonGroup v-else-if="question.type == 'radioButton'" v-model="question.answer"
                                 :options="question" @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5"
-                                :selected="question.answer" />
+                                :selected="question.answer" :name="'qustion_' + question.id"/>
 
                             <NumberBox v-else-if="question.type == 'number'" min="0" v-model="question.answer"
                                 @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5"

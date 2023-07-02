@@ -1,6 +1,7 @@
 <template>
     <article>
         <h4 class="text-center">Instrunctions</h4>
+        <p>You are asked to assess wheter the patient has sepsis or is at risk of developing sepsis</p>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <b>Select</b> variable(s) from Vital Signs, Labs, Medication buttons.

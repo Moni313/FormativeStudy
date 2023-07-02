@@ -61,6 +61,7 @@ function nextTask() {
         tf.value = 0
         showGraphicsVariable.resetActual();
         sepsisQAnswered.value = false;
+        //TODO deselect all the options!!
     }
 }
 function nextFrame() {
@@ -90,26 +91,20 @@ watch(() => sepsisQAnswered, (n) => {
                 <TasksBar :actualTask=actualTask :totalTasks=totalTasks
                     class="border-bottom border-3  mt-3 border-secondary">
                 </TasksBar>
-                <Scenario class="border-bottom border-3  mt-5 border-secondary" :actualTask=actualTask></Scenario>
+                <!-- <Scenario class="border-bottom border-3  mt-5 border-secondary" :actualTask=actualTask></Scenario> -->
                 <InstructionInsideStudy class="mt-5"></InstructionInsideStudy>
             </div>
         </div>
-        <div class="col-auto h-100">
-            <div v-if="!sepsisQAnswered" class="card-header mb-4">
-                <div class="container-fluid">
-                    <div class="row">
-                        <Timeframe :tf="tf">
-                        </Timeframe>
-
-                        <TimeframeNext class="float-start align-items-center text-center  pt-3" @timeframe="nextFrame"
-                            :tf="tf"></TimeframeNext>
-                    </div>
+        <div class="col-7 h-100">
+            <div class="card">
+                <div v-if="!sepsisQAnswered" class="card-header mb-4">
+                    <Timeframe :tf="tf" :actualTask=actualTask @timeframe="nextFrame">
+                    </Timeframe>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="container-fluid">
-                    <div class="row mt-2">
-                        <div class="ms-5">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row mt-2">
+
                             <div v-if="!sepsisQAnswered">
                                 <VisArea v-if="showGraphicsVariable.variable.id != null"
                                     :actualVariable="showGraphicsVariable" :compareModule="false" :tf="tf"></VisArea>
@@ -119,6 +114,7 @@ watch(() => sepsisQAnswered, (n) => {
                             <div v-else>
                                 <SortSelected @next-task="nextTask"></SortSelected>
                             </div>
+
                         </div>
                     </div>
                 </div>

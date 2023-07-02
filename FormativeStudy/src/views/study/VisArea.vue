@@ -1,12 +1,15 @@
 <script setup>
 import { reactive, ref, watch, toRefs } from 'vue';
+import { useAsyncState } from "@vueuse/core";
+import axios from "axios";
+
 import { useVariableStore } from '../../stores/variable.store';
-import SubmitButtons from '../../components/SubmitButtons.vue';
+
 import ListSelected from './ListSelected.vue';
 import Chart from './chart.vue'
 
-import axios from "axios";
-import { useAsyncState } from "@vueuse/core";
+
+
 
 //TODO maybe change logic? instead of passing a prop, actualVariable is selected from the store, and it is set on the ListSelected.vue component when clicking on the variable button
 // allVariableSelected remain the same without the actualVariable
@@ -31,14 +34,15 @@ const compare = ref(false)
 const timeframe = toRefs(props, 'tf');
 
 function userAction(e) {
+    resetCompareVar()
     compare.value = true
+    
     console.log("value of compare: ", compare)
 }
 
-let compareWithShow = ref(false)
+
 function compareWith(e) {
     console.log("variable to compare:", e)
-    compareWithShow.value = true;
     compare.value = false;
     varsStore.setCompareVar(e)
     //TODO here set the second variable for comparison
@@ -47,9 +51,8 @@ watch(compare, (n, o) => {
     console.log(n, o)
 }, { deep: true })
 watch(varsStore, (n, o) => {
-    console.log(n, o)
+    console.log("varstore", n, o)
 }, { deep: true })
-
 
 
 const data1 = [
@@ -57,10 +60,8 @@ const data1 = [
     { date: "25-Apr-07", amount: 95.35 },
     { date: "26-Apr-07", amount: 98.84 },
     { date: "27-Apr-07", amount: 99.92 },
-
-
 ];
-const data2 = [ 
+const data2 = [
     { date: "24-Apr-07", amount: 93.24 },
     { date: "25-Apr-07", amount: 95.35 },
     { date: "26-Apr-07", amount: 98.84 },
@@ -91,46 +92,47 @@ let data = ref(data3);
 
 watch(() => timeframe, (n) => {
     console.log("timeframe", n)
-    if(timeframe.value == 1) data = data1;
-    else if(timeframe.value == 2 ) data = data2;
+    if (timeframe.value == 1) data = data1;
+    else if (timeframe.value == 2) data = data2;
     else data = data3
 })
+
+function resetCompareVar(){
+    varsStore.resetCompare()
+}
 </script>
 <template>
-    [dev: tf={{  props.tf }}]
-    <section>
-        <div class="row mb-5">
-            <div class="input-group mb-1 w-auto">
-                <span class="input-group-prepend input-group-text sm bg-outline-dark fw-bold"> {{ props.actualVariable.variable.label
+    <div class="container">
+        
+        <div class="float-start">
+            <div class="input-group mb-5">
+                <span class="input-group-prepend input-group-text sm bg-outline-dark fw-bold"> {{
+                    props.actualVariable.variable.label
                 }}</span>
-                <button class="btn btn-outline-dark form-control text-start" @click="userAction(labelOk)"> {{
-                    labelOk }}</button>
+                <!-- <button v-if="varsStore.compareWith?.id != null && varsStore.compareWith?.id != ''" class="input-group form-control text-start"> compare with >> </button> -->
+                <!-- <button class="btn btn-outline-secondary form-control text-start" @click="userAction(labelOk)"> {{
+                    labelOk }}</button> -->
                 <!-- <SubmitButtons :label-ok="labelOk" @selected="e => userAction(e)" class="form-control text-start"></SubmitButtons> -->
-                <button v-if="varsStore.compareWith?.id != null && varsStore.compareWith?.id != ''"
+                <!-- <button v-if="varsStore.compareWith?.id != null && varsStore.compareWith?.id != ''" v-on:click="resetCompareVar"
                     class="input-group-append btn btn-outline-dark input-group-text">{{ varsStore.compareWith.label
-                    }}<i class="bi bi-file-excel ps-2 float-end"></i></button>
-                
+                    }}<i class="bi bi-file-excel ps-2 float-end"></i></button> -->
+
             </div>
-            <div class="float-start">
-                    <ListSelected v-if="compare" v-for="c in categories" :c=c :k="c" :compareModule="true"
-                        :varCompare="props.actualVariable.variable.id" @variableSelected="compareWith"></ListSelected>
-                </div>
-            <!-- <h4> <span class="float-start">{{ props.actualVariable.variable.label }}</span>
-                
-                <div class="float-start">
-                    <SubmitButtons :label-ok="labelOk" @selected="e => userAction(e)"></SubmitButtons>
-                    <div class="float-start">
-                        <ListSelected v-if="compare" v-for="c in categories" :c=c :k="c" :compareModule="true"
-                            :varCompare="props.actualVariable.variable.id" @variableSelected="compareWith"></ListSelected>
-                    </div>
-                    <div class="float-end" v-if="varsStore.compareWith?.id != null && varsStore.compareWith?.id != ''">
-                    {{ varsStore.compareWith.label }}</div>
-                </div>
-            </h4> -->
+            <div>
+                <Chart :id="'svg-main'" :v="varsStore.variable" :data="data"></Chart>
+                <button v-if="varsStore.compareWith?.id != null && varsStore.compareWith?.id != ''" v-on:click="resetCompareVar"
+                    class="input-group-append btn btn-outline-dark input-group-text mb-3">{{ varsStore.compareWith.label
+                    }}<i class="bi bi-file-excel ps-2 float-end"></i></button>
+                <Chart :id="'svg-compare'" :v="varsStore.compareWith" v-if="varsStore.compareWith.id != null" :data="data"></Chart>
+            </div>
         </div>
-        <div>
-            <Chart :id="'svg-main'" :v="varsStore.variable" :data="data"></Chart>
-            <Chart :id="'svg-compare'" :v="varsStore.compareWith" v-if="compareWithShow" :data="data"></Chart>
+        <div class="float-end">
+            <button class="btn btn-outline-secondary form-control text-start" @click="userAction(labelOk)"> {{
+                    labelOk }}</button>
+            <ListSelected v-if="compare" v-for="c in categories" :c=c :k="c" :compareModule="true"
+                :varCompare="props.actualVariable.variable.id" @variableSelected="compareWith"></ListSelected>
         </div>
-    </section>
+
+        [dev: tf={{ props.tf }}]
+    </div>
 </template>

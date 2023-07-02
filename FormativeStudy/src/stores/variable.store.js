@@ -45,6 +45,16 @@ export const useVariableStore = defineStore("variable", () => {
       category: null,
     };
   }
+  function resetCompare() {
+    this.compareWith = {
+      id: null,
+      label: null,
+      checked: null,
+      orderChecked: null,
+      fluid: null,
+      category: null,
+    };
+  }
 
   return {
     id,
@@ -52,6 +62,7 @@ export const useVariableStore = defineStore("variable", () => {
     setVariable,
     setCompareVar,
     resetActual,
-    compareWith
+    compareWith,
+    resetCompare
   };
 });

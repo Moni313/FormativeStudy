@@ -6,17 +6,21 @@ const props = defineProps({
   },
   'selected':{
     required: false
+  },
+  'name':{
+    required: true
   }
 });
 
+defineEmits(['input'])
 </script>
 
 
 <template>
   <div>
-  <label :for="option.id">
-    <input type="radio" :value="props.option.label" :id="props.option.id" @change="$parent.$emit('input', $event.target.value)" :checked="props.option == props.selected? true: false"
-      name="radio-input" /> {{ props.option.label }}
+  <label :for="props.option.label">
+    <input type="radio" :value="props.option.label" :id="props.option.label" @change="$parent.$emit('input', $event.target.value)" 
+      :name="props.name" /> {{ props.option.label }}
   </label>
   <br />
 </div>
