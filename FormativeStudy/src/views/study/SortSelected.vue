@@ -2,27 +2,34 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useCategoryStore } from '../../stores/study.store';
+import { utilitiesStore } from '../../stores/utilities.store';
 
 const emit = defineEmits(['nextTask'])
 
+const utilities = utilitiesStore();
+
 const selected = useCategoryStore();
 const sel = ref(selected.allSelected);
-const endTask = ref(false)
+const endTask = ref(false);
 
-function save() {
-    console.log(sel)
-    endTask.value = true
+//to save the new order of variables and exit from the task
+function Save() {
+    console.log("Save new order and Exit");
+    endTask.value = true;
 }
 
+//emit to infomr of getting the next task/post study
 function NextTask() {
     console.log("task completed");
     emit('nextTask')
 }
 
+//to change thw style of the draggable item
 function startEvent(evt){
     console.log("start event: ", evt.item)
 	return (evt.item.style ='font-weight: bold; color: blue; font-size: 1.25em;');
 }
+//to reset the style of the draggable item
 function endEvent(evt){
     console.log("end event: ", evt)
     sel.value.forEach((element, index) => {
@@ -30,7 +37,6 @@ function endEvent(evt){
     })
     return (evt.item.style='');
 }
-
 </script>
 
 <template>
@@ -44,12 +50,12 @@ function endEvent(evt){
 
     </draggable>
     <br />
-    <button class="btn btn-outline-success" v-on:click="save()">Save and Exit</button>
+    <button class="btn btn-outline-success" @click="Save()">Save and Exit</button>
 
     </div>
     <div v-else class="mt-5">
     <h5>This task is completed. Thank you.
-        <button class="btn btn-outline-primary" v-on:click="NextTask()">Next</button>
+        <button class="btn btn-outline-primary" @click="NextTask()">Next</button>
     </h5>
     </div>
 </template>

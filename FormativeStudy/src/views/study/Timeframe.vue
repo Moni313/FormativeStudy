@@ -1,8 +1,8 @@
 <script setup>
 import Scenario from './Scenario.vue';
 import TimeframeNext from './TimeframeNext.vue';
-const props = defineProps(['tf', 'actualTask']);
-console.log("tf timeframe", props.tf)
+const props = defineProps(['tf', 'actualTask', 'totalTasks']);
+const emit = defineEmits(['timeframe'])
 const frames = [{
     'day': '1',
     'tf': [
@@ -28,7 +28,6 @@ const frames = [{
         { "id": 12, start: "18:00", stop: "23:59" }
     ]
 }]
-
 </script>
 
 <template>
@@ -36,7 +35,7 @@ const frames = [{
         <Scenario :actualTask=props.actualTask></Scenario>
     </div>
     <div class="float-end ms-3">
-        <TimeframeNext class="pt-3" :tf="tf">
+        <TimeframeNext class="pt-3" :tf="tf" :totalTasks="props.totalTasks" @timeframe="emit('timeframe')">
         </TimeframeNext>
     </div>
     <div class="float-end">
@@ -61,5 +60,4 @@ const frames = [{
             </div>
         </div>
     </div>
-    
 </template>

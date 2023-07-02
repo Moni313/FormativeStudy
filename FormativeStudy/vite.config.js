@@ -62,6 +62,13 @@ export default {
         //ws: false,
         changeOrigin: true,
         secure: false,
+      },
+      "/logger":{
+        target: "http://localhost:3001",
+        pathRewrite: { "^/logger": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
       }
     },
   },

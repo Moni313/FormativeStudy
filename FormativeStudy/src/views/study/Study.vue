@@ -1,11 +1,12 @@
 <script setup>
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref, watch, watchEffect } from 'vue';
 
 import axios from 'axios';
 import { useAsyncState } from '@vueuse/core';
 
 import { useVariableStore } from '../../stores/variable.store';
 import { useCategoryStore } from '../../stores/study.store';
+import { utilitiesStore } from '../../stores/utilities.store';
 
 import VarSearch from './VarSearch.vue';
 import TasksBar from './TasksBar.vue';
@@ -27,11 +28,11 @@ let { state, isReady } = useAsyncState(async () => {
     const data = await axios.get('/categories').then(t => t.data)
     return data
 })
-//category search
-const categories = reactive(state);
+
 //variable
 const variable = useVariableStore();
 const showGraphicsVariable = reactive(variable);
+
 //timeframe
 const tf = ref(0);
 console.log("Study frame: ", tf)
@@ -50,7 +51,7 @@ function showGraphics(e) {
     showGraphicsVariable.variable = e
 }
 
-
+const refresh = ref(false)
 function nextTask() {
     if (actualTask.value == totalTasks) {
         console.log("All the tasks have been completed")
@@ -58,33 +59,68 @@ function nextTask() {
     }
     else {
         //TODO check everything is reset to default, especially options of categories
-        options.resetAllOptions();
-        actualTask.value = actualTask.value + 1
-        console.log("Task: ", actualTask.value)
-        tf.value = 0
-        showGraphicsVariable.resetActual();
+        tf.value = 0;
         sepsisQAnswered.value = false;
+        options.resetAllOptions();
+
+        showGraphicsVariable.resetActual();
         options.showOptions = false;
+
+        actualTask.value = actualTask.value + 1
+        console.log("Task: ", actualTask.value);
+
+        refresh.value = true;
         //TODO deselect all the options!!
     }
 }
 function nextFrame() {
     tf.value = tf.value + 1
-    console.log("F - Next imeframe: ", tf.value)
 }
 
-watch(() => tf, (n, o) => {
-    console.log("Timeframe", n.value)
-}, { deep: true })
+watch(() => tf.value, (n, o) => {
+    console.log("Timeframe", n);
+    const d = new Date();
+    const ind = utilities.getNextLogId();
+    const log = {
+        "id": ind.value,
+        "timestamp": d,
+        "action": "Next timeframe",
+        "variableName": "Timeframe",
+        "value": n,
+        "order": "",
+        "participantId": "id1"
+    }
 
-watch(() => showGraphicsVariable, (n) => {
+    utilities.postData("/logger", log)
+
+})
+
+watch(() => showGraphicsVariable.variable, (n) => {
     console.log("showGraphicsVariable new ", n)
-}, { deep: true })
+})
 
-watch(() => sepsisQAnswered, (n) => {
+watch(() => sepsisQAnswered.value, (n) => {
     console.log("iSepsis: ", n)
-}, { deep: true })
+})
 
+
+function refreshComponent() {
+    ({ state, isReady } = useAsyncState(async () => {
+        const data = await axios.get('/categories').then(t => t.data)
+        return data
+    }))
+}
+
+//to reset all the option to false
+//called when refresh is true and this is set when a task is completed
+watchEffect(() => {
+    if (refresh.value) {
+        refreshComponent();
+        refresh.value = false; // Reset the trigger value
+    }
+});
+
+const utilities = utilitiesStore();
 </script>
 
 
@@ -102,7 +138,7 @@ watch(() => sepsisQAnswered, (n) => {
         <div class="col-7 h-100">
             <div class="card">
                 <div v-if="!sepsisQAnswered" class="card-header mb-4">
-                    <Timeframe :tf="tf" :actualTask=actualTask @timeframe="nextFrame">
+                    <Timeframe :tf="tf" :actualTask=actualTask :totalTasks="totalTasks" @timeframe="nextFrame">
                     </Timeframe>
                 </div>
                 <div class="card-body">
@@ -130,14 +166,13 @@ watch(() => sepsisQAnswered, (n) => {
                     <div class="mt-2 mb-2 text-center w-auto">
                         <!-- <TimeframeNext class="float-start align-items-center text-center  pt-3" @timeframe="nextFrame"
                             :tf="tf"></TimeframeNext> -->
-                        <VarSearch v-if="isReady" :categories=categories @variableSelected="showGraphics">
+                        <VarSearch v-if="isReady" :categories=state @variableSelected="showGraphics">
                         </VarSearch>
                     </div>
                 </div>
                 <div class="card-body">
                     <h5 class="text-center">Variables Selected</h5>
-                    <ListSelected v-for="c in categories" :c=c :k="c" :compareModule="false"
-                        @variableSelected="showGraphics">
+                    <ListSelected v-for="c in state" :c=c :k="c" :compareModule="false" @variableSelected="showGraphics">
                     </ListSelected>
                     <br />
 

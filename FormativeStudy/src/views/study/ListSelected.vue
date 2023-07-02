@@ -60,7 +60,7 @@ watch(() => category, (n, o) => {
 }, { deep: true })
 </script>
 <template>
-    <section>
+    <section :id="'section_'+category.c.value.label">
         <!-- <p>{{ category.c.value.label }}</p> -->
         <!-- list with only one action -->
         <div v-if="props.compareModule" v-for="option in options.state">

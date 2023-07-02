@@ -1,6 +1,5 @@
 <script setup>
 const props = defineProps(['actualTask', 'totalTasks']);
-console.log("Task in Task Bar", props.actualTask)
 </script>
 <template>
     <section>
