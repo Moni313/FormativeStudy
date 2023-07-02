@@ -15,7 +15,7 @@
             <li class="list-group-item">
                 If you are undecided, you can add more information by:
                 <ul>
-                    <li>discover the <b>"Next" Timeframe</b>,</li>
+                    <li>discover the <b>"Next" Timeframe</b>, graphics for all the selected variables will be updated to the new slot of time. You can not undo this selection.</li>
                     <li><b> select other variable(s)</b>, or </li>
                     <li><b>Compare</b> two variables</li>
                 </ul>

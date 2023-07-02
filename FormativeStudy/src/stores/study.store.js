@@ -8,11 +8,15 @@ export const useCategoryStore = defineStore("category", () => {
   const id = "selectedCategory";
   const category = ref();
   const options = ref();
-  const allSelected = ref(getAllSelected());
   const showOptions = false;
   const showCheckBoxNumber = 30;
   const orderSelection = ref();
   const count = countSelected();
+
+  //global
+  const allSelected = ref(getAllSelected());
+
+  
   function setCategory(category) {
     console.log("getting category from database: ", category);
     this.category = category;
@@ -36,6 +40,8 @@ export const useCategoryStore = defineStore("category", () => {
   }
   function closeArea() {
     this.category = null;
+    this.options = null;
+    this.countSelected = 0; //TODO comment if you want to keep a global sequence of selected for all the tasks
   }
   function setLimit(limit) {
     this.showCheckBoxNumber = limit;
@@ -58,7 +64,7 @@ export const useCategoryStore = defineStore("category", () => {
           return await axios.patch("" + actualUrl, obj);
         });
         if (response.isReady) {
-          console.log("updating all selected...")
+          console.log("updating all selected...");
           this.allSelected = getAllSelected();
           console.log("updated", updatingId, obj);
           this.options = useAsyncState(async () => {
@@ -66,12 +72,12 @@ export const useCategoryStore = defineStore("category", () => {
             console.log("get options updated");
             return data;
           });
-          
         }
       }
     });
   }
 
+  //global
   function getAllSelected() {
     //TODO hard coded but with API should be easier to get all the variables selected
     let selected = [];
@@ -90,7 +96,7 @@ export const useCategoryStore = defineStore("category", () => {
       return data;
     });
 
-    console.log("1", opts)
+    console.log("1", opts);
 
     opts = useAsyncState(async () => {
       const data = await axios
@@ -106,7 +112,7 @@ export const useCategoryStore = defineStore("category", () => {
         });
       return data;
     });
-    console.log("2", opts)
+    console.log("2", opts);
     opts = useAsyncState(async () => {
       const data = await axios
         .get("/optionsLabsCategory")
@@ -121,10 +127,57 @@ export const useCategoryStore = defineStore("category", () => {
         });
       return data;
     });
-    console.log("3", opts)
-    console.log("selected from study.store", selected)
+    console.log("3", opts);
+    console.log("selected from study.store", selected);
     return selected;
   }
+
+  //Global
+  function resetAllOptions() {
+    let opts = useAsyncState(async () => {
+      const data = await axios
+        .get("/optionsVitalsCategory")
+        .then((t) => t.data);
+
+      data.forEach(async (element) => {
+        if (element.checked) {
+          element.checked = false;
+          const actualUrl = "/optionsVitalsCategory/" + element.id;
+          await axios.patch(actualUrl, element);
+          console.log("resetting element to false: ", element);
+        }
+      });
+
+      return data;
+    });
+    opts = useAsyncState(async () => {
+      const data = await axios
+        .get("/optionsMedicationsCategory")
+        .then((t) => t.data);
+      data.forEach(async (element) => {
+        if (element.checked) {
+          element.checked = false;
+          const actualUrl = "/optionsMedicationsCategory/" + element.id;
+          await axios.patch(actualUrl, element);
+          console.log("resetting element to false: ", element);
+        }
+      });
+      return data;
+    });
+    opts = useAsyncState(async () => {
+      const data = await axios.get("/optionsLabsCategory").then((t) => t.data);
+      data.forEach(async (element) => {
+        if (element.checked) {
+          element.checked = false;
+          const actualUrl = "/optionsLabsCategory/" + element.id;
+          await axios.patch(actualUrl, element);
+          console.log("resetting element to false: ", element);
+        }
+      });
+      return data;
+    });
+  }
+
   return {
     id,
     category,
@@ -132,13 +185,13 @@ export const useCategoryStore = defineStore("category", () => {
     showOptions,
     orderSelection,
     showCheckBoxNumber,
+    allSelected,
     getOptions,
     updateOption,
     setCategory,
     closeArea,
     setLimit,
-    allSelected
+    getAllSelected,
+    resetAllOptions
   };
 });
-
-

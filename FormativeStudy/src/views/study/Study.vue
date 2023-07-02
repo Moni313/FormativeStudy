@@ -5,17 +5,16 @@ import axios from 'axios';
 import { useAsyncState } from '@vueuse/core';
 
 import { useVariableStore } from '../../stores/variable.store';
+import { useCategoryStore } from '../../stores/study.store';
 
 import VarSearch from './VarSearch.vue';
 import TasksBar from './TasksBar.vue';
 import Timeframe from './Timeframe.vue';
-import TimeframeNext from './TimeframeNext.vue';
 import SepsisQuest from './SepsisQuest.vue';
 import ListSelected from './ListSelected.vue';
 import InstructionInsideStudy from '../static/InstructionInsideStudy.vue';
 import VisArea from './VisArea.vue';
 import VariableSelection from './VariableSelection.vue';
-import Scenario from './Scenario.vue';
 import SortSelected from './SortSelected.vue';
 
 
@@ -24,7 +23,7 @@ const actualTask = ref(1);
 const totalTasks = 12;
 
 //initialise the categories [vitals, labs, medications]
-const { state, isReady } = useAsyncState(async () => {
+let { state, isReady } = useAsyncState(async () => {
     const data = await axios.get('/categories').then(t => t.data)
     return data
 })
@@ -38,7 +37,7 @@ const tf = ref(0);
 console.log("Study frame: ", tf)
 //SepsisQuestion
 const sepsisQAnswered = ref(false)
-
+const options = useCategoryStore();
 
 function closeArea(e) {
     console.log("what button?", e)
@@ -46,21 +45,26 @@ function closeArea(e) {
 
 function showGraphics(e) {
     console.log("showGraphics", e)
+    if (e.id != null && tf.value == 0) tf.value = 1;
     sepsisQAnswered.value = false
     showGraphicsVariable.variable = e
 }
 
+
 function nextTask() {
     if (actualTask.value == totalTasks) {
         console.log("All the tasks have been completed")
+        //TODO here need to go to post quests
     }
     else {
         //TODO check everything is reset to default, especially options of categories
+        options.resetAllOptions();
         actualTask.value = actualTask.value + 1
         console.log("Task: ", actualTask.value)
         tf.value = 0
         showGraphicsVariable.resetActual();
         sepsisQAnswered.value = false;
+        options.showOptions = false;
         //TODO deselect all the options!!
     }
 }

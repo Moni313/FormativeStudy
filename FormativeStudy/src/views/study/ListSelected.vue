@@ -16,7 +16,6 @@ const opt = reactive(useAsyncState(async () => {
 }))
 let options = reactive(opt);
 
-
 const varsStore = useVariableStore();
 
 function remove(id) {
@@ -56,10 +55,9 @@ emitter.on('updateCategory', (update) => {
     }
 })
 
-watch(() => options.state, (n, o) => {
-    console.log("n", n)
+watch(() => category, (n, o) => {
+    console.log("category", n)
 }, { deep: true })
-
 </script>
 <template>
     <section>

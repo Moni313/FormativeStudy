@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import axios from "axios";
-import { useAsyncState } from "@vueuse/core";
 
 export const useVariableStore = defineStore("variable", () => {
   const id = "selectedVariable";
@@ -59,10 +57,10 @@ export const useVariableStore = defineStore("variable", () => {
   return {
     id,
     variable,
+    compareWith,
     setVariable,
     setCompareVar,
     resetActual,
-    compareWith,
     resetCompare
   };
 });

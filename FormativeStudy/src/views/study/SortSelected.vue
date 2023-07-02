@@ -11,10 +11,6 @@ const endTask = ref(false)
 
 function save() {
     console.log(sel)
-    sel.value.forEach((element, index) => {
-        element.orderChecked = index + 1
-    })
-
     endTask.value = true
 }
 
@@ -29,7 +25,9 @@ function startEvent(evt){
 }
 function endEvent(evt){
     console.log("end event: ", evt)
-    save();
+    sel.value.forEach((element, index) => {
+        element.orderChecked = index + 1
+    })
     return (evt.item.style='');
 }
 
@@ -45,8 +43,8 @@ function endEvent(evt){
         </template>
 
     </draggable>
-    <!-- <br />
-    <button class="btn btn-outline-success" v-on:click="save()">Save order</button> -->
+    <br />
+    <button class="btn btn-outline-success" v-on:click="save()">Save and Exit</button>
 
     </div>
     <div v-else class="mt-5">

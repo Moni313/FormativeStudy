@@ -5,7 +5,8 @@ import { useAsyncState } from '@vueuse/core';
 
 const props = defineProps(['actualTask']);
 const scenario = toRefs(props, 'actualTask');
-console.log("scenario as a prop", scenario)
+//TODO add to log
+//console.log("scenario as a prop", scenario)
 
 const { state, isReady }= useAsyncState(async () => {
     const url = "/tasks/" + scenario.actualTask.value;
