@@ -14,9 +14,10 @@ const { user } = storeToRefs(authStore);
 const agree = 'Agree';
 const close = 'Close';
 
-function prestudypage(e) {
+async function prestudypage(e) {
     const d = new Date();
-    const ind = utilities.getNextLogId();
+    const ind = await utilities.getNextLogId("/logger");
+    console.log("ind for logger:", ind);
     if (e == agree) {
         const log = {
             "id": ind.value,
@@ -25,9 +26,9 @@ function prestudypage(e) {
             "variableName": "",
             "value": "",
             "order": "",
-            "participantId": "id1"
+            "participantId": user.value.id
         }
-
+        console.log(log)
         utilities.postData("/logger", log)
         router.push('/prestudy');
     }
@@ -40,8 +41,9 @@ function prestudypage(e) {
             "variableName": "",
             "value": "",
             "order": "",
-            "participantId": "id1"
+            "participantId": user.value.id
         }
+        console.log(log)
         utilities.postData("/logger", log)
         authStore.logout();
     }

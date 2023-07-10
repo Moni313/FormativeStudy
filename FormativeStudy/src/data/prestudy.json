@@ -653,8 +653,8 @@
             "help": "",
             "type": "text",
             "question_group": "Experience",
-            "expand": true,
-            "expand_to": 1,
+            "expand": false,
+            "expand_to": null,
             "answer": null,
             "options": null
         }

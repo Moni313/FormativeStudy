@@ -3,41 +3,59 @@ import { preStudyUseStore } from '../../stores/prestudy.store';
 import { router } from '../../router';
 import RadioButtonGroup from "../../components/RadioButtonGroup.vue";
 import TextBox from '../../components/TextBox.vue';
-import SelectBox from '../../components/SelectBox.vue';
 import DatalistBox from '../../components/DatalistBox.vue';
-import NumberBox from '../../components/NumberBox.vue';
 import SubmitButtons from '../../components/SubmitButtons.vue';
 
-
-
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '../../stores';
+import { utilitiesStore } from '../../stores/utilities.store';
+const utilities = utilitiesStore();
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
 
 const preStudyData = preStudyUseStore();
 const labelOk = 'OK';
 const labelReset = "Reset";
-const labelNo = "Logout"
+const labelNo = "Logout";
 
 
-function createObjQuestionAnswer() {
+async function createObjQuestionAnswer() {
     let qa = [];
-    preStudyData.prestudydata.questions.forEach(e => {
+    preStudyData.prestudydata.questions.forEach((e) => {
+        qa.push({ 'question': e.label, 'answer': e.answer, 'expand': e.expand});
         if (e.expand) {
-            let se = preStudyData.prestudydata.subquestions.find(sbe => sbe.id == e.expand_to)
-            qa.push({ 'question': e.label, 'answer': e.answer, 'expand': se.answer })
-        }
-        else {
-            qa.push({ 'question': e.label, 'answer': e.answer, 'expand': null })
+            const se = preStudyData.prestudydata.subquestions.find(sbe => sbe.id == e.expand_to);
+            console.log("expanded question: ", se);
+            qa.push({ 'question': se.label, 'answer': se.answer, 'expand': se.expand})
         }
     })
+    const d = new Date();
+    const ind = utilities.getNextLogId('/prestudyQuestions');
+    const answers = { 'id': ind.value, 'participantId': user.value.id, 'prestudy': qa, 'timeframe': d  }
+    await utilities.postData('/prestudyQuestions', answers);
+    console.log(qa, "is created")
     return qa;
 }
 
-function action(e) {
+async function action(e) {
     if (e == labelOk) {
+        router.push('/study');
         //store info
         let obj = createObjQuestionAnswer()
-
-        //redirect to study params: [ 'actualTask', 'totalTasks',  'actualTFDay', 'actualTFBin', 'startinInstruction']
-        router.push('/study');
+        console.log("prestudy question-ansewrs: ", obj);
+        const ind = utilities.getNextLogId('/logger');
+        const d = new Date();
+        const log = {
+            "id": ind.value,
+            "timestamp": d,
+            "action": "Storing prestudy",
+            "variableName": "",
+            "value": "",
+            "order": "",
+            "participantId": user.value.id
+        }
+        const status = await utilities.postData('/logger', log);
+        console.log("Prestudy logger status: ", status);
     }
     else if (e == labelReset) {
         preStudyData.prestudydata.questions.forEach(element => {
@@ -46,8 +64,6 @@ function action(e) {
         preStudyData.prestudydata.subquestions.forEach(element => {
             element.answer = null;
         })
-        let obj = createObjQuestionAnswer();
-
     }
 }
 function updateSubanswer(q, s) { //update q questiond with subquestion asnwer
@@ -57,7 +73,6 @@ function updateSubanswer(q, s) { //update q questiond with subquestion asnwer
     subq.answer = s;
 }
 function setVariables(question, answer, subquestion) {
-
     let q = preStudyData.prestudydata.questions.find(element => element.label == question)
     if (answer != null && q.answer != answer) {
         q.answer = answer;
@@ -100,9 +115,9 @@ function setVariables(question, answer, subquestion) {
                                 :id="'text_' + question.id" @input="e => (setVariables(question.label, e, null))"
                                 class="mb-2 pe-5" :selected="question.answer" />
 
-                            <SelectBox v-else-if="question.type == 'select'" v-model="question.answer"
+                            <!-- <SelectBox v-else-if="question.type == 'select'" v-model="question.answer"
                                 :key="'select_' + question.id" :id="'select_' + question.id" :options="question.options"
-                                @input="e => question.answer = e" class="mb-2 pe-5" :selected="question.answer" />
+                                @input="e => question.answer = e" class="mb-2 pe-5" :selected="question.answer" /> -->
 
                             <DatalistBox v-else-if="question.type == 'datalist'" v-model="question.answer"
                                 :key="'datalist_' + question.id" :id="'datalist_' + question.id" :options="question.options"
@@ -111,11 +126,11 @@ function setVariables(question, answer, subquestion) {
 
                             <RadioButtonGroup v-else-if="question.type == 'radioButton'" v-model="question.answer"
                                 :options="question" @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5"
-                                :selected="question.answer" :name="'qustion_' + question.id"/>
+                                :selected="question.answer" :name="'qustion_' + question.id" />
 
-                            <NumberBox v-else-if="question.type == 'number'" min="0" v-model="question.answer"
+                            <!-- <NumberBox v-else-if="question.type == 'number'" min="0" v-model="question.answer"
                                 @input="e => (setVariables(question.label, e, null))" class="mb-2 pe-5"
-                                :selected="question.answer" />
+                                :selected="question.answer" /> -->
 
                             <div v-if="question.expand && question.answer == 'yes'">
                                 <!-- Expand question [TODO] make this component with props and pass preStudy as a prop -->
@@ -157,22 +172,6 @@ function setVariables(question, answer, subquestion) {
                         </div>
                     </div>
                 </div>
-                <!-- <div class="card-body">
-                    <div class="ps-3 pe-5" v-for="a in preStudyData.prestudydata.questions">
-                        <span class=""
-                            :class="(a.id % 2 == 0) ? 'bg-light col-7 float-end border-bottom' : 'col-7 float-end border-bottom'">{{
-                                a.label }}</span>
-                    <div class="float-start col-5 border-bottom">
-                        <span v-if="a.answer != null"><b :class="(a.id % 2 == 0) ? 'bg.light pe-5' : 'pe-5'">{{ a.answer
-                        }}</b></span>
-                        <span v-else><b :class="(a.id % 2 == 0) ? 'bg.light pe-5' : 'pe-5'"> -- </b></span>
-                        <span v-if="a.expand && preStudyData.prestudydata.questions[a.expand_to] != null && preStudyData.prestudydata.questions[a.expand_to] != ''"><br /><b
-                                :class="(a.id % 2 == 0) ? 'bg.light pe-5' : 'pe-5'">{{
-                                    preStudyData.prestudydata.subquestions.find(e => e.id =
-                                        a.expand_to).answer }}</b><br /></span>
-                    </div>
-                    </div>
-                </div> -->
                 <div class="m-2 ps-1">
                     <SubmitButtons :labelOk=labelOk :labelReset=labelReset :labelNo=labelNo @selected="action"
                         class="d-flex flex-column justify-content-center align-items-center ps-1 pe-1" />

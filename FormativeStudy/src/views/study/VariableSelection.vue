@@ -1,6 +1,5 @@
 <script setup>
-import { ref, watch, reactive, inject, computed } from 'vue';
-import SubmitButtons from '../../components/SubmitButtons.vue';
+import { ref, watch, reactive, inject } from 'vue';
 import { useAsyncState } from "@vueuse/core";
 import axios from "axios";
 import { useCategoryStore } from '../../stores/study.store'
@@ -9,10 +8,8 @@ const cat = useCategoryStore();
 const category = reactive(cat);
 
 const emitter = inject('emitter');
-const emit = defineEmits(['closeArea', 'updateCategory']);
-//buttons variables *
-const labelNo = 'Close';
-const labelOk = 'View Selected';
+const emit = defineEmits(['updateCategory']);
+
 
 let datalistSelectionModel = ref()
 
@@ -30,11 +27,8 @@ function emitSelection(e, from) {
     category.updateOption(actualId, category.category.options);
     emitter.emit('updateCategory', true);
 
-    //TODO filter and datalistSelectionModel can be the same
     datalistSelectionModel = "";
 }
-
-
 
 emitter.on('updateCategoryfromSelected', (update) => {
     if (update) {
@@ -42,7 +36,7 @@ emitter.on('updateCategoryfromSelected', (update) => {
         const url = "/" + category.category.options;
         const opt = useAsyncState(async () => {
             console.log("url", url)
-            return await axios.get("" + url).then((t) => t.data);
+            return await axios.get("" + url).then((t) => t.data)
         })
         if (opt.isReady) {
             console.log(" category.options.state", category.options.state)
@@ -51,20 +45,6 @@ emitter.on('updateCategoryfromSelected', (update) => {
         }
     }
 })
-
-function userButtonAction(action) {
-    
-    
-    // => buttons variables defined above*
-    // just for dev, delete these rows
-    if (action == labelNo) {
-        console.log("Close: selection area is closed");
-    }
-    else if (action == labelOk) {
-        console.log("Show firt variable selected")
-    }
-}
-
 
 watch(() => category.options, (n) => {
     console.log("watching category, value changed:", n)
@@ -105,12 +85,6 @@ watch(() => category.options, (n) => {
 
                 </label>
             </div>
-
         </div>
-        <br />
-        <SubmitButtons class="btn-group m-2" :labelNo=labelNo :labelOk=labelOk @selected="userButtonAction">
-        </SubmitButtons>
-
-
     </div>
 </template>

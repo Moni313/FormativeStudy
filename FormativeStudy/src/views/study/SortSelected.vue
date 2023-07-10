@@ -9,7 +9,9 @@ const emit = defineEmits(['nextTask'])
 const utilities = utilitiesStore();
 
 const selected = useCategoryStore();
+console.log("Sorting all selected: ", selected.allSelected);
 const sel = ref(selected.allSelected);
+selected.getAllSelected();
 const endTask = ref(false);
 
 //to save the new order of variables and exit from the task

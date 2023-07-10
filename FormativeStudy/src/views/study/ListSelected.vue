@@ -11,7 +11,7 @@ const category = toRefs(props, 'c');
 
 const url = "/" + category.c.value.options;
 const opt = reactive(useAsyncState(async () => {
-    const data = axios.get("" + url).then((t) => t.data);
+    const data = axios.get("" + url).then((t) => t.data)
     return data
 }))
 let options = reactive(opt);
@@ -28,7 +28,7 @@ function remove(id) {
             });
             if (response.isReady) {
                 const opt = useAsyncState(async () => {
-                    const data = axios.get("" + url).then((t) => t.data);
+                    const data = axios.get("" + url).then((t) => t.data)
                     return data
                 })
                 options.state = opt.state;
@@ -48,7 +48,7 @@ const emitter = inject('emitter');
 emitter.on('updateCategory', (update) => {
     if (update) {
         const opt = useAsyncState(async () => {
-            const data = await axios.get("" + url).then((t) => t.data);
+            const data = await axios.get("" + url).then((t) => t.data)
             return data
         })
         options.state = opt.state
@@ -89,7 +89,7 @@ watch(() => category, (n, o) => {
 <!-- 
     options from database look like:
 
-    http://localhost:3001/optionsLabsCategory
+    http://127.0.0.1:3001/optionsLabsCategory
 
     [
 {

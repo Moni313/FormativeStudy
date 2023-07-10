@@ -7,6 +7,7 @@ import { useAsyncState } from '@vueuse/core';
 import { useVariableStore } from '../../stores/variable.store';
 import { useCategoryStore } from '../../stores/study.store';
 import { utilitiesStore } from '../../stores/utilities.store';
+import { sepsisQuestStore } from "../../stores/sepsisquest.store";
 
 import VarSearch from './VarSearch.vue';
 import TasksBar from './TasksBar.vue';
@@ -25,7 +26,7 @@ const totalTasks = 12;
 
 //initialise the categories [vitals, labs, medications]
 let { state, isReady } = useAsyncState(async () => {
-    const data = await axios.get('/categories').then(t => t.data)
+    const data = await axios.get('/categories').then(t => t.data);
     return data
 })
 
@@ -37,7 +38,8 @@ const showGraphicsVariable = reactive(variable);
 const tf = ref(0);
 console.log("Study frame: ", tf)
 //SepsisQuestion
-const sepsisQAnswered = ref(false)
+const sepsisQAnswered = ref(false);
+const sepsisQuest = sepsisQuestStore();
 const options = useCategoryStore();
 
 function closeArea(e) {
@@ -61,6 +63,7 @@ function nextTask() {
         //TODO check everything is reset to default, especially options of categories
         tf.value = 0;
         sepsisQAnswered.value = false;
+        sepsisQuest.sepsisquest.answer = null;
         options.resetAllOptions();
 
         showGraphicsVariable.resetActual();
@@ -77,10 +80,10 @@ function nextFrame() {
     tf.value = tf.value + 1
 }
 
-watch(() => tf.value, (n, o) => {
-    console.log("Timeframe", n);
+function logTimeframe(n){
     const d = new Date();
-    const ind = utilities.getNextLogId();
+    const ind = utilities.getNextLogId('/logger');
+    console.log("logTimeFrame new index: ", ind.value);
     const log = {
         "id": ind.value,
         "timestamp": d,
@@ -88,11 +91,15 @@ watch(() => tf.value, (n, o) => {
         "variableName": "Timeframe",
         "value": n,
         "order": "",
-        "participantId": "id1"
+        "participantId": user.id
     }
+    return log()
+}
 
-    utilities.postData("/logger", log)
-
+watch(() => tf.value, async (n) => {
+    console.log("Timeframe", n);
+    const log = logTimeframe(n);
+    await utilities.postData("/logger", log)
 })
 
 watch(() => showGraphicsVariable.variable, (n) => {
@@ -100,18 +107,18 @@ watch(() => showGraphicsVariable.variable, (n) => {
 })
 
 watch(() => sepsisQAnswered.value, (n) => {
-    console.log("iSepsis: ", n)
+    console.log("isSepsis: ", n)
 })
 
 
 function refreshComponent() {
     ({ state, isReady } = useAsyncState(async () => {
-        const data = await axios.get('/categories').then(t => t.data)
+        const data = await axios.get('/categories').then(t => t.data);
         return data
     }))
 }
 
-//to reset all the option to false
+//to reset all the options to false
 //called when refresh is true and this is set when a task is completed
 watchEffect(() => {
     if (refresh.value) {
