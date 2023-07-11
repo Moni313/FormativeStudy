@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import { useAsyncState } from "@vueuse/core";
 import { countSelected } from "./countSelected.store";
@@ -13,18 +13,25 @@ export const useCategoryStore = defineStore("category", () => {
   const orderSelection = ref();
   const count = countSelected();
 
+  const arrayApi = [
+    "/optionsVitalsCategory",
+    "/optionsMedicationsCategory",
+    "/optionsLabsCategory",
+  ];
+
   //global
   const allSelected = ref(getAllSelected());
   // const selected = reactive([]);
 
   function setCategory(category) {
-    console.log("getting category from database: ", category);
+    //console.log("getting category from database: ", category);
     this.category = category;
     this.showOptions = true;
     this.options = useAsyncState(async () => {
       let url = "/" + category.options;
+      console.log("AXIOS in study store setCategory");
       const data = await axios.get("" + url).then((t) => t.data);
-      console.log("Category in VariableSelection: ", data);
+      //console.log("Category in VariableSelection: ", data);
       return data;
     });
     this.showCategory = true;
@@ -32,8 +39,9 @@ export const useCategoryStore = defineStore("category", () => {
   function getOptions(category) {
     this.options = useAsyncState(async () => {
       let url = "/" + category.options;
+      console.log("AXIOS in study store getOptions");
       const data = await axios.get("" + url).then((t) => t.data);
-      console.log("Category getOptions: ", data);
+      //console.log("Category getOptions: ", data);
       return data;
     });
     return this.options;
@@ -47,27 +55,13 @@ export const useCategoryStore = defineStore("category", () => {
     this.showCheckBoxNumber = limit;
   }
 
-  //selected contains all the option selected, calling this function can add or remove the passed obj from the array
-  // function selectedUpdate(obj) {
-  //   const p = this.selected.filter((o) => {
-  //     return o.id == obj.id;
-  //   });
-  //   console.log(p, "selected list")
-  //   if (p.lenght == 0) {
-  //     this.selected.push(obj);
-  //   } else
-  //     this.selected = this.selected.filter((o) => {
-  //       o.id != obj.id;
-  //     });
 
-  //   console.log("selectedUpdate: ", this.selected);
-  // }
 
   function updateOption(updatingId, url) {
     this.options.state.filter((obj) => {
       if (obj.id == updatingId) {
         // this.selectedUpdate(obj);
-        console.log("obj in store", updatingId, obj);
+        //console.log("obj in store", updatingId, obj);
         const response = useAsyncState(async () => {
           const actualUrl = "/" + url + "/" + obj.id;
           count.add(); //this should keep the order going on
@@ -84,10 +78,11 @@ export const useCategoryStore = defineStore("category", () => {
         if (response.isReady) {
           console.log("updating all selected...");
           this.allSelected = getAllSelected();
-          console.log("updated", updatingId, obj);
+          //console.log("updated", updatingId, obj);
           this.options = useAsyncState(async () => {
+            console.log("AXIOS in study store updateOptions");
             const data = axios.get("" + url).then((t) => t.data);
-            console.log("get options updated");
+            //console.log("get options updated");
             return data;
           });
         }
@@ -99,101 +94,54 @@ export const useCategoryStore = defineStore("category", () => {
   function getAllSelected() {
     //TODO hard coded but with API should be easier to get all the variables selected
     let selected = [];
-    let opts = useAsyncState(async () => {
-      const data = await axios
-        .get("/optionsVitalsCategory")
-        .then((t) => t.data)
-        .then((t) => {
-          t.forEach((element) => {
-            if (element.checked) {
-              selected.push(element);
-              console.log("Adding element: ", element);
-            }
+    arrayApi.forEach((api) => {
+      console.log("AXIOS in study store get all selected for ", api);
+      const opts = useAsyncState(async () => {
+        const data = await axios
+          .get(api)
+          .then((t) => t.data)
+          .then((t) => {
+            t.forEach((element) => {
+              if (element.checked) {
+                selected.push(element);
+                console.log("Adding element vitals: ", element);
+              }
+            });
           });
-        });
-      return data;
+        return data;
+      });
+      console.log("--- ", api, opts);
     });
-
-    console.log("1", opts);
-
-    opts = useAsyncState(async () => {
-      const data = await axios
-        .get("/optionsMedicationsCategory")
-        .then((t) => t.data)
-        .then((t) => {
-          t.forEach((element) => {
-            if (element.checked) {
-              selected.push(element);
-              console.log("Adding element: ", element);
-            }
-          });
-        });
-      return data;
-    });
-    console.log("2", opts);
-    opts = useAsyncState(async () => {
-      const data = await axios
-        .get("/optionsLabsCategory")
-        .then((t) => t.data)
-        .then((t) => {
-          t.forEach((element) => {
-            if (element.checked) {
-              selected.push(element);
-              console.log("Adding element: ", element);
-            }
-          });
-        });
-      return data;
-    });
-    console.log("3", opts);
     console.log("selected from study.store", selected);
     return selected;
   }
 
   //Global
   function resetAllOptions() {
-    let opts = useAsyncState(async () => {
-      const data = await axios
-        .get("/optionsVitalsCategory")
-        .then((t) => t.data);
-
-      data.forEach(async (element) => {
-        if (element.checked) {
-          element.checked = false;
-          const actualUrl = "/optionsVitalsCategory/" + element.id;
-          await axios.patch(actualUrl, element);
-          console.log("resetting element to false: ", element);
-        }
+    console.log("rewset all options is called");
+    arrayApi.forEach((api) => {
+      const opts = useAsyncState( async () => {
+        const data = await axios
+          .get(api)
+          .then((t) => t.data)
+          .then((data) => {
+            data.forEach(async (element) => {
+              if (element.checked) {
+                element.checked = false;
+                const actualUrl = api + "/" + element.id;
+                console.log("AXIOS in study store PATCH", actualUrl);
+                await axios.patch("" + actualUrl, element).catch((error) => {
+                  console.error(error.toJSON());
+                });
+              }
+            });
+          }).catch(error => {console.error(error.toJSON())});
+        return data;
       });
-
-      return data;
+      console.log(opts);
     });
-    opts = useAsyncState(async () => {
-      const data = await axios
-        .get("/optionsMedicationsCategory")
-        .then((t) => t.data);
-      data.forEach(async (element) => {
-        if (element.checked) {
-          element.checked = false;
-          const actualUrl = "/optionsMedicationsCategory/" + element.id;
-          await axios.patch(actualUrl, element);
-          console.log("resetting element to false: ", element);
-        }
-      });
-      return data;
-    });
-    opts = useAsyncState(async () => {
-      const data = await axios.get("/optionsLabsCategory").then((t) => t.data);
-      data.forEach(async (element) => {
-        if (element.checked) {
-          element.checked = false;
-          const actualUrl = "/optionsLabsCategory/" + element.id;
-          await axios.patch(actualUrl, element);
-          console.log("resetting element to false: ", element);
-        }
-      });
-      return data;
-    });
+    this.allSelected = [];
+    console.log("are all option reset to false? ", this.allSelected);
   }
 
   return {

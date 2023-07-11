@@ -56,13 +56,6 @@ export default {
         changeOrigin: true,
         secure: false,
       },
-      "/tasks":{
-        target: "http://127.0.0.1:3001",
-        pathRewrite: { "^/tasks": "" },
-        //ws: false,
-        changeOrigin: true,
-        secure: false,
-      },
       "/logger":{
         target: "http://127.0.0.1:3001",
         pathRewrite: { "^/logger": "" },
@@ -94,6 +87,13 @@ export default {
       "/posttaskQuestions":{
         target: "http://127.0.0.1:3001",
         pathRewrite: { "^/posttaskQuestions": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
+      },
+      "/scenarios":{
+        target: "http://127.0.0.1:3001",
+        pathRewrite: { "^/scenarios": "" },
         //ws: false,
         changeOrigin: true,
         secure: false,

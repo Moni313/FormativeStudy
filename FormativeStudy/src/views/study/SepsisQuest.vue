@@ -45,23 +45,23 @@ const severeQuest = severeQuestStore();
 //     ]
 // }
 function setAnswerSepsis(e) {
-    console.log("setAnswerSepsis", e);
+    console.log("Sepsi Quest -> setAnswerSepsis", e);
     if (e == 'Yes' || e == 'No') sepsisQuest.sepsisquest.answer = e;
     else sepsisQuest.sepsisquest.answer = '';
     severeQuest.severequest.answer = '';
 }
 function setAnswerSeverity(e) {
-    console.log("setAnswerSeverity", sepsisQuest.sepsisquest.answer, e);
+    console.log("Sepsi Quest -> setAnswerSeverity", sepsisQuest.sepsisquest.answer, e);
     severeQuest.severequest.answer = e
 }
 
 function action(e) {
-    console.log("SepsisQuestion action: ", e)
+    console.log("Sepsi Quest -> SepsisQuestion action: ", e)
     if(e == labelOk) emit('sepsisQuestion', true)
 }
 
 const disableButton = computed(() => {
-    console.log("checking status of answers", sepsisQuest.sepsisquest.answer)
+    console.log("Sepsi Quest -> checking status of answers", sepsisQuest.sepsisquest.answer)
     if(sepsisQuest.sepsisquest.answer == 'No' || (severeQuest.severequest.answer != '' && severeQuest.severequest.answer != null)) return false
     else return true
 })

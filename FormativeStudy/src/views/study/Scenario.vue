@@ -8,13 +8,14 @@ const scenario = toRefs(props, 'actualTask');
 //TODO add to log
 //console.log("scenario as a prop", scenario)
 
-const { state, isReady }= useAsyncState(async () => {
-    const url = "/tasks/" + scenario.actualTask.value;
-    console.log("Getting scenario for tasks", url)
-    const data = await axios.get("" + url).then(t => t.data)
+const { state, isReady }= useAsyncState( () => {
+    const url = "/scenarios/" + scenario.actualTask.value;
+    console.log("AXIOS Getting scenario for tasks", url)
+    const data = axios.get(url).then(t => t.data);
     console.log("retrieved scenario: ", data)
     return data
 })
+console.log("Scenario state", state)
 
 </script>
 <template>

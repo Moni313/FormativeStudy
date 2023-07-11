@@ -20,13 +20,13 @@ export const useVariableStore = defineStore("variable", () => {
     category: null,
   });
   function setVariable(variable) {
-    console.log("actual variable shown in the graphic area: ", variable);
+    console.log("variable.store.js -> actual variable shown in the graphic area: ", variable);
     this.variable = variable;
     //here API to retrieve variable of the patient
   }
   function setCompareVar(variable) {
     console.log(
-      "compare variable ",
+      "variable.store.js -> compare variable ",
       this.variable.label,
       "with ",
       variable.label

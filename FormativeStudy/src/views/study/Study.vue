@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref, watch, watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import axios from 'axios';
 import { useAsyncState } from '@vueuse/core';
@@ -8,6 +9,7 @@ import { useVariableStore } from '../../stores/variable.store';
 import { useCategoryStore } from '../../stores/study.store';
 import { utilitiesStore } from '../../stores/utilities.store';
 import { sepsisQuestStore } from "../../stores/sepsisquest.store";
+import { useAuthStore } from '../../stores';
 
 import VarSearch from './VarSearch.vue';
 import TasksBar from './TasksBar.vue';
@@ -18,7 +20,6 @@ import InstructionInsideStudy from '../static/InstructionInsideStudy.vue';
 import VisArea from './VisArea.vue';
 import VariableSelection from './VariableSelection.vue';
 import SortSelected from './SortSelected.vue';
-import AllSelected from './AllSelected.vue';
 
 
 //variables for tasks
@@ -27,6 +28,7 @@ const totalTasks = 12;
 
 //initialise the categories [vitals, labs, medications]
 const { state, isReady } = useAsyncState(async () => {
+    console.log("AXIOS in study get categories");
     const data = await axios.get('/categories').then(t => t.data);
     return data
 })
@@ -38,18 +40,20 @@ const showGraphicsVariable = reactive(variable);
 
 //timeframe
 const tf = ref(0);
-console.log("Study frame: ", tf)
+//console.log("Study frame: ", tf)
 //SepsisQuestion
 const sepsisQAnswered = ref(false);
 const sepsisQuest = sepsisQuestStore();
 const options = useCategoryStore();
+options.resetAllOptions();
 
+//TODO this actually does nothing
 function closeArea(e) {
     console.log("what button?", e)
 }
 
 function showGraphics(e) {
-    console.log("showGraphics", e)
+    console.log("Study -> showGraphics", e)
     if (e.id != null && tf.value == 0) tf.value = 1;
     sepsisQAnswered.value = false
     showGraphicsVariable.variable = e
@@ -58,7 +62,7 @@ function showGraphics(e) {
 const refresh = ref(false)
 function nextTask() {
     if (actualTask.value == totalTasks) {
-        console.log("All the tasks have been completed")
+        console.log("Study -> All the tasks have been completed")
         //TODO here need to go to post quests
     }
     else {
@@ -67,35 +71,38 @@ function nextTask() {
         sepsisQAnswered.value = false;
         sepsisQuest.sepsisquest.answer = null;
         options.resetAllOptions();
-        // options.selected = [];
-        showGraphicsVariable.resetActual();
-        options.showOptions = false;
-
-        actualTask.value = actualTask.value + 1
-        console.log("Task: ", actualTask.value);
-
-        refresh.value = true;
         //TODO deselect all the options!!
+        showGraphicsVariable.resetActual();
+        showGraphicsVariable.resetCompare();
+        options.showOptions = false;
+        actualTask.value = actualTask.value + 1
+        console.log("Study -> New Task: ", actualTask.value);
+        //need this to refres the categories
+        //refresh.value = true;
     }
 }
 function nextFrame() {
     tf.value = tf.value + 1
 }
 
-function logTimeframe(n){
+const utilities = utilitiesStore();
+const authStore = useAuthStore();
+const { user } = storeToRefs(authStore);
+async function logTimeframe(n){
     const d = new Date();
-    const ind = utilities.getNextLogId('/logger');
+    const ind = await utilities.getNextLogId('/logger');
     console.log("logTimeFrame new index: ", ind.value);
     const log = {
         "id": ind.value,
+        "taskId" : actualTask.value,
         "timestamp": d,
         "action": "Next timeframe",
         "variableName": "Timeframe",
         "value": n,
         "order": "",
-        "participantId": user.id
+        "participantId": user.value.id
     }
-    return log()
+    return log
 }
 
 watch(() => tf.value, async (n) => {
@@ -113,24 +120,25 @@ watch(() => sepsisQAnswered.value, (n) => {
 })
 
 
-function refreshComponent() {
-    ({ state, isReady } = useAsyncState(async () => {
-        const data = await axios.get('/categories').then(t => t.data);
-        return data
-    }))
-    console.log("from watchEffect: ", state)
-}
+// function refreshComponent() {
+//     ({ state, isReady } = useAsyncState(async () => {
+//         console.log("AXIOS in study get categories in refresh componnet");
+//         const data = await axios.get('/categories').then(t => t.data);
+//         return data
+//     }))
+//     console.log("from watchEffect: state is refreshed", state)
+// }
 
 //to reset all the options to false
 //called when refresh is true and this is set when a task is completed
-watchEffect(() => {
-    if (refresh.value) {
-        refreshComponent();
-        refresh.value = false; // Reset the trigger value
-    }
-});
+// watchEffect(() => {
+//     if (refresh.value) {
+//         refreshComponent();
+//         refresh.value = false; // Reset the trigger value
+//     }
+// });
 
-const utilities = utilitiesStore();
+
 </script>
 
 

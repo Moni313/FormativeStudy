@@ -17,34 +17,26 @@ const close = 'Close';
 async function prestudypage(e) {
     const d = new Date();
     const ind = await utilities.getNextLogId("/logger");
+
     console.log("ind for logger:", ind);
+    let log = {
+        "id": ind.value,
+        "timestamp": d,
+        "action": "Consent Form Logout",
+        "variableName": "",
+        "value": "",
+        "order": "",
+        "participantId": user.value.id
+    }
     if (e == agree) {
-        const log = {
-            "id": ind.value,
-            "timestamp": d,
-            "action": "Consent Form Accepted",
-            "variableName": "",
-            "value": "",
-            "order": "",
-            "participantId": user.value.id
-        }
-        console.log(log)
-        utilities.postData("/logger", log)
+        log.action =  "Consent Form Accepted";
+        console.log("prestudypage new log", log)
+        await utilities.postData("/logger", log)
         router.push('/prestudy');
     }
     else if (e == close) {
-
-        const log = {
-            "id": ind.value,
-            "timestamp": d,
-            "action": "Consent Form Logout",
-            "variableName": "",
-            "value": "",
-            "order": "",
-            "participantId": user.value.id
-        }
-        console.log(log)
-        utilities.postData("/logger", log)
+        console.log("prestudypage new log", log)
+        await utilities.postData("/logger", log)
         authStore.logout();
     }
 }

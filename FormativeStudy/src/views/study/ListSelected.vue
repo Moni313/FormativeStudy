@@ -11,12 +11,28 @@ const category = toRefs(props, 'c');
 
 const url = "/" + category.c.value.options;
 const opt = reactive(useAsyncState(async () => {
-    const data = axios.get("" + url).then((t) => t.data)
+    console.log("AXIOS in ListSelected: category", url);
+    const data = await axios.get("" + url).then((t) => t.data)
+        .then((data) => {
+            if (!props.compareModule) {
+                data.forEach(async (element) => {
+                    if (element.checked) {
+                        element.checked = false;
+                        const actualUrl = url + "/" + element.id;
+                        console.log("AXIOS in study store PATCH", actualUrl);
+                        await axios.patch("/" + actualUrl, element).catch((error) => {
+                            console.error(error.toJSON());
+                        });
+                    }
+                });
+            }
+        }).catch(error => { console.error(error.toJSON()) });
     return data
 }))
 let options = reactive(opt);
 
 const varsStore = useVariableStore();
+
 
 function remove(id) {
     options.state.filter((obj) => {
@@ -24,14 +40,21 @@ function remove(id) {
             obj.checked = false;
             const response = useAsyncState(async () => {
                 const actualUrl = url + "/" + id;
+                console.log("AXIOS in List selected remove", url);
                 return await axios.patch("" + actualUrl, obj);
             });
             if (response.isReady) {
                 const opt = useAsyncState(async () => {
+                    console.log("AXIOS in ListSelected remove if response is ready");
                     const data = axios.get("" + url).then((t) => t.data)
                     return data
                 })
                 options.state = opt.state;
+                console.log("Is the variable we are deleting showing in the VisArea?", varsStore.variable.id == obj.id)
+                console.log(varsStore.variable)
+                console.log(obj)
+                if (varsStore.variable.id == obj.id) { varsStore.resetActual() }
+                if (varsStore.compareWith.id == obj.id) { varsStore.resetCompare() }
                 emitter.emit('updateCategoryfromSelected', true);
             }
         }
@@ -48,6 +71,7 @@ const emitter = inject('emitter');
 emitter.on('updateCategory', (update) => {
     if (update) {
         const opt = useAsyncState(async () => {
+            console.log("AXIOS in ListSelected emitter on update category");
             const data = await axios.get("" + url).then((t) => t.data)
             return data
         })
@@ -56,11 +80,11 @@ emitter.on('updateCategory', (update) => {
 })
 
 watch(() => category, (n, o) => {
-    console.log("category", n)
+    console.log("in List selected watching category", n)
 }, { deep: true })
 </script>
 <template>
-    <section :id="'section_'+category.c.value.label">
+    <section :id="'section_' + category.c.value.label">
         <!-- <p>{{ category.c.value.label }}</p> -->
         <!-- list with only one action -->
         <div v-if="props.compareModule" v-for="option in options.state">

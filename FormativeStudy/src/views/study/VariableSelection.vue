@@ -23,7 +23,7 @@ function emitSelection(e, from) {
     else {
         actualId = e.id
     }
-    console.log("update actualid", actualId)
+    console.log("VariableSelection -> update actualid", actualId)
     category.updateOption(actualId, category.category.options);
     emitter.emit('updateCategory', true);
 
@@ -32,22 +32,22 @@ function emitSelection(e, from) {
 
 emitter.on('updateCategoryfromSelected', (update) => {
     if (update) {
-        console.log("updateCategoryfromSelected", category.category.options)
+        //console.log("VariableSelection -> updateCategoryfromSelected", category.category.options)
         const url = "/" + category.category.options;
         const opt = useAsyncState(async () => {
-            console.log("url", url)
+            console.log("AXIOS in Variable Selection ", url)
             return await axios.get("" + url).then((t) => t.data)
         })
         if (opt.isReady) {
-            console.log(" category.options.state", category.options.state)
-            console.log("opt", opt.state)
+            //console.log(" category.options.state", category.options.state)
+            //console.log("opt", opt.state)
             category.options.state = opt.state
         }
     }
 })
 
 watch(() => category.options, (n) => {
-    console.log("watching category, value changed:", n)
+    console.log("VariableSelection -> watching category, value changed:", n)
 }, { deep: true })
 
 

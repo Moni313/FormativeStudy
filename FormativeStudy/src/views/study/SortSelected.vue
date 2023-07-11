@@ -2,38 +2,35 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useCategoryStore } from '../../stores/study.store';
-import { utilitiesStore } from '../../stores/utilities.store';
 
 const emit = defineEmits(['nextTask'])
 
-const utilities = utilitiesStore();
-
 const selected = useCategoryStore();
-console.log("Sorting all selected: ", selected.allSelected);
+console.log("Sort Selected: ", selected.allSelected);
 const sel = ref(selected.allSelected);
 selected.getAllSelected();
 const endTask = ref(false);
 
 //to save the new order of variables and exit from the task
 function Save() {
-    console.log("Save new order and Exit");
+    console.log("Sort Selected -> Save new order and Exit");
     endTask.value = true;
 }
 
 //emit to infomr of getting the next task/post study
-function NextTask() {
-    console.log("task completed");
+async function NextTask() {
+    console.log("Sort Selected -> task completed");
     emit('nextTask')
 }
 
 //to change thw style of the draggable item
 function startEvent(evt){
-    console.log("start event: ", evt.item)
+    //console.log("start event: ", evt.item)
 	return (evt.item.style ='font-weight: bold; color: blue; font-size: 1.25em;');
 }
 //to reset the style of the draggable item
 function endEvent(evt){
-    console.log("end event: ", evt)
+    //console.log("end event: ", evt)
     sel.value.forEach((element, index) => {
         element.orderChecked = index + 1
     })

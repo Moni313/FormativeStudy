@@ -4,24 +4,20 @@ import { useAsyncState } from "@vueuse/core";
 import axios from "axios";
 
 import { useVariableStore } from '../../stores/variable.store';
+import { utilitiesStore } from '../../stores/utilities.store';
 
 import ListSelected from './ListSelected.vue';
 import Chart from './chart.vue'
-
-
-
 
 //TODO maybe change logic? instead of passing a prop, actualVariable is selected from the store, and it is set on the ListSelected.vue component when clicking on the variable button
 // allVariableSelected remain the same without the actualVariable
 const props = defineProps(['timeframe', 'actualVariable', 'tf'])
 
 const varsStore = useVariableStore();
+const utilities = utilitiesStore();
 
 //initialise the categories [vitals, labs, medications]
-const { state, isReady } = useAsyncState(async () => {
-    const data = await axios.get('/categories').then(t => t.data)
-    return data
-})
+const { state, isReady } = utilities.getData("/categories");
 
 //category serach
 const categories = reactive(state);
@@ -36,22 +32,21 @@ const timeframe = toRefs(props, 'tf');
 function userAction(e) {
     resetCompareVar()
     compare.value = true
-    
-    console.log("value of compare: ", compare)
+    console.log("ViArea -> value of compare: ", compare)
 }
 
 
 function compareWith(e) {
-    console.log("variable to compare:", e)
+    console.log("ViArea -> variable to compare:", e)
     compare.value = false;
     varsStore.setCompareVar(e)
     //TODO here set the second variable for comparison
 }
 watch(compare, (n, o) => {
-    console.log(n, o)
+    console.log("ViArea -> compare n, o",n, o)
 }, { deep: true })
 watch(varsStore, (n, o) => {
-    console.log("varstore", n, o)
+    console.log("ViArea ->  varstore n, o", n, o)
 }, { deep: true })
 
 
@@ -91,7 +86,7 @@ const data3 = [
 let data = ref(data3);
 
 watch(() => timeframe, (n) => {
-    console.log("timeframe", n)
+    console.log("VisArea -> timeframe", n)
     if (timeframe.value == 1) data = data1;
     else if (timeframe.value == 2) data = data2;
     else data = data3

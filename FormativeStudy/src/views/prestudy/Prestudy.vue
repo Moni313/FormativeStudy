@@ -19,31 +19,32 @@ const labelReset = "Reset";
 const labelNo = "Logout";
 
 
-function createObjQuestionAnswer() {
+async function createObjQuestionAnswer() {
     let qa = [];
     preStudyData.prestudydata.questions.forEach((e) => {
         qa.push({ 'question': e.label, 'answer': e.answer, 'expand': e.expand});
         if (e.expand) {
             const se = preStudyData.prestudydata.subquestions.find(sbe => sbe.id == e.expand_to);
-            console.log("expanded question: ", se);
+            //console.log("expanded question: ", se);
             qa.push({ 'question': se.label, 'answer': se.answer, 'expand': se.expand})
         }
     })
     const d = new Date();
     const ind = utilities.getNextLogId('/prestudyQuestions');
     const answers = { 'id': ind.value, 'participantId': user.value.id, 'prestudy': qa, 'timeframe': d  }
-    utilities.postData('/prestudyQuestions', answers);
-    console.log(qa, "is created")
+    await utilities.postData('/prestudyQuestions', answers);
+    //console.log(qa, "is created")
     return qa;
 }
 
-function action(e) {
+async function action(e) {
     if (e == labelOk) {
         router.push('/study');
         //store info
         let obj = createObjQuestionAnswer()
         console.log("prestudy question-ansewrs: ", obj);
-        const ind = utilities.getNextLogId('/logger');
+        const ind = await utilities.getNextLogId('/logger');
+        
         const d = new Date();
         const log = {
             "id": ind.value,
@@ -54,8 +55,8 @@ function action(e) {
             "order": "",
             "participantId": user.value.id
         }
-        const status = utilities.postData('/logger', log);
-        console.log("Prestudy logger status: ", status);
+        
+        utilities.postData('/logger', log);
     }
     else if (e == labelReset) {
         preStudyData.prestudydata.questions.forEach(element => {
