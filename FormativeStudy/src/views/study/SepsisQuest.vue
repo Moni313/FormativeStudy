@@ -61,8 +61,8 @@ function action(e) {
 }
 
 const disableButton = computed(() => {
-    console.log("checking status of answers")
-    if(sepsisQuest.sepsisquest.answer == 'No' || severeQuest.severequest.answer != '' || severeQuest.severequest.answer != null) return false
+    console.log("checking status of answers", sepsisQuest.sepsisquest.answer)
+    if(sepsisQuest.sepsisquest.answer == 'No' || (severeQuest.severequest.answer != '' && severeQuest.severequest.answer != null)) return false
     else return true
 })
 </script>

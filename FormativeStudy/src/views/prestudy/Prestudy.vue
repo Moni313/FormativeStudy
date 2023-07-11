@@ -19,7 +19,7 @@ const labelReset = "Reset";
 const labelNo = "Logout";
 
 
-async function createObjQuestionAnswer() {
+function createObjQuestionAnswer() {
     let qa = [];
     preStudyData.prestudydata.questions.forEach((e) => {
         qa.push({ 'question': e.label, 'answer': e.answer, 'expand': e.expand});
@@ -32,12 +32,12 @@ async function createObjQuestionAnswer() {
     const d = new Date();
     const ind = utilities.getNextLogId('/prestudyQuestions');
     const answers = { 'id': ind.value, 'participantId': user.value.id, 'prestudy': qa, 'timeframe': d  }
-    await utilities.postData('/prestudyQuestions', answers);
+    utilities.postData('/prestudyQuestions', answers);
     console.log(qa, "is created")
     return qa;
 }
 
-async function action(e) {
+function action(e) {
     if (e == labelOk) {
         router.push('/study');
         //store info
@@ -54,7 +54,7 @@ async function action(e) {
             "order": "",
             "participantId": user.value.id
         }
-        const status = await utilities.postData('/logger', log);
+        const status = utilities.postData('/logger', log);
         console.log("Prestudy logger status: ", status);
     }
     else if (e == labelReset) {

@@ -18,6 +18,7 @@ import InstructionInsideStudy from '../static/InstructionInsideStudy.vue';
 import VisArea from './VisArea.vue';
 import VariableSelection from './VariableSelection.vue';
 import SortSelected from './SortSelected.vue';
+import AllSelected from './AllSelected.vue';
 
 
 //variables for tasks
@@ -25,10 +26,11 @@ const actualTask = ref(1);
 const totalTasks = 12;
 
 //initialise the categories [vitals, labs, medications]
-let { state, isReady } = useAsyncState(async () => {
+const { state, isReady } = useAsyncState(async () => {
     const data = await axios.get('/categories').then(t => t.data);
     return data
 })
+console.log("Study state: ", state)
 
 //variable
 const variable = useVariableStore();
@@ -65,7 +67,7 @@ function nextTask() {
         sepsisQAnswered.value = false;
         sepsisQuest.sepsisquest.answer = null;
         options.resetAllOptions();
-
+        // options.selected = [];
         showGraphicsVariable.resetActual();
         options.showOptions = false;
 
@@ -116,6 +118,7 @@ function refreshComponent() {
         const data = await axios.get('/categories').then(t => t.data);
         return data
     }))
+    console.log("from watchEffect: ", state)
 }
 
 //to reset all the options to false
@@ -181,6 +184,7 @@ const utilities = utilitiesStore();
                     <h5 class="text-center">Variables Selected</h5>
                     <ListSelected v-for="c in state" :c=c :k="c" :compareModule="false" @variableSelected="showGraphics">
                     </ListSelected>
+                    <!-- <AllSelected @variableSelected="showGraphics"></AllSelected> -->
                     <br />
 
                     <SepsisQuest class="p-3 border-primary border-3" @sepsisQuestion="e => sepsisQAnswered = e">

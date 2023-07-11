@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import axios from "axios";
 import { useAsyncState } from "@vueuse/core";
 import { countSelected } from "./countSelected.store";
@@ -15,8 +15,8 @@ export const useCategoryStore = defineStore("category", () => {
 
   //global
   const allSelected = ref(getAllSelected());
+  // const selected = reactive([]);
 
-  
   function setCategory(category) {
     console.log("getting category from database: ", category);
     this.category = category;
@@ -46,9 +46,27 @@ export const useCategoryStore = defineStore("category", () => {
   function setLimit(limit) {
     this.showCheckBoxNumber = limit;
   }
+
+  //selected contains all the option selected, calling this function can add or remove the passed obj from the array
+  // function selectedUpdate(obj) {
+  //   const p = this.selected.filter((o) => {
+  //     return o.id == obj.id;
+  //   });
+  //   console.log(p, "selected list")
+  //   if (p.lenght == 0) {
+  //     this.selected.push(obj);
+  //   } else
+  //     this.selected = this.selected.filter((o) => {
+  //       o.id != obj.id;
+  //     });
+
+  //   console.log("selectedUpdate: ", this.selected);
+  // }
+
   function updateOption(updatingId, url) {
     this.options.state.filter((obj) => {
       if (obj.id == updatingId) {
+        // this.selectedUpdate(obj);
         console.log("obj in store", updatingId, obj);
         const response = useAsyncState(async () => {
           const actualUrl = "/" + url + "/" + obj.id;
@@ -192,6 +210,8 @@ export const useCategoryStore = defineStore("category", () => {
     closeArea,
     setLimit,
     getAllSelected,
-    resetAllOptions
+    resetAllOptions,
+    // selectedUpdate,
+    // selected,
   };
 });
