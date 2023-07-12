@@ -252,7 +252,7 @@
     {
       "id": 50825,
       "label": "Temperature",
-      "checked": true,
+      "checked": false,
       "orderChecked": 1,
       "fluid": "Blood",
       "category": "Blood Gas"
@@ -324,7 +324,7 @@
     {
       "id": 50834,
       "label": "Sodium, Body Fluid",
-      "checked": true,
+      "checked": false,
       "orderChecked": 2,
       "fluid": "Other Body Fluid",
       "category": "Blood Gas"
@@ -372,7 +372,7 @@
     {
       "id": 50840,
       "label": "Cholesterol, Ascites",
-      "checked": true,
+      "checked": false,
       "orderChecked": 3,
       "fluid": "Ascites",
       "category": "Chemistry"
@@ -13388,265 +13388,12 @@
       "category": null
     }
   ],
-  "logger": [
-    {
-      "timestamp": "2023-07-11T05:11:57.690Z",
-      "action": "Consent Form Accepted",
-      "variableName": "",
-      "value": "",
-      "order": "",
-      "participantId": 1,
-      "id": 1
-    },
-    {
-      "timestamp": "2023-07-11T05:11:59.673Z",
-      "action": "Storing prestudy",
-      "variableName": "",
-      "value": "",
-      "order": "",
-      "participantId": 1,
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "timestamp": "2023-07-11T05:28:06.932Z",
-      "action": "Consent Form Accepted",
-      "variableName": "",
-      "value": "",
-      "order": "",
-      "participantId": 1,
-      "id": 7
-    },
-    {
-      "timestamp": "2023-07-11T05:28:08.707Z",
-      "action": "Storing prestudy",
-      "variableName": "",
-      "value": "",
-      "order": "",
-      "participantId": 1,
-      "id": 8
-    },
-    {
-      "id": 9
-    },
-    {
-      "id": 10
-    },
-    {
-      "id": 11
-    },
-    {
-      "id": 12
-    },
-    {
-      "id": 13
-    },
-    {
-      "timestamp": "2023-07-11T05:33:44.087Z",
-      "action": "Consent Form Accepted",
-      "variableName": "",
-      "value": "",
-      "order": "",
-      "participantId": 1,
-      "id": 14
-    },
-    {
-      "timestamp": "2023-07-11T05:33:45.665Z",
-      "action": "Storing prestudy",
-      "variableName": "",
-      "value": "",
-      "order": "",
-      "participantId": 1,
-      "id": 15
-    },
-    {
-      "id": 16
-    }
-  ],
-  "prestudyQuestions": [
-    {
-      "participantId": 1,
-      "prestudy": [
-        {
-          "question": "What is the highest level of education you have completed?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What best describes your role?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What is your specialisation?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "How many years of experience do you have in a clinical role?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "How many years of experience do you have caring for patients who have contracted sepsis",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "Have you any special expertise with sepsis patients, e.g., undergone special training in sepsis and/or conducted research related to patient with sepsis",
-          "answer": null,
-          "expand": true
-        },
-        {
-          "question": "Please Explain",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "Are you directly involved in diagnosis for sepsis?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What best describes the health organisation you work in?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What is the approximate size of the facility you work in?",
-          "answer": null,
-          "expand": false
-        }
-      ],
-      "timeframe": "2023-07-11T05:11:59.602Z",
-      "id": 1
-    },
-    {
-      "participantId": 1,
-      "prestudy": [
-        {
-          "question": "What is the highest level of education you have completed?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What best describes your role?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What is your specialisation?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "How many years of experience do you have in a clinical role?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "How many years of experience do you have caring for patients who have contracted sepsis",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "Have you any special expertise with sepsis patients, e.g., undergone special training in sepsis and/or conducted research related to patient with sepsis",
-          "answer": null,
-          "expand": true
-        },
-        {
-          "question": "Please Explain",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "Are you directly involved in diagnosis for sepsis?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What best describes the health organisation you work in?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What is the approximate size of the facility you work in?",
-          "answer": null,
-          "expand": false
-        }
-      ],
-      "timeframe": "2023-07-11T05:28:08.620Z",
-      "id": 2
-    },
-    {
-      "participantId": 1,
-      "prestudy": [
-        {
-          "question": "What is the highest level of education you have completed?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What best describes your role?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What is your specialisation?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "How many years of experience do you have in a clinical role?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "How many years of experience do you have caring for patients who have contracted sepsis",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "Have you any special expertise with sepsis patients, e.g., undergone special training in sepsis and/or conducted research related to patient with sepsis",
-          "answer": null,
-          "expand": true
-        },
-        {
-          "question": "Please Explain",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "Are you directly involved in diagnosis for sepsis?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What best describes the health organisation you work in?",
-          "answer": null,
-          "expand": false
-        },
-        {
-          "question": "What is the approximate size of the facility you work in?",
-          "answer": null,
-          "expand": false
-        }
-      ],
-      "timeframe": "2023-07-11T05:33:45.591Z",
-      "id": 3
-    }
-  ],
+
+  "logger": [],
+  "prestudyQuestions": [],
   "poststudyQuestions": [],
-  "posttaskQuestions": []
+  "posttaskQuestions": [],
+  "initialise": {
+    
+  }
 }

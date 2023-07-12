@@ -97,6 +97,13 @@ export default {
         //ws: false,
         changeOrigin: true,
         secure: false,
+      },
+      "/initialise":{
+        target: "http://127.0.0.1:3001",
+        pathRewrite: { "^/initialise": "" },
+        //ws: false,
+        changeOrigin: true,
+        secure: false,
       }
     },
   },
