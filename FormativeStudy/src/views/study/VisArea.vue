@@ -1,7 +1,5 @@
 <script setup>
 import { reactive, ref, watch, toRefs } from 'vue';
-import { useAsyncState } from "@vueuse/core";
-import axios from "axios";
 
 import { useVariableStore } from '../../stores/variable.store';
 import { utilitiesStore } from '../../stores/utilities.store';

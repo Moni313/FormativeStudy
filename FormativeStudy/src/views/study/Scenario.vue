@@ -3,13 +3,12 @@ import { toRefs, watch } from 'vue';
 import axios from 'axios';
 import { useAsyncState } from '@vueuse/core';
 
-const props = defineProps(['actualTask']);
-const scenario = toRefs(props, 'actualTask');
-//TODO add to log
-//console.log("scenario as a prop", scenario)
+const props = defineProps(['actualScenario']);
+const scenario = toRefs(props.actualScenario);
 
+console.log(scenario)
 const { state, isReady }= useAsyncState( () => {
-    const url = "/scenarios/" + scenario.actualTask.value;
+    const url = "/scenarios/" + scenario.value;
     console.log("AXIOS Getting scenario for tasks", url)
     const data = axios.get(url).then(t => t.data);
     console.log("retrieved scenario: ", data)

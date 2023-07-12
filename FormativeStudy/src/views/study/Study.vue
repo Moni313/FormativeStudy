@@ -1,4 +1,41 @@
 <script setup>
+import { computed, ref, watch, watchEffect } from 'vue';
+
+import { utilitiesStore } from '../../stores/utilities.store';
+
+import Timeframe from './Timeframe.vue';
+
+const utilities = utilitiesStore();
+const initialise = utilities.getData("/initialization");
+
+
+function nextFrame() {
+    init.tf = init.tf + 1
+}
+
+const init = computed(() =>{
+    return initialise
+
+})
+
+watch(init, (newVal) => {
+      console.log("new value initialise: ",newVal); // should log the fetched data
+    });
+
+watchEffect(() => {
+    console.log("Watching init", init)
+});
+
+</script>
+<template>
+   initialise {{ init.value }} initialise
+    <br/>
+    <Timeframe :tf="init.tf" :actualTask=init.scenario :totalTasks="init.totalScenarios" @timeframe="nextFrame">
+    </Timeframe>
+</template>
+
+
+<!-- <script setup>
 import { reactive, ref, watch, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 
@@ -120,25 +157,6 @@ watch(() => sepsisQAnswered.value, (n) => {
 })
 
 
-// function refreshComponent() {
-//     ({ state, isReady } = useAsyncState(async () => {
-//         console.log("AXIOS in study get categories in refresh componnet");
-//         const data = await axios.get('/categories').then(t => t.data);
-//         return data
-//     }))
-//     console.log("from watchEffect: state is refreshed", state)
-// }
-
-//to reset all the options to false
-//called when refresh is true and this is set when a task is completed
-// watchEffect(() => {
-//     if (refresh.value) {
-//         refreshComponent();
-//         refresh.value = false; // Reset the trigger value
-//     }
-// });
-
-
 </script>
 
 
@@ -149,7 +167,7 @@ watch(() => sepsisQAnswered.value, (n) => {
                 <TasksBar :actualTask=actualTask :totalTasks=totalTasks
                     class="border-bottom border-3  mt-3 border-secondary">
                 </TasksBar>
-                <!-- <Scenario class="border-bottom border-3  mt-5 border-secondary" :actualTask=actualTask></Scenario> -->
+                 <Scenario class="border-bottom border-3  mt-5 border-secondary" :actualTask=actualTask></Scenario> 
                 <InstructionInsideStudy class="mt-5"></InstructionInsideStudy>
             </div>
         </div>
@@ -182,8 +200,8 @@ watch(() => sepsisQAnswered.value, (n) => {
             <div class="card">
                 <div class=" card-header">
                     <div class="mt-2 mb-2 text-center w-auto">
-                        <!-- <TimeframeNext class="float-start align-items-center text-center  pt-3" @timeframe="nextFrame"
-                            :tf="tf"></TimeframeNext> -->
+                         <TimeframeNext class="float-start align-items-center text-center  pt-3" @timeframe="nextFrame"
+                            :tf="tf"></TimeframeNext> 
                         <VarSearch v-if="isReady" :categories=state @variableSelected="showGraphics">
                         </VarSearch>
                     </div>
@@ -192,7 +210,7 @@ watch(() => sepsisQAnswered.value, (n) => {
                     <h5 class="text-center">Variables Selected</h5>
                     <ListSelected v-for="c in state" :c=c :k="c" :compareModule="false" @variableSelected="showGraphics">
                     </ListSelected>
-                    <!-- <AllSelected @variableSelected="showGraphics"></AllSelected> -->
+                     <AllSelected @variableSelected="showGraphics"></AllSelected> 
                     <br />
 
                     <SepsisQuest class="p-3 border-primary border-3" @sepsisQuestion="e => sepsisQAnswered = e">
@@ -202,4 +220,4 @@ watch(() => sepsisQAnswered.value, (n) => {
             </div>
         </div>
     </div>
-</template>
+</template> -->

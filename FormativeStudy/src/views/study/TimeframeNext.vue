@@ -4,7 +4,7 @@ const props = defineProps(['tf', 'totalTasks'])
 const emit = defineEmits(['timeframe']);
 
 const checkLast = computed(() => {
-    if (props.tf == props.totalTasks) return true //TODO make 12 as a variable
+    if (props.tf == props.totalTasks) return true
     else return false
 })
 

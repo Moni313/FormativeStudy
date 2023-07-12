@@ -3,12 +3,16 @@ import { ref, watch, reactive, inject } from 'vue';
 import { useAsyncState } from "@vueuse/core";
 import axios from "axios";
 import { useCategoryStore } from '../../stores/study.store'
+import { utilitiesStore } from '../../stores/utilities.store';
 
+const emit = defineEmits(['updateCategory']);
+
+const utilities = utilitiesStore();
 const cat = useCategoryStore();
 const category = reactive(cat);
 
 const emitter = inject('emitter');
-const emit = defineEmits(['updateCategory']);
+
 
 
 let datalistSelectionModel = ref()
@@ -34,15 +38,9 @@ emitter.on('updateCategoryfromSelected', (update) => {
     if (update) {
         //console.log("VariableSelection -> updateCategoryfromSelected", category.category.options)
         const url = "/" + category.category.options;
-        const opt = useAsyncState(async () => {
-            console.log("AXIOS in Variable Selection ", url)
-            return await axios.get("" + url).then((t) => t.data)
-        })
-        if (opt.isReady) {
-            //console.log(" category.options.state", category.options.state)
-            //console.log("opt", opt.state)
-            category.options.state = opt.state
-        }
+        const opt = utilities.getData(url);
+        category.options.state = opt.state
+
     }
 })
 
