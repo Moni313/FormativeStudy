@@ -16,11 +16,10 @@ const close = 'Close';
 
 async function prestudypage(e) {
     const d = new Date();
-    const ind = await utilities.getNextLogId("/logger");
 
-    console.log("ind for logger:", ind);
+    console.log("ind for logger:");
     let log = {
-        "id": ind.value,
+        "id": '',
         "timestamp": d,
         "action": "Consent Form Logout",
         "variableName": "",

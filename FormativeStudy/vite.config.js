@@ -98,9 +98,9 @@ export default {
         changeOrigin: true,
         secure: false,
       },
-      "/initialise":{
+      "/initialization":{
         target: "http://127.0.0.1:3001",
-        pathRewrite: { "^/initialise": "" },
+        pathRewrite: { "^/initialization": "" },
         //ws: false,
         changeOrigin: true,
         secure: false,

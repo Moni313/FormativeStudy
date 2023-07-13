@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-// import axios from "axios";
-// import { useAsyncState } from "@vueuse/core";
 
 export const countSelected = defineStore("count", () => {
   const id = "countSelectedVariables";

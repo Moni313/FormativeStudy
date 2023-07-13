@@ -1,0 +1,174 @@
+{
+    "questions": [
+        {
+            "id": 1,
+            "label": "Did you find this task difficult?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "Extremely difficult",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 2,
+                    "label": "A lot difficult",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "Moderate",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "A bit difficult",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                }
+                ,
+                {
+                    "id": 5,
+                    "label": "Not at all",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "label": "Ho much confident are you in your decision?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "I am totally unsure I assessed this patient correctly",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 2,
+                    "label": "I can be wrong on my answer",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "I do not know",
+                    "description": null,
+                    "help": null,
+                    "order": 2,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "I have some dubts but I am confident on my decision",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                },
+                {
+                    "id": 5,
+                    "label": "I am sure I assessed this patient corretly",
+                    "description": null,
+                    "help": null,
+                    "order": 3,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "label": "Did you feel biased from previous task(s) on making deciion for this patient?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": true,
+            "expand_to": 1,
+            "condition_to_expand": true,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "yes",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "less than 3"
+                },
+                {
+                    "id": 2,
+                    "label": "none",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "label": "Describe what helped you the most to decide for sepsis/not sepsis",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "text",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "answer": null,
+            "options": null
+        }
+    ],
+    "subquestions": [
+        {
+            "id": 1,
+            "label": "Please Explain",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "text",
+            "question_group": "Experience",
+            "expand": false,
+            "expand_to": null,
+            "answer": null,
+            "options": null
+        }
+    ]
+}

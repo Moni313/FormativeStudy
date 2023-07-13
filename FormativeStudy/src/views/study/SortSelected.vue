@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { useCategoryStore } from '../../stores/study.store';
 
+import PostTaskQuestions from "./postTask.vue";
 const emit = defineEmits(['nextTask'])
 
 const selected = useCategoryStore();
@@ -53,8 +54,10 @@ function endEvent(evt){
 
     </div>
     <div v-else class="mt-5">
-    <h5>This task is completed. Thank you.
-        <button class="btn btn-outline-primary" @click="NextTask()">Next</button>
+        <h5>This task is completed. Thank you. Please fill the below form.
+        <!-- <button class="btn btn-outline-primary" @click="NextTask()">Next</button> -->
     </h5>
+        <PostTaskQuestions @action="NextTask"></PostTaskQuestions>
+    
     </div>
 </template>

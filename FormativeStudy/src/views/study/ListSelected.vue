@@ -10,9 +10,9 @@ const emit = defineEmits(['updateCategoryfromSelected', 'variableSelected'])
 const category = toRefs(props, 'c');
 
 const url = "/" + category.c.value.options;
-const opt = reactive(useAsyncState(async () => {
+const opt = reactive(useAsyncState( () => {
     console.log("AXIOS in ListSelected: category", url);
-    const data = await axios.get("" + url).then((t) => t.data)
+    const data = axios.get("" + url).then((t) => t.data)
         .then((data) => {
             if (!props.compareModule) {
                 data.forEach(async (element) => {
@@ -21,7 +21,7 @@ const opt = reactive(useAsyncState(async () => {
                         const actualUrl = url + "/" + element.id;
                         console.log("AXIOS in study store PATCH", actualUrl);
                         await axios.patch("/" + actualUrl, element).catch((error) => {
-                            console.error(error.toJSON());
+                            console.log(error.toJSON());
                         });
                     }
                 });

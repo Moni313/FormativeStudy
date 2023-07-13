@@ -81,7 +81,7 @@ export const useCategoryStore = defineStore("category", () => {
           //console.log("updated", updatingId, obj);
           this.options = useAsyncState(async () => {
             console.log("AXIOS in study store updateOptions");
-            const data = axios.get("" + url).then((t) => t.data);
+            const data = await axios.get("" + url).then((t) => t.data);
             //console.log("get options updated");
             return data;
           });

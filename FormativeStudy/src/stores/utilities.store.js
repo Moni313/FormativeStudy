@@ -1,92 +1,92 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-export const utilitiesStore = defineStore("utilities", {
-  state: () => ({
-    data: [],
-  }),
+export const utilitiesStore = defineStore("utilities", () => {
+  async function postData(api, data) {
+    const ind = await getNextLogId(api);
+    data.id = ind.value
 
-  getters: {
-    async getNextLogId(api) {
-      console.log("Getting new index for ", api);
-      try {
-        const a = api + "?_sort=id&_order=desc";
-        console.log("AXIOS in study store utilities getNextLogId");
-        const response = await axios.get(a);
+    console.log("utilities, postData()", api, data);
+    try {
+      console.log("AXIOS in study store Utilities postData");
+      const response = await axios.post(api, data);
+      //console.log("response in postData", response);
+      return response.status;
+    } catch (error) {
+      if (error.response) {
+        // The request was made, but the server responded with a status code outside the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made, but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.log("Error", error.message);
+      }
+      console.log(error.config);
+      return error.status;
+    }
+  }
 
-        const logs = response.data;
-        //console.log(api, ": ", logs);
-        if (logs.length > 0) {
-          const lastLog = logs[0];
-          const lastLogId = lastLog.id;
-          console.log(api, " id: ", lastLogId); // Last ID of the users
-          return lastLogId + 1;
-        }
-      } catch (error) {
+  async function getNextLogId(api) {
+    console.log("Getting new index for ", api);
+    try {
+      const a = api + "?_sort=id&_order=desc";
+      console.log("AXIOS in study store utilities getNextLogId");
+      const response = await axios.get(a);
+
+      const logs = response.data;
+      //console.log(api, ": ", logs);
+      if (logs.length > 0) {
+        const lastLog = logs[0];
+        const lastLogId = lastLog.id;
+        console.log(api, " id: ", lastLogId); // Last ID of the users
+        return lastLogId + 1;
+      }
+    } catch (error) {
+      if (error.response) {
+        // The request was made, but the server responded with a status code outside the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made, but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an error
+        console.log("Error", error.message);
+      }
+      console.log(error.config);
+    }
+    return 0;
+  }
+
+  async function getData(api) {
+    const data = await axios
+      .get(api)
+      .then((t) => t.data)
+      .catch((error) => {
         if (error.response) {
           // The request was made, but the server responded with a status code outside the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
         } else if (error.request) {
           // The request was made, but no response was received
-          console.log(error.request);
+          console.erro(error.request);
         } else {
           // Something happened in setting up the request that triggered an error
-          console.log("Error", error.message);
+          console.erro("Error", error.message);
         }
-        console.log(error.config);
-      }
-      return 0;
-    },
-    async getData(api) {
-      const data = await axios
-        .get(api)
-        .then((t) => t.data)
-        .catch((error) => {
-          if (error.response) {
-            // The request was made, but the server responded with a status code outside the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made, but no response was received
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an error
-            console.log("Error", error.message);
-          }
-          console.log(error.config);
-        });
+        console.erro(error.config);
+        return data;
+      });
+  }
 
-      return data;
-    },
-  },
-
-  actions: {
-    async postData(api, data) {
-      console.log("utilities, postData()", api, data);
-      try {
-        console.log("AXIOS in study store Utilities postData");
-        const response = await axios.post(api, data);
-        //console.log("response in postData", response);
-        return response.status;
-      } catch (error) {
-        if (error.response) {
-          // The request was made, but the server responded with a status code outside the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made, but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an error
-          console.log("Error", error.message);
-        }
-        console.log(error.config);
-        return error.status;
-      }
-    },
-  },
+  return {
+    postData,
+    getData,
+  };
 });

@@ -6,16 +6,16 @@
             "image": null,
             "description": null,
             "help": "",
-            "type": "radioButton",
+            "type": "checkBox",
             "question_group": "Experience",
-            "expand": true,
+            "expand": false,
             "expand_to": 1,
             "condition_to_expand": null,
             "answer": null,
             "options": [
                 {
                     "id": 1,
-                    "label": "Yes",
+                    "label": "APACHE",
                     "description": null,
                     "help": null,
                     "order": 0,
@@ -23,7 +23,55 @@
                 },
                 {
                     "id": 2,
-                    "label": "No",
+                    "label": "SIRS",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 3,
+                    "label": "SOFA",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 4,
+                    "label": "qSOFA",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 5,
+                    "label": "NEWS",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 6,
+                    "label": "MEWS",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer"
+                },
+                {
+                    "id": 7,
+                    "label": "Other",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "answer"
+                },
+                {
+                    "id": 8,
+                    "label": "No, I do not use tools",
                     "description": null,
                     "help": null,
                     "order": 1,

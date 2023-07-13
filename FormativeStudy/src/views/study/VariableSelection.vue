@@ -36,7 +36,7 @@ emitter.on('updateCategoryfromSelected', (update) => {
         const url = "/" + category.category.options;
         const opt = useAsyncState(async () => {
             console.log("AXIOS in Variable Selection ", url)
-            return await axios.get("" + url).then((t) => t.data)
+            return axios.get("" + url).then((t) => t.data)
         })
         if (opt.isReady) {
             //console.log(" category.options.state", category.options.state)

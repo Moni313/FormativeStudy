@@ -27,9 +27,9 @@ const actualTask = ref(1);
 const totalTasks = 12;
 
 //initialise the categories [vitals, labs, medications]
-const { state, isReady } = useAsyncState(async () => {
+const { state, isReady } = useAsyncState( () => {
     console.log("AXIOS in study get categories");
-    const data = await axios.get('/categories').then(t => t.data);
+    const data = axios.get('/categories').then(t => t.data);
     return data
 })
 console.log("Study state: ", state)
@@ -45,7 +45,6 @@ const tf = ref(0);
 const sepsisQAnswered = ref(false);
 const sepsisQuest = sepsisQuestStore();
 const options = useCategoryStore();
-options.resetAllOptions();
 
 //TODO this actually does nothing
 function closeArea(e) {
@@ -59,8 +58,9 @@ function showGraphics(e) {
     showGraphicsVariable.variable = e
 }
 
-const refresh = ref(false)
+// const refresh = ref(false)
 function nextTask() {
+    console.log("----------------------- Start new task");
     if (actualTask.value == totalTasks) {
         console.log("Study -> All the tasks have been completed")
         //TODO here need to go to post quests
@@ -88,12 +88,15 @@ function nextFrame() {
 const utilities = utilitiesStore();
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
-async function logTimeframe(n){
+
+
+
+watch(() => tf.value, async (n) => {
+    console.log("Timeframe", n);
     const d = new Date();
-    const ind = await utilities.getNextLogId('/logger');
     console.log("logTimeFrame new index: ", ind.value);
     const log = {
-        "id": ind.value,
+        "id": '',
         "taskId" : actualTask.value,
         "timestamp": d,
         "action": "Next timeframe",
@@ -102,12 +105,6 @@ async function logTimeframe(n){
         "order": "",
         "participantId": user.value.id
     }
-    return log
-}
-
-watch(() => tf.value, async (n) => {
-    console.log("Timeframe", n);
-    const log = logTimeframe(n);
     await utilities.postData("/logger", log)
 })
 
@@ -170,7 +167,7 @@ watch(() => sepsisQAnswered.value, (n) => {
                                 </VariableSelection>
                             </div>
                             <div v-else>
-                                <SortSelected @next-task="nextTask"></SortSelected>
+                                <SortSelected @nextTask="nextTask"></SortSelected>
                             </div>
 
                         </div>

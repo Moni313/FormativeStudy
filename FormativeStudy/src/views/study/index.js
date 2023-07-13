@@ -11,3 +11,4 @@ export { default as Timeframe } from "./Timeframe.vue";
 export { default as TimeframeNext } from "./TimeframeNext.vue";
 export { default as AllSelected } from "./AllSelected.vue";
 export { default as SortSelected } from "./SortSelected.vue";
+export { default as PostTaskQuestions} from "./postTask.vue";

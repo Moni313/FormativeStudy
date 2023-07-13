@@ -1,6 +1,5 @@
 <script setup>
-import { preStudyUseStore } from '../../stores/prestudy.store';
-import { router } from '../../router';
+import { postTaskUseStore } from '../../stores/postTask.store';
 import RadioButtonGroup from "../../components/RadioButtonGroup.vue";
 import TextBox from '../../components/TextBox.vue';
 import DatalistBox from '../../components/DatalistBox.vue';
@@ -9,11 +8,13 @@ import SubmitButtons from '../../components/SubmitButtons.vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '../../stores';
 import { utilitiesStore } from '../../stores/utilities.store';
+
+const emit = defineEmits("action");
 const utilities = utilitiesStore();
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 
-const preStudyData = preStudyUseStore();
+const postTaskData = postTaskUseStore();
 const labelOk = 'OK';
 const labelReset = "Reset";
 const labelNo = "Logout";
@@ -21,26 +22,27 @@ const labelNo = "Logout";
 
 async function createObjQuestionAnswer() {
     let qa = [];
-    preStudyData.prestudydata.questions.forEach((e) => {
+    postTaskData.posttaskdata.questions.forEach((e) => {
         qa.push({ 'question': e.label, 'answer': e.answer, 'expand': e.expand});
         if (e.expand) {
-            const se = preStudyData.prestudydata.subquestions.find(sbe => sbe.id == e.expand_to);
+            const se = postTaskData.posttaskdata.subquestions.find(sbe => sbe.id == e.expand_to);
             //console.log("expanded question: ", se);
             qa.push({ 'question': se.label, 'answer': se.answer, 'expand': se.expand})
         }
     })
     const d = new Date();
     const answers = { 'id': '', 'participantId': user.value.id, 'prestudy': qa, 'timeframe': d  }
-    utilities.postData('/prestudyQuestions', answers);
+    await utilities.postData('/posttaskQuestions', answers);
+    //console.log(qa, "is created")
     return qa;
 }
 
 async function action(e) {
     if (e == labelOk) {
-        router.push('/study');
         //store info
         let obj = createObjQuestionAnswer()
         console.log("prestudy question-ansewrs: ", obj);
+        
         const d = new Date();
         const log = {
             "id": '',
@@ -52,32 +54,33 @@ async function action(e) {
             "participantId": user.value.id
         }
         
-        await utilities.postData('/logger', log);
+        utilities.postData('/logger', log);
+        emit('action', e);
     }
     else if (e == labelReset) {
-        preStudyData.prestudydata.questions.forEach(element => {
+        postTaskData.posttaskdata.questions.forEach(element => {
             element.answer = null;
         })
-        preStudyData.prestudydata.subquestions.forEach(element => {
+        postTaskData.posttaskdata.subquestions.forEach(element => {
             element.answer = null;
         })
     }
 }
 function updateSubanswer(q, s) { //update q questiond with subquestion asnwer
-    let item = preStudyData.prestudydata.questions.find(element => element.label == q);
+    let item = postTaskData.posttaskdata.questions.find(element => element.label == q);
 
-    let subq = preStudyData.prestudydata.subquestions.find(e => e.id == item.expand_to);
+    let subq = postTaskData.posttaskdata.subquestions.find(e => e.id == item.expand_to);
     subq.answer = s;
 }
 function setVariables(question, answer, subquestion) {
-    let q = preStudyData.prestudydata.questions.find(element => element.label == question)
+    let q = postTaskData.posttaskdata.questions.find(element => element.label == question)
     if (answer != null && q.answer != answer) {
         q.answer = answer;
     }
     if (answer == null) { //remove question with no answer from the list (input was cleared)
-        const index = preStudyData.prestudydata.questions.indexOf(q);
+        const index = postTaskData.posttaskdata.questions.indexOf(q);
         if (index > -1) {
-            preStudyData.prestudydata.questions.splice(index, 1);
+            postTaskData.posttaskdata.questions.splice(index, 1);
         }
     }
     if (subquestion != null && q.answer != subquestion) {
@@ -90,10 +93,10 @@ function setVariables(question, answer, subquestion) {
 <template>
     <form class="container">
         <div class="card">
-            <div class="card-header h4">{{ preStudyData.prestudydata.questions[0].question_group }}</div>
+            <div class="card-header h4">{{ postTaskData.posttaskdata.questions[0].question_group }}</div>
 
             <div class="col-12">
-                <div v-for="question in preStudyData.prestudydata.questions" :id="'qustion_' + question.id"
+                <div v-for="question in postTaskData.posttaskdata.questions" :id="'qustion_' + question.id"
                     class="float-start col-6 border-top">
 
                     <div class="card card-body border-0 input-group p-2">
@@ -131,7 +134,7 @@ function setVariables(question, answer, subquestion) {
 
                             <div v-if="question.expand && question.answer == 'yes'">
                                 <!-- Expand question [TODO] make this component with props and pass preStudy as a prop -->
-                                <TextBox v-model="preStudyData.prestudydata.subquestions[question.expand_to - 1].answer"
+                                <TextBox v-model="postTaskData.posttaskdata.subquestions[question.expand_to - 1].answer"
                                     @input="e => (updateSubanswer(question.label, e))" />
                             </div>
                         </div>
@@ -144,22 +147,22 @@ function setVariables(question, answer, subquestion) {
                 <div class="card-header h5">Summary</div>
                 <div class="card-body">
                     <div class="col-12">
-                        <div v-for="a in preStudyData.prestudydata.questions">
+                        <div v-for="a in postTaskData.posttaskdata.questions">
                             <div class="col-8 float-end text-left border-top"> {{ a.label }}</div>
                             <div class="col-4 text-end border-top pe-5">
                                 <div v-if="a.answer == null || a.answer == ''">
                                     <br />
                                     <div
-                                        v-if="a.expand && (preStudyData.prestudydata.questions[a.expand_to] == null || preStudyData.prestudydata.questions[a.expand_to] == '')">
+                                        v-if="a.expand && (postTaskData.posttaskdata.questions[a.expand_to] == null || postTaskData.posttaskdata.questions[a.expand_to] == '')">
                                         <br />
                                     </div>
 
                                 </div>
                                 <div v-else> <b>{{ a.answer }}</b>
                                     <div
-                                        v-if="a.expand && preStudyData.prestudydata.questions[a.expand_to] != null && preStudyData.prestudydata.questions[a.expand_to] != ''">
+                                        v-if="a.expand && postTaskData.posttaskdata.questions[a.expand_to] != null && postTaskData.posttaskdata.questions[a.expand_to] != ''">
                                         <b>{{
-                                            preStudyData.prestudydata.subquestions.find(e => e.id =
+                                            postTaskData.posttaskdata.subquestions.find(e => e.id =
                                                 a.expand_to).answer }}</b>
                                     </div>
 
@@ -170,7 +173,7 @@ function setVariables(question, answer, subquestion) {
                     </div>
                 </div>
                 <div class="m-2 ps-1">
-                    <SubmitButtons :labelOk=labelOk :labelReset=labelReset :labelNo=labelNo @selected="action"
+                    <SubmitButtons :labelOk=labelOk @selected="action"
                         class="d-flex flex-column justify-content-center align-items-center ps-1 pe-1" />
                 </div>
             </div>
