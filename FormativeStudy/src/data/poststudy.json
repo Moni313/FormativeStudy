@@ -2,7 +2,7 @@
     "questions": [
         {
             "id": 1,
-            "label": "Do you normally use defined guidelines to assess sepsis?",
+            "label": "Do you use defined guidelines to assess sepsis?",
             "image": null,
             "description": null,
             "help": "",
@@ -19,7 +19,8 @@
                     "description": null,
                     "help": null,
                     "order": 0,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 2,
@@ -27,7 +28,8 @@
                     "description": null,
                     "help": null,
                     "order": 1,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 3,
@@ -35,7 +37,8 @@
                     "description": null,
                     "help": null,
                     "order": 0,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 4,
@@ -43,7 +46,8 @@
                     "description": null,
                     "help": null,
                     "order": 1,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 5,
@@ -51,7 +55,8 @@
                     "description": null,
                     "help": null,
                     "order": 0,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 6,
@@ -59,7 +64,8 @@
                     "description": null,
                     "help": null,
                     "order": 1,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 7,
@@ -67,11 +73,44 @@
                     "description": null,
                     "help": null,
                     "order": 0,
-                    "type": "answer"
+                    "type": "answer",
+                    "checked": false
                 },
                 {
                     "id": 8,
                     "label": "No, I do not use tools",
+                    "description": null,
+                    "help": null,
+                    "order": 1,
+                    "type": "answer",
+                    "checked": false
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "label": "Is there information missed that might be useful to assess sepsis and was not possible to find in this study?",
+            "image": null,
+            "description": null,
+            "help": "",
+            "type": "radioButton",
+            "question_group": "Experience",
+            "expand": true,
+            "expand_to": 1,
+            "condition_to_expand": null,
+            "answer": null,
+            "options": [
+                {
+                    "id": 1,
+                    "label": "yes",
+                    "description": null,
+                    "help": null,
+                    "order": 0,
+                    "type": "less than 3"
+                },
+                {
+                    "id": 2,
+                    "label": "none",
                     "description": null,
                     "help": null,
                     "order": 1,
@@ -83,57 +122,16 @@
     "subquestions": [
         {
             "id": 1,
-            "label": "",
+            "label": "Please explain",
             "image": null,
             "description": null,
             "help": "",
-            "type": "checkBox",
+            "type": "text",
             "question_group": "Experience",
             "expand": false,
             "expand_to": null,
             "answer": null,
-            "options": [
-                {
-                    "id": 1,
-                    "label": "qSOFA",
-                    "description": null,
-                    "help": null,
-                    "order": 0,
-                    "type": "answer"
-                },
-                {
-                    "id": 2,
-                    "label": "NEWS (National Early Warning Result)",
-                    "description": null,
-                    "help": "Respiratory  frequency,  oxygen  saturation,  systolic blood pressure, pulse rate, neurological level of consciousness  and  body  temperature.",
-                    "order": 1,
-                    "type": "answer"
-                },
-                {
-                    "id": 3,
-                    "label": "MNEWS (Modified National Early Warning Result)",
-                    "description": null,
-                    "help": "Respiratory rate, systolic blood pressure, heart rate, level of consciousness and body temperature",
-                    "order": 1,
-                    "type": "answer"
-                },
-                {
-                    "id": 3,
-                    "label": "SIRS",
-                    "description": null,
-                    "help": null,
-                    "order": 1,
-                    "type": "answer"
-                },
-                {
-                    "id": 4,
-                    "label": "Other",
-                    "description": null,
-                    "help": null,
-                    "order": 1,
-                    "type": "answer"
-                }
-            ]
+            "options": null
         }
     ]
-    }
+}

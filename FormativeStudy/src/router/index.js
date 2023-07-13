@@ -6,6 +6,7 @@ import accountRoutes from './account.routes';
 import usersRoutes from '../router/users.routers';
 import prestudy from '../router/prestudy.routers';
 import study from '../router/study.routers';
+import poststudy from '../router/poststudy.routers';
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,7 @@ export const router = createRouter({
         { ...usersRoutes },
         { ...prestudy },
         { ...study },
+        { ...poststudy},
         // catch all redirect to home page
         { path: '/:pathMatch(.*)*', redirect: '/' }
     ]

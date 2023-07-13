@@ -6,4 +6,4 @@ export { default as TB } from "./TextBox.vue";
 export { default as SB } from "./SelectBox.vue";
 export { default as NB } from "./NumberBox.vue";
 export { default as SubmitB } from "./SubmitButtons.vue";
-// export { default as CBG } from "./CheckBoxGroup.vue";
+export { default as CBG } from "./CheckBox.vue";

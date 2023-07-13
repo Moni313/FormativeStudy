@@ -23,21 +23,21 @@ import SortSelected from './SortSelected.vue';
 
 
 //variables for tasks
-const actualTask = ref(1);
+const actualTask = ref(12);
 const totalTasks = 12;
 
 //initialise the categories [vitals, labs, medications]
 const { state, isReady } = useAsyncState( () => {
     console.log("AXIOS in study get categories");
-    const data = axios.get('/categories').then(t => t.data);
-    return data
+    return axios.get('/categories').then(t => t.data);
+    
 })
 console.log("Study state: ", state)
 
 //variable
 const variable = useVariableStore();
 const showGraphicsVariable = reactive(variable);
-
+import { router } from '../../router';
 //timeframe
 const tf = ref(0);
 //console.log("Study frame: ", tf)
@@ -64,6 +64,7 @@ function nextTask() {
     if (actualTask.value == totalTasks) {
         console.log("Study -> All the tasks have been completed")
         //TODO here need to go to post quests
+        router.push('/poststudy');
     }
     else {
         //TODO check everything is reset to default, especially options of categories
@@ -94,7 +95,7 @@ const { user } = storeToRefs(authStore);
 watch(() => tf.value, async (n) => {
     console.log("Timeframe", n);
     const d = new Date();
-    console.log("logTimeFrame new index: ", ind.value);
+    console.log("logTimeFrame new index: ",);
     const log = {
         "id": '',
         "taskId" : actualTask.value,

@@ -9,10 +9,10 @@ const props = defineProps(['c', 'compareModule', 'varCompare']);
 const emit = defineEmits(['updateCategoryfromSelected', 'variableSelected'])
 const category = toRefs(props, 'c');
 
-const url = "/" + category.c.value.options;
-const opt = reactive(useAsyncState( () => {
+const url = category.c.value.options;
+const opt = reactive(useAsyncState( async () => {
     console.log("AXIOS in ListSelected: category", url);
-    const data = axios.get("" + url).then((t) => t.data)
+    const data = await axios.get("/" + url).then((t) => t.data)
         .then((data) => {
             if (!props.compareModule) {
                 data.forEach(async (element) => {

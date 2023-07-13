@@ -70,19 +70,20 @@ export const utilitiesStore = defineStore("utilities", () => {
       .catch((error) => {
         if (error.response) {
           // The request was made, but the server responded with a status code outside the range of 2xx
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
         } else if (error.request) {
           // The request was made, but no response was received
-          console.erro(error.request);
+          console.log(error.request);
         } else {
           // Something happened in setting up the request that triggered an error
-          console.erro("Error", error.message);
+          console.log("Error", error.message);
         }
-        console.erro(error.config);
-        return data;
+        console.log(error.config);
       });
+      console.log("Getting data: ", data)
+      return data
   }
 
   return {
