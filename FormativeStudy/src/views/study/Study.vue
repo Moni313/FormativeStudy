@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, watch, watchEffect } from 'vue';
+import { reactive, ref, watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import axios from 'axios';
@@ -23,16 +23,16 @@ import SortSelected from './SortSelected.vue';
 
 
 //variables for tasks
-const actualTask = ref(12);
+const actualTask = ref(11);
 const totalTasks = 12;
 
+
+
 //initialise the categories [vitals, labs, medications]
-const { state, isReady } = useAsyncState( () => {
-    console.log("AXIOS in study get categories");
-    return axios.get('/categories').then(t => t.data);
-    
+const { state, isReady } = useAsyncState(() => {
+    return axios.get('/categories').then(t => t.data)
 })
-console.log("Study state: ", state)
+if (isReady) console.log("Study state: ", state)
 
 //variable
 const variable = useVariableStore();
@@ -45,6 +45,7 @@ const tf = ref(0);
 const sepsisQAnswered = ref(false);
 const sepsisQuest = sepsisQuestStore();
 const options = useCategoryStore();
+options.resetAllOptions();
 
 //TODO this actually does nothing
 function closeArea(e) {
@@ -71,7 +72,7 @@ function nextTask() {
         tf.value = 0;
         sepsisQAnswered.value = false;
         sepsisQuest.sepsisquest.answer = null;
-        options.resetAllOptions();
+
         //TODO deselect all the options!!
         showGraphicsVariable.resetActual();
         showGraphicsVariable.resetCompare();
@@ -79,7 +80,11 @@ function nextTask() {
         actualTask.value = actualTask.value + 1
         console.log("Study -> New Task: ", actualTask.value);
         //need this to refres the categories
+        options.resetAllOptions();
         //refresh.value = true;
+
+        //TODO update initialise to keep trace of work
+
     }
 }
 function nextFrame() {
@@ -98,7 +103,7 @@ watch(() => tf.value, async (n) => {
     console.log("logTimeFrame new index: ",);
     const log = {
         "id": '',
-        "taskId" : actualTask.value,
+        "scenario": actualTask.value,
         "timestamp": d,
         "action": "Next timeframe",
         "variableName": "Timeframe",
@@ -136,6 +141,11 @@ watch(() => sepsisQAnswered.value, (n) => {
 //     }
 // });
 
+//initialise
+const initValues = computed(async () => {
+    return utilities.getData('/initialization');
+
+})
 
 </script>
 
@@ -151,53 +161,66 @@ watch(() => sepsisQAnswered.value, (n) => {
                 <InstructionInsideStudy class="mt-5"></InstructionInsideStudy>
             </div>
         </div>
-        <div class="col-7 h-100">
-            <div class="card">
-                <div v-if="!sepsisQAnswered" class="card-header mb-4">
-                    <Timeframe :tf="tf" :actualTask=actualTask :totalTasks="totalTasks" @timeframe="nextFrame">
-                    </Timeframe>
+        <div v-if="!sepsisQAnswered" class="col-2 h-100">
+            <!-- <div class="card"> -->
+            <div class=" card-header">
+                <div class="mt-2 mb-2 text-center w-auto">
+                    <!-- <TimeframeNext class="float-start align-items-center text-center  pt-3" @timeframe="nextFrame"
+                            :tf="tf"></TimeframeNext> -->
+                    <VarSearch v-if="isReady" :categories=state @variableSelected="showGraphics">
+                    </VarSearch>
                 </div>
-                <div class="card-body">
-                    <div class="container-fluid">
-                        <div class="row mt-2">
+            </div>
+            <div class="card-body">
+                <h5 class="text-center border-top border-3 mt-5 pt-3">Variables Selected</h5>
+                <ListSelected v-for="c in state" :c=c :k="c" :compareModule="false" @variableSelected="showGraphics">
+                </ListSelected>
+                <!-- <AllSelected @variableSelected="showGraphics"></AllSelected> -->
 
-                            <div v-if="!sepsisQAnswered">
-                                <VisArea v-if="showGraphicsVariable.variable.id != null"
-                                    :actualVariable="showGraphicsVariable" :compareModule="false" :tf="tf"></VisArea>
-                                <VariableSelection v-else @closeArea="closeArea">
-                                </VariableSelection>
-                            </div>
-                            <div v-else>
-                                <SortSelected @nextTask="nextTask"></SortSelected>
+            </div>
+            <!-- </div> -->
+        </div>
+        <div class="col-7">
+            <div class="position-relative">
+
+                <div class="card">
+                    <div v-if="!sepsisQAnswered" class="card-header mb-4">
+                        <Timeframe :tf="tf" :actualTask=actualTask :totalTasks="totalTasks" @timeframe="nextFrame">
+                        </Timeframe>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row mt-2">
+
+                                <div v-if="!sepsisQAnswered">
+                                    <VisArea v-if="showGraphicsVariable.variable.id != null"
+                                        :actualVariable="showGraphicsVariable" :compareModule="false" :tf="tf">
+                                    </VisArea>
+                                    <VariableSelection v-else @closeArea="closeArea">
+                                    </VariableSelection>
+
+                                </div>
+                                <div v-else>
+                                    <SortSelected @nextTask="nextTask"></SortSelected>
+                                </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-if="!sepsisQAnswered" class="col-3 h-100">
-            <div class="card">
-                <div class=" card-header">
-                    <div class="mt-2 mb-2 text-center w-auto">
-                        <!-- <TimeframeNext class="float-start align-items-center text-center  pt-3" @timeframe="nextFrame"
-                            :tf="tf"></TimeframeNext> -->
-                        <VarSearch v-if="isReady" :categories=state @variableSelected="showGraphics">
-                        </VarSearch>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="text-center">Variables Selected</h5>
-                    <ListSelected v-for="c in state" :c=c :k="c" :compareModule="false" @variableSelected="showGraphics">
-                    </ListSelected>
-                    <!-- <AllSelected @variableSelected="showGraphics"></AllSelected> -->
-                    <br />
-
-                    <SepsisQuest class="p-3 border-primary border-3" @sepsisQuestion="e => sepsisQAnswered = e">
-                    </SepsisQuest>
-
-                </div>
+            <div class="w-auto h-auto position-fixed bottom-0 end-0 bg-light">
+                <SepsisQuest class="p-3 me-5 mb-5 border-primary border-3" @sepsisQuestion="e => sepsisQAnswered = e">
+                </SepsisQuest>
             </div>
+
+
+
+
+
+
+
         </div>
     </div>
 </template>

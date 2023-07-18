@@ -32,7 +32,7 @@ async function createObjQuestionAnswer() {
     })
     const d = new Date();
     const answers = { 'id': '', 'participantId': user.value.id, 'prestudy': qa, 'timeframe': d }
-    utilities.postData('/prestudyQuestions', answers);
+    utilities.postData('/posttaskQuestions', answers);
     return qa;
 }
 
@@ -46,6 +46,7 @@ async function action(e) {
         const log = {
             "id": '',
             "timestamp": d,
+            "scenario" : null,
             "action": "Storing post Study",
             "variableName": "",
             "value": "",

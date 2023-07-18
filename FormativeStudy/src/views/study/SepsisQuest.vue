@@ -68,8 +68,8 @@ const disableButton = computed(() => {
 </script>
 <template>
     <div class="border rounded">
-        <h3 class="d-flex flex-column justify-content-center align-items-center"><b>{{ sepsisQuest.sepsisquest.label }}</b>
-        </h3>
+        <h4 class="d-flex flex-column justify-content-center align-items-center"><b>{{ sepsisQuest.sepsisquest.label }}</b>
+        </h4>
         
             <RadioButtonGroup key="sepsisQuest" id="sepsisQuest" v-model=sepsisQuest.sepsisquest.answer name="sepsisQuest"
                 :options=sepsisQuest.sepsisquest :selected=sepsisQuest.sepsisquest.answer @input="e => setAnswerSepsis(e)"

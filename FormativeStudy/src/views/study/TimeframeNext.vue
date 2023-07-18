@@ -14,7 +14,8 @@ function selectNextTimeframe(){
 </script>
 
 <template>
-    <h4 class="align-items-center text-center">Time Slot<br />
-        <button class="btn btn-success text-center mt-3" :disabled="checkLast" v-on:click="selectNextTimeframe"><b class="h4"><i class="bi bi-chevron-double-right"></i></b></button>
-    </h4>
+    <p class="align-items-center text-center"><span class="h4">Time Slot</span><br />
+        <button class="btn btn-success text-center mt-3" :disabled="checkLast" v-on:click="selectNextTimeframe"><b class="h4"><i class="bi bi-chevron-double-right"></i></b></button><br/>
+       <b>Do not overuse me!</b>
+    </p>
 </template>

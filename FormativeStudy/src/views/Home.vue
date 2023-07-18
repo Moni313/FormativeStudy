@@ -21,6 +21,7 @@ async function prestudypage(e) {
     let log = {
         "id": '',
         "timestamp": d,
+        "scenario" : null,
         "action": "Consent Form Logout",
         "variableName": "",
         "value": "",

@@ -45,6 +45,7 @@ async function action(e) {
         const log = {
             "id": '',
             "timestamp": d,
+            "scenario" : null,
             "action": "Storing prestudy",
             "variableName": "",
             "value": "",

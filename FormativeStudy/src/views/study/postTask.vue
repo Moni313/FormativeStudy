@@ -17,7 +17,6 @@ const { user } = storeToRefs(authStore);
 const postTaskData = postTaskUseStore();
 const labelOk = 'OK';
 const labelReset = "Reset";
-const labelNo = "Logout";
 
 
 async function createObjQuestionAnswer() {
@@ -44,9 +43,11 @@ async function action(e) {
         console.log("prestudy question-ansewrs: ", obj);
         
         const d = new Date();
+        //TODO update scenario
         const log = {
             "id": '',
             "timestamp": d,
+            "scenario" : "NEED TO BE UPDATED",
             "action": "Storing prestudy",
             "variableName": "",
             "value": "",
