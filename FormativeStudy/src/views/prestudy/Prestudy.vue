@@ -37,36 +37,6 @@ async function createObjQuestionAnswer() {
     return qa;
 }
 
-async function action(e) {
-    if (e == labelOk) {
-        router.push('/study');
-        //store info
-        let obj = createObjQuestionAnswer()
-        console.log("prestudy question-ansewrs: ", obj);
-        const ind = await utilities.getNextLogId('/logger');
-        
-        const d = new Date();
-        const log = {
-            "id": ind.value,
-            "timestamp": d,
-            "action": "Storing prestudy",
-            "variableName": "",
-            "value": "",
-            "order": "",
-            "participantId": user.value.id
-        }
-        
-        utilities.postData('/logger', log);
-    }
-    else if (e == labelReset) {
-        preStudyData.prestudydata.questions.forEach(element => {
-            element.answer = null;
-        })
-        preStudyData.prestudydata.subquestions.forEach(element => {
-            element.answer = null;
-        })
-    }
-}
 function updateSubanswer(q, s) { //update q questiond with subquestion asnwer
     let item = preStudyData.prestudydata.questions.find(element => element.label == q);
 
@@ -86,6 +56,39 @@ function setVariables(question, answer, subquestion) {
     }
     if (subquestion != null && q.answer != subquestion) {
         q.answer = subquestion;
+    }
+}
+
+
+function action(e) {
+    if (e == labelOk) {
+        
+        //store info
+        let obj = createObjQuestionAnswer()
+        console.log("prestudy question-ansewrs: ", obj);
+        const ind = utilities.getNextLogId('/logger');
+        
+        const d = new Date();
+        const log = {
+            "id": ind.value,
+            "timestamp": d,
+            "action": "Storing prestudy",
+            "variableName": "",
+            "value": "",
+            "order": "",
+            "participantId": user.value.id
+        }
+        
+        utilities.postData('/logger', log);
+        router.push('/study');
+    }
+    else if (e == labelReset) {
+        preStudyData.prestudydata.questions.forEach(element => {
+            element.answer = null;
+        })
+        preStudyData.prestudydata.subquestions.forEach(element => {
+            element.answer = null;
+        })
     }
 }
 </script>
