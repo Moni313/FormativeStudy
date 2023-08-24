@@ -16,8 +16,6 @@ const close = 'Close';
 
 async function prestudypage(e) {
     const d = new Date();
-
-    console.log("ind for logger:");
     let log = {
         "id": '',
         "timestamp": d,
