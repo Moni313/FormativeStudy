@@ -137,8 +137,8 @@
     {
       "id": 50809,
       "label": "Glucose",
-      "checked": false,
-      "orderChecked": 1,
+      "checked": true,
+      "orderChecked": 2,
       "fluid": "Blood",
       "category": "Blood Gas"
     },
@@ -169,7 +169,7 @@
     {
       "id": 50813,
       "label": "Lactate",
-      "checked": false,
+      "checked": true,
       "orderChecked": 1,
       "fluid": "Blood",
       "category": "Blood Gas"
@@ -13441,6 +13441,16 @@
       "action": "Storing prestudy",
       "variableName": "",
       "value": "",
+      "order": "",
+      "participantId": 1
+    },
+    {
+      "id": 3,
+      "scenario": 11,
+      "timestamp": "2023-08-24T06:17:04.047Z",
+      "action": "Next timeframe",
+      "variableName": "Timeframe",
+      "value": 1,
       "order": "",
       "participantId": 1
     }
