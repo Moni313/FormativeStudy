@@ -155,14 +155,15 @@ watch(compare, (n, o) => {
                 <Chart :id="'svg-compare'" :v="varsStore.compareWith" v-if="varsStore.compareWith.id != null" :data="data">
                 </Chart>
             </div>
-        </div>
-        <div class="float-end">
+            <div class="float-start">
             <button class="btn btn-outline-secondary form-control text-start" @click="userAction(labelOk)"> {{
                 labelOk }}</button>
             <AllSelected v-if="compare" v-for="c in categories" :c=c :k="'allSelected_' + c"
                 :varCompare="props.actualVariable.variable.id" @variableSelected="compareWith"></AllSelected>
 
         </div>
+        </div>
+        
 
         [dev: tf={{ props.tf }}]
     </div>

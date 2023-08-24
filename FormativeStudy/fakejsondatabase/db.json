@@ -13453,6 +13453,26 @@
       "value": 1,
       "order": "",
       "participantId": 1
+    },
+    {
+      "id": 4,
+      "scenario": 11,
+      "timestamp": "2023-08-24T06:34:44.306Z",
+      "action": "Next timeframe",
+      "variableName": "Timeframe",
+      "value": 2,
+      "order": "",
+      "participantId": 1
+    },
+    {
+      "id": 5,
+      "scenario": 11,
+      "timestamp": "2023-08-24T06:36:39.068Z",
+      "action": "Next timeframe",
+      "variableName": "Timeframe",
+      "value": 3,
+      "order": "",
+      "participantId": 1
     }
   ],
   "prestudyQuestions": [

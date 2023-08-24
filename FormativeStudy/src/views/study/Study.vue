@@ -153,7 +153,7 @@ const initValues = computed(async () => {
 <template class="container-fluid">
     <div class="row h-100">
         <div class="col-2 h-100">
-            <div class="card card-body">
+            <div class="card ps-1 pe-1">
                 <TasksBar :actualTask=actualTask :totalTasks=totalTasks
                     class="border-bottom border-3  mt-3 border-secondary">
                 </TasksBar>
@@ -180,7 +180,7 @@ const initValues = computed(async () => {
             </div>
             <!-- </div> -->
         </div>
-        <div class="col-7">
+        <div class="col-8">
             <div class="position-relative">
 
                 <div class="card">
@@ -211,7 +211,7 @@ const initValues = computed(async () => {
                 </div>
             </div>
             <div class="w-auto h-auto position-fixed bottom-0 end-0 bg-light">
-                <SepsisQuest class="p-3 me-5 mb-5 border-primary border-3" @sepsisQuestion="e => sepsisQAnswered = e">
+                <SepsisQuest class="p-3 me-3 mb-3 border-primary border-3" @sepsisQuestion="e => sepsisQAnswered = e">
                 </SepsisQuest>
             </div>
 
